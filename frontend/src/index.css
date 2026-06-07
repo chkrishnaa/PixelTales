@@ -1,0 +1,125 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-turquoise-50: #f0fdfa;
+  --color-turquoise-100: #ccfbf1;
+  --color-turquoise-200: #98f7e5;
+  --color-turquoise-300: #5debd5;
+  --color-turquoise-400: #33d7c3;
+  --color-turquoise-500: #13b9a7;
+  --color-turquoise-600: #0c9589;
+  --color-turquoise-700: #0e776f;
+  --color-turquoise-800: #105f5a;
+  --color-turquoise-900: #124f4b;
+  --color-turquoise-950: #042f2e;
+  --color-accent-warm: #f97316;
+  --font-display: 'Fredoka One', cursive;
+  --font-sans: Nunito, sans-serif;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply m-0 min-h-svh font-sans bg-turquoise-50 text-gray-800 antialiased dark:bg-gray-950 dark:text-gray-100;
+  }
+
+  #root {
+    @apply min-h-svh;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+
+  button {
+    @apply font-[inherit] cursor-pointer border-0 bg-transparent;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-text {
+    font-family: var(--font-sans);
+  }
+
+  .page-container {
+    @apply mx-auto w-full h-full max-w-7xl px-5;
+  }
+
+  .movie-grid {
+    @apply grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4;
+  }
+
+  .card-surface {
+    @apply rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-turquoise-700 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-turquoise-600;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/70 bg-white/15 px-5 py-2.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/25;
+  }
+
+  .input-field {
+    @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-turquoise-400 focus:ring-2 focus:ring-turquoise-400/25 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100;
+  }
+}
+
+
+/* ==================================
+   PixelTales Global Scrollbar
+================================== */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #14b8a6 #ccfbf1;
+}
+
+/* Chrome, Edge, Safari */
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ccfbf1; /* Light turquoise track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #14b8a6; /* Main scrollbar */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0d9488;
+}
+
+/* Dark Mode */
+
+.dark ::-webkit-scrollbar-track {
+  background: #164e63; /* dark cyan track */
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #2dd4bf;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #5eead4;
+}
+
+.dark {
+  scrollbar-color: #2dd4bf #164e63;
+}
