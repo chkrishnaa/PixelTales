@@ -10,6 +10,7 @@ import configurePassport   from './config/passport.js';
 import authRoutes          from './routes/authRoutes.js';
 import feedbackRoutes      from './routes/feedbackRoutes.js';
 import reviewRoutes        from './routes/reviewRoutes.js';
+import chatRoutes          from './routes/chatRoutes.js';
 import { errorHandler }    from './middlewares/errorHandler.js';
 
 dotenv.config();
@@ -37,6 +38,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use('/api/auth',     authRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/reviews',  reviewRoutes);
+app.use('/api/chat',     chatRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) =>
