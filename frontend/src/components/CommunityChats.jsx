@@ -1,114 +1,175 @@
 import { useState, useRef, useEffect } from 'react';
-import { ArrowLeft, Send, Users, MessageSquare, Hash } from 'lucide-react';
+import { ArrowLeft, Send, Users, Search, Hash } from 'lucide-react';
 import { CHAT_ROOMS, CHAT_MESSAGES } from '../utils/data';
 import { useAuth } from '../context/AuthContext';
 
-/* ── Time formatter ───────────────────────────────────────── */
-function formatTime(iso) {
+/* ── Helpers ─────────────────────────────────────────────── */
+function formatBubbleTime(iso) {
+  return new Date(iso).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatDateSeparator(iso) {
+  const d    = new Date(iso);
+  const now  = new Date();
+  const diff = Math.floor((now - d) / 86400000);
+  if (diff === 0)  return 'Today';
+  if (diff === 1)  return 'Yesterday';
+  return d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+}
+
+function formatListTime(iso) {
   const d   = new Date(iso);
   const now = new Date();
-  const diffMin = Math.floor((now - d) / 60000);
-  if (diffMin < 1)  return 'just now';
-  if (diffMin < 60) return `${diffMin}m ago`;
-  const diffH = Math.floor(diffMin / 60);
-  if (diffH < 24)   return `${diffH}h ago`;
+  const diff = Math.floor((now - d) / 86400000);
+  if (diff === 0)  return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  if (diff === 1)  return 'Yesterday';
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-/* ── Avatar initials ──────────────────────────────────────── */
 const AVATAR_COLORS = [
-  'from-cyan-400 to-blue-600',
-  'from-violet-400 to-purple-600',
-  'from-rose-400 to-pink-600',
-  'from-amber-400 to-orange-500',
-  'from-emerald-400 to-teal-600',
-  'from-turquoise-300 to-turquoise-600',
+  ['#0891b2','#0e7490'], ['#7c3aed','#6d28d9'], ['#db2777','#be185d'],
+  ['#d97706','#b45309'], ['#059669','#047857'], ['#0f766e','#0d9488'],
+  ['#4f46e5','#4338ca'], ['#dc2626','#b91c1c'],
 ];
-function avatarColor(name) {
-  let hash = 0;
-  for (const ch of name) hash = (hash * 31 + ch.charCodeAt(0)) & 0xffff;
-  return AVATAR_COLORS[hash % AVATAR_COLORS.length];
+function avatarGrad(name = '') {
+  let h = 0; for (const c of name) h = (h * 31 + c.charCodeAt(0)) & 0xffff;
+  const [a, b] = AVATAR_COLORS[h % AVATAR_COLORS.length];
+  return `linear-gradient(135deg,${a},${b})`;
 }
 
-/* ── Single chat message bubble ──────────────────────────── */
-function MessageBubble({ msg, isOwn }) {
+/* ── Avatar circle ───────────────────────────────────────── */
+function Avatar({ name, size = 40, style = {} }) {
   return (
-    <div className={`flex gap-2.5 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
-      {/* Avatar */}
-      <div className={`shrink-0 size-8 rounded-full bg-linear-to-br ${avatarColor(msg.userName)}
-                       flex items-center justify-center text-xs font-bold text-white uppercase select-none`}>
-        {msg.userName[0]}
-      </div>
-
-      <div className={`flex max-w-[72%] flex-col gap-0.5 ${isOwn ? 'items-end' : 'items-start'}`}>
-        {!isOwn && (
-          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 ml-1">
-            {msg.userName}
-          </span>
-        )}
-        <div className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-          isOwn
-            ? 'rounded-tr-sm bg-turquoise-600 text-white'
-            : 'rounded-tl-sm bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100'
-        }`}>
-          {msg.text}
-        </div>
-        <span className="text-[10px] text-gray-400 mx-1">{formatTime(msg.timestamp)}</span>
-      </div>
+    <div style={{ width: size, height: size, borderRadius: '50%', background: avatarGrad(name),
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: size * 0.38, fontWeight: 700, color: '#fff',
+                  flexShrink: 0, userSelect: 'none', ...style }}>
+      {(name?.[0] ?? '?').toUpperCase()}
     </div>
   );
 }
 
-/* ── Chat room card ───────────────────────────────────────── */
-function RoomCard({ room, lastMsg, onClick }) {
+/* ── Room list item ──────────────────────────────────────── */
+function RoomListItem({ room, lastMsg, isActive, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="group w-full rounded-2xl bg-white p-4 text-left shadow-sm ring-1 ring-gray-100 transition-all
-                 hover:shadow-md hover:ring-turquoise-200 dark:bg-gray-900 dark:ring-gray-800 dark:hover:ring-turquoise-700"
+      className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
+        isActive
+          ? 'bg-turquoise-50 dark:bg-turquoise-950/30'
+          : 'hover:bg-gray-50 dark:hover:bg-gray-800/60'
+      }`}
     >
-      {/* Gradient header strip */}
-      <div className="flex items-center gap-3">
-        <div
-          className="flex size-12 shrink-0 items-center justify-center rounded-xl text-2xl shadow-sm"
-          style={{ background: room.gradient }}
-        >
-          {room.icon}
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <h3 className="truncate font-bold text-gray-900 dark:text-white group-hover:text-turquoise-700 dark:group-hover:text-turquoise-400 transition-colors">
-            {room.name}
-          </h3>
-          <p className="truncate text-xs text-gray-500 dark:text-gray-400">
-            {room.description}
-          </p>
-        </div>
+      {/* Room icon */}
+      <div
+        className="flex size-12 shrink-0 items-center justify-center rounded-full text-xl shadow-sm"
+        style={{ background: room.gradient }}
+      >
+        {room.icon}
       </div>
 
-      {/* Last message preview */}
-      {lastMsg && (
-        <p className="mt-3 truncate rounded-lg bg-gray-50 px-3 py-1.5 text-xs text-gray-600
-                      dark:bg-gray-800 dark:text-gray-400">
-          <span className="font-semibold">{lastMsg.userName}:</span> {lastMsg.text}
+      <div className="min-w-0 flex-1">
+        <div className="flex items-baseline justify-between gap-2">
+          <span className="truncate font-semibold text-gray-900 dark:text-white text-sm">
+            {room.name}
+          </span>
+          {lastMsg && (
+            <span className="shrink-0 text-[10px] text-gray-400 dark:text-gray-500">
+              {formatListTime(lastMsg.timestamp)}
+            </span>
+          )}
+        </div>
+        <p className="truncate text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+          {lastMsg
+            ? <><span className="font-semibold">{lastMsg.userName}:</span> {lastMsg.text}</>
+            : room.description}
         </p>
-      )}
-
-      {/* Stats */}
-      <div className="mt-3 flex items-center gap-4 text-xs font-semibold text-gray-400">
-        <span className="flex items-center gap-1"><Users size={12} />{room.memberCount.toLocaleString()}</span>
-        <span className="flex items-center gap-1"><MessageSquare size={12} />{room.messageCount.toLocaleString()}</span>
       </div>
     </button>
   );
 }
 
-/* ── Full chat panel ──────────────────────────────────────── */
-function ChatPanel({ room, onBack }) {
-  const { user } = useAuth();
-  const [messages, setMessages] = useState(CHAT_MESSAGES[room.id] ?? []);
-  const [draft, setDraft]       = useState('');
-  const bottomRef               = useRef(null);
+/* ── Date separator ──────────────────────────────────────── */
+function DateSep({ label }) {
+  return (
+    <div className="flex items-center gap-3 px-4 py-1">
+      <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
+      <span className="rounded-full bg-gray-100 px-3 py-0.5 text-[10px] font-semibold
+                       text-gray-400 dark:bg-gray-800 dark:text-gray-500">
+        {label}
+      </span>
+      <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
+    </div>
+  );
+}
+
+/* ── Message bubble (WhatsApp style) ─────────────────────── */
+function Bubble({ msg, prevMsg, isOwn }) {
+  const sameAuthor = prevMsg && prevMsg.userId === msg.userId;
+  const showAvatar = !isOwn && !sameAuthor;
+  const showName   = !isOwn && !sameAuthor;
+
+  return (
+    <div className={`flex items-end gap-2 px-4 ${isOwn ? 'flex-row-reverse' : 'flex-row'} ${sameAuthor ? 'mt-0.5' : 'mt-3'}`}>
+
+      {/* Avatar spacer/icon */}
+      {!isOwn && (
+        <div className="w-8 shrink-0">
+          {showAvatar && <Avatar name={msg.userName} size={32} />}
+        </div>
+      )}
+
+      <div className={`flex max-w-[68%] flex-col gap-0.5 ${isOwn ? 'items-end' : 'items-start'}`}>
+        {showName && (
+          <span className="ml-1 text-xs font-bold" style={{ color: avatarGrad(msg.userName).slice(22, 29) }}>
+            {msg.userName}
+          </span>
+        )}
+
+        {/* Bubble */}
+        <div className={`relative rounded-2xl px-3.5 py-2 text-sm leading-relaxed shadow-sm ${
+          isOwn
+            ? 'rounded-br-sm bg-[#dcf8c6] text-gray-900 dark:bg-[#025c4c] dark:text-gray-100'
+            : 'rounded-bl-sm bg-white text-gray-900 dark:bg-[#1f2c34] dark:text-gray-100'
+        }`}
+          style={isOwn ? undefined : { boxShadow: '0 1px 2px rgba(0,0,0,.08)' }}
+        >
+          {/* WhatsApp-style tail */}
+          {!sameAuthor && (
+            <span className={`absolute top-0 ${isOwn ? 'right-[-5px]' : 'left-[-5px]'} overflow-hidden`}
+              style={{ width: 8, height: 13 }}>
+              <svg width="8" height="13" viewBox="0 0 8 13">
+                {isOwn
+                  ? <path d="M1 1 Q8 1 8 8 L8 13 Z" fill="#dcf8c6" className="dark:hidden" />
+                  : <path d="M7 1 Q0 1 0 8 L0 13 Z" fill="white" className="dark:hidden" />}
+                {isOwn
+                  ? <path d="M1 1 Q8 1 8 8 L8 13 Z" fill="#025c4c" className="hidden dark:block" />
+                  : <path d="M7 1 Q0 1 0 8 L0 13 Z" fill="#1f2c34" className="hidden dark:block" />}
+              </svg>
+            </span>
+          )}
+
+          {msg.text}
+
+          {/* Time */}
+          <span className={`ml-3 float-right mt-1 text-[10px] ${
+            isOwn ? 'text-[#6a9e7f] dark:text-[#6cbc8e]' : 'text-gray-400 dark:text-gray-500'
+          }`}>
+            {formatBubbleTime(msg.timestamp)}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Chat panel ──────────────────────────────────────────── */
+function ChatPanel({ room, messages: initMsgs, onBack, isMobile }) {
+  const { user }  = useAuth();
+  const [messages, setMessages] = useState(initMsgs);
+  const [draft,    setDraft]    = useState('');
+  const bottomRef  = useRef(null);
+  const inputRef   = useRef(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -116,96 +177,96 @@ function ChatPanel({ room, onBack }) {
 
   const send = () => {
     const text = draft.trim();
-    if (!text) return;
-    setMessages((prev) => [
-      ...prev,
-      {
-        id:        `local-${Date.now()}`,
-        userId:    user?.id ?? 'guest',
-        userName:  user?.name ?? 'Guest',
-        avatar:    null,
-        text,
-        timestamp: new Date().toISOString(),
-      },
-    ]);
+    if (!text || !user) return;
+    setMessages((p) => [...p, {
+      id:        `local-${Date.now()}`,
+      userId:    user.id ?? user._id ?? 'me',
+      userName:  user.name ?? 'You',
+      text,
+      timestamp: new Date().toISOString(),
+    }]);
     setDraft('');
+    inputRef.current?.focus();
   };
 
-  const handleKey = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
-  };
+  const meId = user?.id ?? user?._id ?? '__me__';
 
-  const currentUserId = user?.id ?? user?._id ?? 'guest';
+  // Build display list with date separators inserted
+  const items = [];
+  let lastDate = null;
+  messages.forEach((msg, i) => {
+    const d = new Date(msg.timestamp).toDateString();
+    if (d !== lastDate) { items.push({ type: 'sep', id: `sep-${d}`, label: formatDateSeparator(msg.timestamp) }); lastDate = d; }
+    items.push({ type: 'msg', msg, prevMsg: i > 0 ? messages[i - 1] : null });
+  });
 
   return (
-    <div className="flex h-[calc(100vh-200px)] min-h-[500px] flex-col rounded-2xl border border-gray-100
-                    bg-white shadow-lg dark:border-gray-800 dark:bg-gray-950">
-
+    <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center gap-3 border-b border-gray-100 px-4 py-3 dark:border-gray-800">
-        <button
-          onClick={onBack}
-          className="rounded-full p-1.5 text-gray-500 transition hover:bg-gray-100 dark:hover:bg-gray-800"
-        >
-          <ArrowLeft size={18} />
-        </button>
-
-        <div
-          className="flex size-9 shrink-0 items-center justify-center rounded-xl text-xl"
-          style={{ background: room.gradient }}
-        >
+      <div className="flex items-center gap-3 border-b border-gray-200 bg-[#f0f2f5] px-3 py-2.5 dark:border-gray-700 dark:bg-[#202c33]">
+        {isMobile && (
+          <button onClick={onBack} className="rounded-full p-1 text-gray-600 hover:bg-black/10 dark:text-gray-300">
+            <ArrowLeft size={20} />
+          </button>
+        )}
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-full text-lg"
+          style={{ background: room.gradient }}>
           {room.icon}
         </div>
-
-        <div className="flex-1">
-          <h2 className="font-bold text-gray-900 dark:text-white leading-none">{room.name}</h2>
-          <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-            <Users size={10} /> {room.memberCount.toLocaleString()} members
+        <div className="flex-1 min-w-0">
+          <h2 className="font-bold text-sm text-gray-900 dark:text-white">{room.name}</h2>
+          <p className="text-[11px] text-gray-500 dark:text-gray-400 flex items-center gap-1">
+            <Users size={9} /> {room.memberCount.toLocaleString()} members
           </p>
         </div>
-
-        <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold
-                        text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
+        <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px]
+                        font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
           <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
           Live
         </div>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-thin">
-        {messages.map((msg) => (
-          <MessageBubble
-            key={msg.id}
-            msg={msg}
-            isOwn={msg.userId === currentUserId}
-          />
-        ))}
-        <div ref={bottomRef} />
+      {/* Messages area — WhatsApp light green / dark teal wallpaper feel */}
+      <div className="flex-1 overflow-y-auto py-3 space-y-0"
+           style={{ background: 'var(--chat-bg, #efeae2)' }}>
+        <style>{`:root { --chat-bg: #efeae2; } .dark { --chat-bg: #0b141a; }`}</style>
+
+        {items.map((item) =>
+          item.type === 'sep'
+            ? <DateSep key={item.id} label={item.label} />
+            : <Bubble key={item.msg.id} msg={item.msg} prevMsg={item.prevMsg}
+                      isOwn={item.msg.userId === meId} />
+        )}
+        <div ref={bottomRef} className="h-2" />
       </div>
 
-      {/* Input */}
-      <div className="border-t border-gray-100 p-3 dark:border-gray-800">
+      {/* Input bar */}
+      <div className="border-t border-gray-200 bg-[#f0f2f5] px-3 py-2 dark:border-gray-700 dark:bg-[#202c33]">
         {!user && (
-          <p className="mb-2 text-center text-xs text-gray-400 dark:text-gray-500">
-            <span className="font-semibold text-turquoise-600">Log in</span> to send messages. You can read the chat as a guest.
+          <p className="mb-1.5 text-center text-xs text-gray-400">
+            <span className="font-semibold text-turquoise-600">Log in</span> to send messages
           </p>
         )}
-        <div className={`flex items-end gap-2 ${!user ? 'opacity-60 pointer-events-none' : ''}`}>
-          <textarea
-            rows={1}
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={handleKey}
-            placeholder="Type a message… (Enter to send)"
-            className="flex-1 resize-none rounded-2xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm outline-none transition
-                       focus:border-turquoise-400 focus:bg-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100
-                       dark:focus:border-turquoise-600 dark:focus:bg-gray-950 max-h-28"
-          />
+        <div className="flex items-end gap-2">
+          <div className="flex flex-1 items-end gap-2 rounded-2xl bg-white px-4 py-2 shadow-sm
+                          dark:bg-[#2a3942]">
+            <textarea
+              ref={inputRef}
+              rows={1}
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
+              disabled={!user}
+              placeholder={user ? 'Type a message…' : 'Login to chat'}
+              className="max-h-28 flex-1 resize-none bg-transparent text-sm text-gray-900 outline-none
+                         placeholder:text-gray-400 dark:text-gray-100 dark:placeholder:text-gray-500"
+            />
+          </div>
           <button
             onClick={send}
-            disabled={!draft.trim()}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-turquoise-600
-                       text-white transition hover:bg-turquoise-500 active:scale-95 disabled:opacity-40"
+            disabled={!draft.trim() || !user}
+            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-turquoise-600
+                       text-white shadow transition hover:bg-turquoise-500 active:scale-95 disabled:opacity-40"
           >
             <Send size={16} />
           </button>
@@ -215,51 +276,80 @@ function ChatPanel({ room, onBack }) {
   );
 }
 
-/* ── Main exported component ──────────────────────────────── */
+/* ── Exported component ──────────────────────────────────── */
 export default function CommunityChats() {
-  const [activeRoom, setActiveRoom] = useState(null);
+  const [activeRoom, setActiveRoom] = useState(CHAT_ROOMS[0].id);
+  const [search,     setSearch]     = useState('');
 
-  if (activeRoom) {
-    return (
-      <ChatPanel
-        room={CHAT_ROOMS.find((r) => r.id === activeRoom)}
-        onBack={() => setActiveRoom(null)}
-      />
-    );
-  }
+  const filtered = CHAT_ROOMS.filter((r) =>
+    r.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const room     = CHAT_ROOMS.find((r) => r.id === activeRoom);
+  const messages = CHAT_MESSAGES[activeRoom] ?? [];
 
   return (
-    <div>
-      {/* Header */}
-      <div className="mb-5 flex items-center justify-between">
-        <div>
-          <h2 className="flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white">
-            <Hash size={20} className="text-turquoise-600" />
-            Community Chats
-          </h2>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Join a room and chat with fellow cartoon fans
-          </p>
+    <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-lg dark:border-gray-700"
+         style={{ height: 'calc(100vh - 220px)', minHeight: 540, display: 'flex' }}>
+
+      {/* ── Left sidebar — room list ──────────────────────── */}
+      <div className="flex w-[280px] shrink-0 flex-col border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-[#111b21]">
+
+        {/* Sidebar header */}
+        <div className="border-b border-gray-100 bg-[#f0f2f5] px-4 py-3 dark:border-gray-700 dark:bg-[#202c33]">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="font-bold text-gray-900 dark:text-white text-sm">Community Chats</h2>
+            <span className="rounded-full bg-turquoise-500 px-2 py-0.5 text-[10px] font-bold text-white">
+              {CHAT_ROOMS.length}
+            </span>
+          </div>
+          {/* Search */}
+          <div className="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 dark:bg-[#2a3942]">
+            <Search size={13} className="text-gray-400 shrink-0" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search rooms…"
+              className="flex-1 bg-transparent text-xs text-gray-700 outline-none placeholder:text-gray-400
+                         dark:text-gray-200 dark:placeholder:text-gray-500"
+            />
+          </div>
         </div>
-        <span className="rounded-full bg-turquoise-500 px-3 py-1 text-xs font-bold text-white">
-          {CHAT_ROOMS.length} rooms
-        </span>
+
+        {/* Room list */}
+        <div className="flex-1 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800">
+          {filtered.map((r) => {
+            const msgs    = CHAT_MESSAGES[r.id] ?? [];
+            const lastMsg = msgs[msgs.length - 1];
+            return (
+              <RoomListItem
+                key={r.id}
+                room={r}
+                lastMsg={lastMsg}
+                isActive={r.id === activeRoom}
+                onClick={() => setActiveRoom(r.id)}
+              />
+            );
+          })}
+          {filtered.length === 0 && (
+            <p className="px-4 py-6 text-center text-xs text-gray-400">No rooms found</p>
+          )}
+        </div>
       </div>
 
-      {/* Room grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {CHAT_ROOMS.map((room) => {
-          const msgs    = CHAT_MESSAGES[room.id] ?? [];
-          const lastMsg = msgs[msgs.length - 1];
-          return (
-            <RoomCard
-              key={room.id}
-              room={room}
-              lastMsg={lastMsg}
-              onClick={() => setActiveRoom(room.id)}
-            />
-          );
-        })}
+      {/* ── Right panel — active chat ─────────────────────── */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        {room
+          ? <ChatPanel key={activeRoom} room={room} messages={messages} onBack={() => {}} isMobile={false} />
+          : (
+            <div className="flex flex-1 items-center justify-center">
+              <div className="text-center text-gray-400">
+                <Hash size={40} className="mx-auto mb-2 opacity-40" />
+                <p className="text-sm">Select a room to start chatting</p>
+              </div>
+            </div>
+          )
+        }
       </div>
     </div>
   );
