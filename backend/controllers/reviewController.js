@@ -129,6 +129,58 @@ export const deleteReview = async (req, res, next) => {
 };
 
 /**
+ * POST /api/reviews/:id/like
+ * Toggle like — requires login.
+ */
+export const likeReview = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const review = await Review.findById(req.params.id);
+    if (!review || review.isDeleted)
+      return res.status(404).json({ success: false, message: 'Review not found.' });
+
+    const alreadyLiked    = review.likedBy.includes(userId);
+    const alreadyDisliked = review.dislikedBy.includes(userId);
+
+    if (alreadyLiked) {
+      review.likedBy.pull(userId);
+    } else {
+      review.likedBy.push(userId);
+      if (alreadyDisliked) review.dislikedBy.pull(userId);
+    }
+    await review.save();
+
+    res.json({ success: true, likes: review.likedBy.length, dislikes: review.dislikedBy.length, liked: !alreadyLiked, disliked: false });
+  } catch (err) { next(err); }
+};
+
+/**
+ * POST /api/reviews/:id/dislike
+ * Toggle dislike — requires login.
+ */
+export const dislikeReview = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const review = await Review.findById(req.params.id);
+    if (!review || review.isDeleted)
+      return res.status(404).json({ success: false, message: 'Review not found.' });
+
+    const alreadyDisliked = review.dislikedBy.includes(userId);
+    const alreadyLiked    = review.likedBy.includes(userId);
+
+    if (alreadyDisliked) {
+      review.dislikedBy.pull(userId);
+    } else {
+      review.dislikedBy.push(userId);
+      if (alreadyLiked) review.likedBy.pull(userId);
+    }
+    await review.save();
+
+    res.json({ success: true, likes: review.likedBy.length, dislikes: review.dislikedBy.length, liked: false, disliked: !alreadyDisliked });
+  } catch (err) { next(err); }
+};
+
+/**
  * GET /api/reviews/me
  * Check if a user has already submitted a review (by email query param).
  */

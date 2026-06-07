@@ -33,6 +33,12 @@ const reviewSchema = new mongoose.Schema(
       maxlength: [1000, 'Review cannot exceed 1000 characters'],
     },
 
+    // Users who liked this review
+    likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+
+    // Users who disliked this review
+    dislikedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+
     // Soft-delete flag — keeps data for analytics but hides from public
     isDeleted: {
       type: Boolean,

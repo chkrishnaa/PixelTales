@@ -6,7 +6,10 @@ import {
   submitReview,
   updateReview,
   deleteReview,
+  likeReview,
+  dislikeReview,
 } from '../controllers/reviewController.js';
+import { protect } from '../middlewares/auth.js';
 
 const router = express.Router();
 
@@ -58,5 +61,9 @@ router.put('/:id', updateValidation, updateReview);
 
 // Authenticated user — soft-delete own review (verified by email match)
 router.delete('/:id', deleteReview);
+
+// Authenticated — like / dislike (must be logged in)
+router.post('/:id/like',    protect, likeReview);
+router.post('/:id/dislike', protect, dislikeReview);
 
 export default router;

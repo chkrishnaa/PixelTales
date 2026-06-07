@@ -1,12 +1,33 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import GoogleSignInButton from '../../components/GoogleSignInButton'
+import { useState }   from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import GoogleSignInButton from '../../components/GoogleSignInButton';
+import { useAuth }        from '../../context/AuthContext';
 
 export default function Signup() {
-  const navigate = useNavigate()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const navigate = useNavigate();
+  const { register, API } = useAuth();
+
+  const [name,     setName]     = useState('');
+  const [email,    setEmail]    = useState('');
+  const [password, setPassword] = useState('');
+  const [error,    setError]    = useState('');
+  const [loading,  setLoading]  = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(''); setLoading(true);
+    try {
+      await register(name, email, password);
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      setError(err.message || 'Registration failed. Please try again.');
+    }
+    setLoading(false);
+  };
+
+  const handleGoogle = () => {
+    window.location.href = `${API}/api/auth/google`;
+  };
 
   return (
     <div className="card-surface p-8">
@@ -17,14 +38,14 @@ export default function Signup() {
         Create an account and start watching cartoons
       </p>
 
+      {error && (
+        <p className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
+          {error}
+        </p>
+      )}
+
       <div className="mt-6 space-y-4">
-        <form
-          className="space-y-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            navigate("/dashboard");
-          }}
-        >
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <label className="block">
             <span className="mb-1 block text-sm font-bold">Name</span>
             <input
@@ -55,8 +76,8 @@ export default function Signup() {
               required
             />
           </label>
-          <button type="submit" className="btn-primary w-full py-3">
-            Create Account
+          <button type="submit" disabled={loading} className="btn-primary w-full py-3">
+            {loading ? 'Creating account…' : 'Create Account'}
           </button>
         </form>
 
@@ -66,13 +87,10 @@ export default function Signup() {
           <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
         </div>
 
-        <GoogleSignInButton
-          label="Sign up with Google"
-          onClick={() => navigate("/dashboard")}
-        />
+        <GoogleSignInButton label="Sign up with Google" onClick={handleGoogle} />
 
         <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link to="/login" className="font-bold text-turquoise-600 dark:text-turquoise-400">
             Sign in
           </Link>

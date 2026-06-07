@@ -7,9 +7,10 @@ import Profile from './pages/Profile'
 import Community from './pages/Community'
 import Feedback from './pages/Feedback'
 import Party from './pages/Party'
-import Login from './pages/auth/Login'
-import Signup from './pages/auth/Signup'
+import Login          from './pages/auth/Login'
+import Signup         from './pages/auth/Signup'
 import ForgotPassword from './pages/auth/ForgotPassword'
+import AuthCallback   from './pages/auth/AuthCallback'
 import MovieDetails from './pages/MovieDetails'
 import Page404 from './pages/Page404'
 import Review from './pages/Review'
@@ -19,10 +20,13 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
+          <Route path="login"          element={<Login />} />
+          <Route path="signup"         element={<Signup />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
         </Route>
+
+        {/* Google OAuth callback — outside AuthLayout */}
+        <Route path="auth/callback" element={<AuthCallback />} />
 
         <Route path="/" element={<Home />} />
 

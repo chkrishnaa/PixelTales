@@ -1,11 +1,33 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import GoogleSignInButton from '../../components/GoogleSignInButton'
+import { useState }   from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import GoogleSignInButton from '../../components/GoogleSignInButton';
+import { useAuth }        from '../../context/AuthContext';
 
 export default function Login() {
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const navigate   = useNavigate();
+  const [params]   = useSearchParams();
+  const { login, API } = useAuth();
+
+  const [email,    setEmail]    = useState('');
+  const [password, setPassword] = useState('');
+  const [error,    setError]    = useState(params.get('error') === 'google_failed' ? 'Google sign-in failed. Please try again.' : '');
+  const [loading,  setLoading]  = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(''); setLoading(true);
+    try {
+      await login(email, password);
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      setError(err.message || 'Login failed. Please check your credentials.');
+    }
+    setLoading(false);
+  };
+
+  const handleGoogle = () => {
+    window.location.href = `${API}/api/auth/google`;
+  };
 
   return (
     <div className="card-surface p-8">
@@ -16,14 +38,14 @@ export default function Login() {
         Sign in to continue watching on PixelTales
       </p>
 
+      {error && (
+        <p className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
+          {error}
+        </p>
+      )}
+
       <div className="mt-6 space-y-4">
-        <form
-          className="space-y-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            navigate("/dashboard");
-          }}
-        >
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <label className="block">
             <span className="mb-1 block text-sm font-bold">Email</span>
             <input
@@ -50,24 +72,22 @@ export default function Login() {
           >
             Forgot password?
           </Link>
-          <button type="submit" className="btn-primary w-full py-3">
-            Sign In
+          <button type="submit" disabled={loading} className="btn-primary w-full py-3">
+            {loading ? 'Signing in…' : 'Sign In'}
           </button>
         </form>
-        
+
         <div className="flex items-center gap-3 text-xs font-semibold text-gray-400">
           <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
           or
           <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
         </div>
-        <GoogleSignInButton onClick={() => navigate("/dashboard")} />
+
+        <GoogleSignInButton onClick={handleGoogle} />
 
         <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-          Don&apos;t have an account?{" "}
-          <Link
-            to="/signup"
-            className="font-bold text-turquoise-600 dark:text-turquoise-400"
-          >
+          Don&apos;t have an account?{' '}
+          <Link to="/signup" className="font-bold text-turquoise-600 dark:text-turquoise-400">
             Sign up
           </Link>
         </p>
