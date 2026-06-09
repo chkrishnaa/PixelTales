@@ -11,6 +11,8 @@ import authRoutes          from './routes/authRoutes.js';
 import feedbackRoutes      from './routes/feedbackRoutes.js';
 import reviewRoutes        from './routes/reviewRoutes.js';
 import chatRoutes          from './routes/chatRoutes.js';
+import movieRoutes         from './routes/movieRoutes.js';
+import collectionRoutes    from './routes/collectionRoutes.js';
 import { errorHandler }    from './middlewares/errorHandler.js';
 
 dotenv.config();
@@ -39,6 +41,8 @@ app.use('/api/auth',     authRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/reviews',  reviewRoutes);
 app.use('/api/chat',     chatRoutes);
+app.use('/api/movies',      movieRoutes);
+app.use('/api/collections', collectionRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) =>

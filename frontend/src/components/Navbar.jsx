@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import {
-  Home,
   LayoutDashboard,
   Globe,
   MessageCircle,
@@ -8,6 +7,7 @@ import {
   Search,
 } from "lucide-react";
 import ProfileDropdown from "./ProfileDropdown";
+import Logo from "../assets/Logo";
 
 const NAV_ITEMS = [
   // { to: '/home', label: 'Home', icon: Home },
@@ -21,13 +21,13 @@ export default function Navbar() {
     <header
       className="
     sticky top-0 z-50
-    border-b border-gray-200
-    bg-white/90
-    shadow-sm
-    backdrop-blur-xl
-    dark:border-gray-800
-    dark:bg-gray-950/90
-    font-text
+        border-b border-gray-200
+        bg-white/90
+        shadow-sm
+        backdrop-blur-sm
+        dark:border-gray-800
+        dark:bg-gray-950/90
+        font-text
   "
     >
       <div
@@ -40,24 +40,8 @@ export default function Navbar() {
       md:px-8
       xl:px-20 backdrop-blur-2xl"
       >
-        <NavLink
-          to="/"
-          className="
-    flex items-center gap-2
-    rounded-2xl
-    
-    bg-white/80 dark:bg-gray-950/80
-    px-4 py-2
-    
-    transition-all
-
-  "
-        >
-          <span className="text-xl">🎬</span>
-
-          <span className="font-display text-turquoise-600 dark:text-turquoise-400 text-xl">
-            PixelTales
-          </span>
+        <NavLink to="/" className="flex items-center transition-opacity hover:opacity-80 rounded-xl overflow-hidden">
+          <Logo size="md" hideTextOnMobile />
         </NavLink>
 
         <nav className="hidden sm:flex gap-2 items-center" aria-label="Main">

@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import ThemeSelector from "./Utility/ThemeSelector";
 import { useTheme } from "../context/ThemeContext";
-// import { useState } from "react";
+import Logo from "../assets/Logo";
 
 export default function HomeNavbar({ isLoggedIn = false }) {
     // const [theme, setTheme] = useState("system");
@@ -14,7 +14,7 @@ export default function HomeNavbar({ isLoggedIn = false }) {
         border-b border-gray-200
         bg-white/90
         shadow-sm
-        backdrop-blur-xl
+        backdrop-blur-sm
         dark:border-gray-800
         dark:bg-gray-950/90
         font-text
@@ -32,27 +32,8 @@ export default function HomeNavbar({ isLoggedIn = false }) {
         "
       >
         {/* Logo */}
-        <div
-          className="
-            flex items-center gap-2
-            rounded-2xl
-            bg-white/80 dark:bg-gray-950/80
-            px-4 py-2
-          "
-        >
-          <span className="text-xl">🎬</span>
-
-          <span
-            className="
-              font-display
-              text-xl
-              text-turquoise-600
-              dark:text-turquoise-400
-              hidden md:block
-            "
-          >
-            PixelTales
-          </span>
+        <div className="flex items-center rounded-xl overflow-hidden">
+          <Logo size="md" hideTextOnMobile />
         </div>
 
         {/* Actions */}

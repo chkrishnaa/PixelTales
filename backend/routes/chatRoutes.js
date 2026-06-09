@@ -1,6 +1,10 @@
 import express  from 'express';
 import { body }  from 'express-validator';
 import {
+  getCommunity,
+  getCommunityMessages,
+  sendCommunityMessage,
+  deleteCommunityMessage,
   getRooms,
   createRoom,
   getMessages,
@@ -11,28 +15,37 @@ import { protect, adminOnly } from '../middlewares/auth.js';
 
 const router = express.Router();
 
-/* ── Rooms ──────────────────────────────────────────────────── */
+/* ── Single community group ─────────────────────────────────── */
 
-// Public — anyone can browse rooms
+// Public — community group info
+router.get('/community', getCommunity);
+
+// Public — read community messages
+router.get('/community/messages', getCommunityMessages);
+
+// Authenticated — send a community message
+router.post('/community/messages', protect, [
+  body('text').trim().notEmpty().withMessage('Message text is required').isLength({ max: 1000 }),
+], sendCommunityMessage);
+
+// Authenticated (owner or admin) — delete a community message
+router.delete('/community/messages/:msgId', protect, deleteCommunityMessage);
+
+/* ── Legacy multi-room routes (kept for compatibility) ──────── */
+
 router.get('/rooms', getRooms);
 
-// Admin only — create a new room
 router.post('/rooms', protect, adminOnly, [
   body('name').trim().notEmpty().withMessage('Room name is required').isLength({ max: 80 }),
   body('description').optional().isLength({ max: 200 }),
 ], createRoom);
 
-/* ── Messages ───────────────────────────────────────────────── */
-
-// Public — read messages
 router.get('/rooms/:roomId/messages', getMessages);
 
-// Authenticated — send a message
 router.post('/rooms/:roomId/messages', protect, [
   body('text').trim().notEmpty().withMessage('Message text is required').isLength({ max: 1000 }),
 ], sendMessage);
 
-// Authenticated (owner or admin) — soft-delete a message
 router.delete('/rooms/:roomId/messages/:msgId', protect, deleteMessage);
 
 export default router;

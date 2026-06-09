@@ -1,30 +1,29 @@
-
 export const ADMIN_USER = "PixelTales";
 
 const LIKERS_POOL = [
-  { name: "Raj Patel",       email: "raj.patel@pixeltales.com" },
-  { name: "Meera Singh",     email: "meera.singh@pixeltales.com" },
-  { name: "Aditya Kumar",    email: "aditya.kumar@pixeltales.com" },
-  { name: "Pooja Nair",      email: "pooja.nair@pixeltales.com" },
-  { name: "Kunal Joshi",     email: "kunal.joshi@pixeltales.com" },
-  { name: "Riya Verma",      email: "riya.verma@pixeltales.com" },
-  { name: "Siddharth Rao",   email: "siddharth.rao@pixeltales.com" },
-  { name: "Nisha Patel",     email: "nisha.patel@pixeltales.com" },
+  { name: "Raj Patel", email: "raj.patel@pixeltales.com" },
+  { name: "Meera Singh", email: "meera.singh@pixeltales.com" },
+  { name: "Aditya Kumar", email: "aditya.kumar@pixeltales.com" },
+  { name: "Pooja Nair", email: "pooja.nair@pixeltales.com" },
+  { name: "Kunal Joshi", email: "kunal.joshi@pixeltales.com" },
+  { name: "Riya Verma", email: "riya.verma@pixeltales.com" },
+  { name: "Siddharth Rao", email: "siddharth.rao@pixeltales.com" },
+  { name: "Nisha Patel", email: "nisha.patel@pixeltales.com" },
   { name: "Vikram Malhotra", email: "vikram.malhotra@pixeltales.com" },
-  { name: "Deepa Sharma",    email: "deepa.sharma@pixeltales.com" },
-  { name: "Yash Trivedi",    email: "yash.trivedi@pixeltales.com" },
-  { name: "Kritika Das",     email: "kritika.das@pixeltales.com" },
-  { name: "Aryan Bose",      email: "aryan.bose@pixeltales.com" },
-  { name: "Simran Kaur",     email: "simran.kaur@pixeltales.com" },
-  { name: "Manish Dubey",    email: "manish.dubey@pixeltales.com" },
-  { name: "Anjali Gupta",    email: "anjali.gupta@pixeltales.com" },
-  { name: "Rohit Khanna",    email: "rohit.khanna@pixeltales.com" },
-  { name: "Preeti Sinha",    email: "preeti.sinha@pixeltales.com" },
-  { name: "Tarun Mehta",     email: "tarun.mehta@pixeltales.com" },
-  { name: "Sunita Iyer",     email: "sunita.iyer@pixeltales.com" },
-  { name: "Karan Bajaj",     email: "karan.bajaj@pixeltales.com" },
-  { name: "Divya Menon",     email: "divya.menon@pixeltales.com" },
-  { name: "Pranav Shah",     email: "pranav.shah@pixeltales.com" },
+  { name: "Deepa Sharma", email: "deepa.sharma@pixeltales.com" },
+  { name: "Yash Trivedi", email: "yash.trivedi@pixeltales.com" },
+  { name: "Kritika Das", email: "kritika.das@pixeltales.com" },
+  { name: "Aryan Bose", email: "aryan.bose@pixeltales.com" },
+  { name: "Simran Kaur", email: "simran.kaur@pixeltales.com" },
+  { name: "Manish Dubey", email: "manish.dubey@pixeltales.com" },
+  { name: "Anjali Gupta", email: "anjali.gupta@pixeltales.com" },
+  { name: "Rohit Khanna", email: "rohit.khanna@pixeltales.com" },
+  { name: "Preeti Sinha", email: "preeti.sinha@pixeltales.com" },
+  { name: "Tarun Mehta", email: "tarun.mehta@pixeltales.com" },
+  { name: "Sunita Iyer", email: "sunita.iyer@pixeltales.com" },
+  { name: "Karan Bajaj", email: "karan.bajaj@pixeltales.com" },
+  { name: "Divya Menon", email: "divya.menon@pixeltales.com" },
+  { name: "Pranav Shah", email: "pranav.shah@pixeltales.com" },
 ];
 
 /** Return n likers starting at offset for variety across comments */
@@ -54,15 +53,18 @@ const REC_THUMBNAIL = "";
 
 export const MOVIE_DETAILS = [
   {
-    id: "d-steel-troops",
-    title: "Doraemon: Nobita and the New Steel Troops",
+    id: "d-nobita-and-the-steel-troops",
+    title: [
+      "Doraemon: Nobita and the Steel Troops",
+      "Doraemon: Nobita and the Steel Troops: The New Age",
+    ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT, // Assuming this is imported elsewhere
     progress: 62,
     videoUrl:
       "https://drive.google.com/file/d/1LeLvdNurMAwANalm1HWchhS1TotCh0v7/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/SteelTroops.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops.jpg",
     rating: 4.9,
     year: 2011,
     releaseDate: "2011-03-05", // Updated to ISO 8601 for easier Date parsing/sorting
@@ -77,14 +79,54 @@ export const MOVIE_DETAILS = [
     description:
       "While playing in an empty lot, Nobita discovers mysterious robot parts falling from the sky. With Doraemon's help, he secretly assembles a gigantic robot inside a mirror world. What begins as a fun adventure soon turns into a dangerous mission when they learn that the robot belongs to a powerful mechanical army from another world. As war threatens Earth, Doraemon and his friends must uncover the truth behind the robot invasion and fight to protect both worlds. Filled with emotional moments, action-packed battles, friendship, sacrifice, and unforgettable characters, Nobita and the New Steel Troops is considered one of the most beloved and emotionally powerful Doraemon movies ever made.",
     characters: [
-      { name: "Doraemon", role: "Main Character" },
-      { name: "Nobita", role: "Main Character" },
-      { name: "Shizuka", role: "Supporting Character" },
-      { name: "Gian", role: "Supporting Character" },
-      { name: "Suneo", role: "Supporting Character" },
-      { name: "Zanda Claus", role: "Robot Ally" },
-      { name: "Pippo", role: "Antagonist / Ally" },
-      { name: "Riruru", role: "Key Antagonist / Ally" }, // Added Lilulu
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo: "",
+        bio: "Doraemon is a robotic cat from the 22nd century sent to help Nobita. In this film, his futuristic gadgets and unwavering loyalty are put to the ultimate test as he helps Nobita navigate the mirror world and stand against a mechanical army far more powerful than anything they have faced before.",
+      },
+      {
+        name: "Nobita",
+        role: "Main Character",
+        photo: "",
+        bio: "Nobita is the kind-hearted but clumsy hero who accidentally triggers the robot invasion. Driven by guilt and love for his friends, he undergoes remarkable growth in this movie — transforming from a boy who always gives up into someone willing to sacrifice everything to protect the world.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character",
+        photo: "",
+        bio: "Shizuka is Nobita's gentle and compassionate friend whose courage proves crucial at pivotal moments. Her bond with Riruru becomes one of the movie's most touching storylines, showing that friendship can transcend even the greatest of conflicts.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character",
+        photo: "",
+        bio: "Gian, usually the bully of the group, reveals a surprisingly brave and self-sacrificing side in this film. When the stakes rise to a planetary level, he steps up without hesitation — proving that true strength comes from protecting the people you care about.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character",
+        photo: "",
+        bio: "Suneo's mechanical knowledge and clever thinking prove surprisingly useful during the robot crisis. Though he can be self-serving, his loyalty to his friends shines through when the group faces seemingly impossible odds in the mirror world.",
+      },
+      {
+        name: "Zanda Claus",
+        role: "Robot Ally",
+        photo: "",
+        bio: "Zanda Claus is a giant robotic warrior that Nobita secretly assembles inside the mirror world. Initially a source of fun and adventure, it becomes the group's last line of defence — a symbol of Nobita's determination to fight for peace.",
+      },
+      {
+        name: "Pippo",
+        role: "Antagonist / Ally",
+        photo: "",
+        bio: "Pippo is a small robotic soldier who begins as part of the invading army but gradually reveals a more complex nature. His interactions with Nobita force him to question the purpose of war, making him one of the film's most memorable and layered characters.",
+      },
+      {
+        name: "Riruru",
+        role: "Key Antagonist / Ally",
+        photo: "",
+        bio: "Riruru starts as the primary antagonist — a brilliant and ruthless robot general — but her arc is one of the most emotionally powerful in the entire Doraemon series. Her evolving relationship with Shizuka transforms her from enemy to the story's most heartbreaking hero.",
+      },
     ],
     gallery: [
       // Suffixes added to simulate unique gallery images
@@ -261,11 +303,11 @@ export const MOVIE_DETAILS = [
     ],
   },
   {
-    id: "d-parallel-visit-to-the-west",
+    id: "d-nobita-bana-superhero",
     title: [
+      "Doraemon: Nobita's Bana Superhero",
       "Doraemon: The Record of Nobita's Parallel Visit to the West",
-      "Doraemon's Parallel Journey to the West",
-      "Doraemon The Movie: Nobita Bana Superhero",
+      "Doraemon: Nobita's Parallel Journey to the West",
     ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
@@ -273,7 +315,7 @@ export const MOVIE_DETAILS = [
     videoUrl:
       "https://drive.google.com/file/d/1AkSI1NF0mZXTW5plSNfse6PFVgqXHdGv/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/ParallelVisitToTheWest.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaBanaSuperhero.jpg",
     rating: 4.3,
     year: 1988,
     releaseDate: "1988-03-12",
@@ -300,15 +342,18 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
   {
-    id: "d-tin-labyrinth",
-    title: "Doraemon: Nobita and the Tin Labyrinth",
+    id: "d-khel-khilona-bhool-bhulaiya",
+    title: [
+      "Doraemon The Movie: Khel Khilona Bhool Bhulaiya",
+      "Doraemon The Movie: Nobita and the Tin Labyrinth",
+    ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1oG9uswDZP8skgm8YayHt7BMf06R-Gtl1/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/TinLabyrinth.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/KhelKhilonaBhoolBhulaiya.jpg",
     rating: 4.4,
     year: 1993,
     releaseDate: "1993-03-06",
@@ -336,15 +381,20 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
   {
-    id: "d-three-visionary-swordsmen",
-    title: "Doraemon: Nobita's Three Visionary Swordsmen",
+    id: "d-teen-kaabil-talwarbaaz",
+    title: [
+      "Doraemon the Movie: Nobita or Teen Kaabil Talwarbaaz",
+      "Doraemon the Movie: Nobita's Three Visionary Swordsmen",
+      "Doraemon the Movie: Nobita's Three Magical Swordsmen",
+      "Doraemon the Movie: The Fantastic Three Musketeers",
+    ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/16IKZg7IOcN10bXVx_fwQhRh7GOKL_7WT/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/ThreeVisionarySwordsmen.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/TeenKaabilTalwarbaaz.jpg",
     rating: 4.5,
     year: 1994,
     releaseDate: "1994-03-12",
@@ -373,15 +423,18 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
   {
-    id: "d-adventure-in-south-seas",
-    title: "Doraemon: Nobita's Great Adventure in the South Seas",
+    id: "d-nobitas-great-adventure-in-the-south-seas",
+    title: [
+      "Doraemon: Nobita's Great Adventure in the South Seas",
+      "Doraemon: Nobita's South Sea Adventure",
+    ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1v6J1jH9gofCZr6XNO27mYaZ4x-y8qGid/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/AdventureInSouthSeas.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatAdventureInTheSouthSeas.jpg",
     rating: 4.5,
     year: 1998,
     releaseDate: "1998-03-07",
@@ -409,15 +462,20 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
   {
-    id: "d-legend-of-the-sun-king",
-    title: "Doraemon: Nobita and the Legend of the Sun King",
+    id: "d-yeh-bhi-tha-nobita-woh-bhi-tha-nobita",
+    title: [
+      "Doraemon The Movie: Yeh Bhi Tha Nobita Woh Bhi Tha Nobita",
+      "Doraemon: Nobita and the Legend of the Sun King",
+      "Doraemon: Doraemon and the Empire of the Sun",
+      "Doraemon the Movie: Nobita's Legendary King of The Sun",
+    ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1QZ6n0MLXDlrdsXKt7W4YQ1Sd0Rwz7Mgg/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/LegendOfTheSunKing.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/YehBhiThaNobitaWohBhiThaNobita.jpg",
     rating: 4.6,
     year: 2000,
     releaseDate: "2000-03-04",
@@ -446,7 +504,7 @@ export const MOVIE_DETAILS = [
   },
   {
     id: "d-stand-by-me",
-    title: "Stand by Me Doraemon",
+    title: "Doraemon: Stand by Me",
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 100,
@@ -481,7 +539,7 @@ export const MOVIE_DETAILS = [
   },
   {
     id: "d-nobitas-treasure-island",
-    title: "Doraemon: Nobita's Treasure Island",
+    title: "Doraemon The Movie: Nobita's Treasure Island",
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
@@ -517,15 +575,18 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
   {
-    id: "d-little-space-war",
-    title: "Doraemon: Nobita's Little Star Wars",
+    id: "d-nobitas-little-space-war",
+    title: [
+      "Doraemon: Nobita's Little Space War",
+      "Doraemon: Nobita's Little Star Wars",
+    ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1l6V8mnu4jJOnKVyW1S2srgQAItgp-8r6/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/LittleSpaceWar.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasLittleSpaceWar.jpg",
     rating: 4.5,
     year: 1985,
     releaseDate: "1985-03-16",
@@ -555,7 +616,7 @@ export const MOVIE_DETAILS = [
   },
   {
     id: "d-stand-by-me-2",
-    title: "Stand by Me Doraemon 2",
+    title: "Doraemon: Stand by Me 2",
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 12,
@@ -589,7 +650,7 @@ export const MOVIE_DETAILS = [
   },
   {
     id: "d-nobitas-new-dinosaur",
-    title: "Doraemon: Nobita's New Dinosaur",
+    title: "Doraemon The Movie: Nobita's New Dinosaur",
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
@@ -625,15 +686,18 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
   {
-    id: "d-nobitas-chronicle-of-the-moon-exploration",
-    title: "Doraemon: Nobita's Chronicle of the Moon Exploration",
+    id: "d-nobita-chala-chand-pe",
+    title: [
+      "Doraemon The Movie: Nobita Chala Chand Pe",
+      "Doraemon: Nobita's Chronicle of the Moon Exploration",
+    ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/17yRUXq88CLDqFL7LbHrOFx6McmJBwdBD/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasChronicleOfTheMoonExploration.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaChalaChandPe.jpg",
     rating: 4.6,
     year: 2019,
     releaseDate: "2019-03-01",
@@ -662,15 +726,19 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
   {
-    id: "d-nobitas-space-heroes",
-    title: "Doraemon: Nobita's Space Heroes",
+    id: "d-nobita-aur-antariksh-daku",
+    title: [
+      "Doraemon The Movie: Nobita Aur Antariksh Daku",
+      "Doraemon: Nobita's Space Heroes",
+      "Doraemon: Nobita and The Super Star",
+    ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1hDP7GAMyGOwBWZFK0VUIb9C7CSu5v3RW/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasSpaceHeroes.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAurAntarikshDaku.jpg",
     rating: 4.3,
     year: 2015,
     releaseDate: "2015-03-07",
@@ -698,15 +766,17 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
   {
-    id: "d-nobitas-great-demon-peko",
-    title:
-      "Doraemon: New Nobita's Great Demon ~Peko and the Exploration Party of 5~",
+    id: "d-nobita-the-explorer-bow-bow",
+    title: [
+      " Doraemon The Movie: Nobita The Explorer Bow! Bow!",
+      "Doraemon: New Nobita's Great Demon Peko and the Exploration Party of 5",
+    ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl: "",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatDemonPeko.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaTheExplorerBowBow.jpg",
     rating: 4.5,
     year: 2014,
     releaseDate: "2014-03-08",
@@ -734,15 +804,20 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
   {
-    id: "d-secret-gadget-museum",
-    title: "Doraemon: Nobita's Secret Gadget Museum",
+    id: "d-nobita-aur-gadget-museum-ka-rahasya",
+    title: [
+      "Doraemon The Movie: Nobita aur Gadget Museum Ka Rahasya",
+      "Doraemon the Movie: Nobita in the Secret Gadget Museum",
+      "Doraemon: Nobita's Secret Gadget Museum",
+      "Doraemon the Movie: Doraemon and Nobita Holmes in the Mysterious Museum of the Future",
+    ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1Gv3Q7TLA_PuPUKugFhKU83xyWv0Mg3HW/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/SecretGadgetMuseum.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAurGadgetMuseumKaRahasya.jpg",
     rating: 4.7,
     year: 2013,
     releaseDate: "2013-03-09",
@@ -771,16 +846,16 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
   {
-    id: "d-adventure-of-koya-koya-planet",
+    id: "d-nobita-and-the-adventure-of-koya-koya-planet",
     title:
-      "Doraemon: The New Record of Nobita's Spaceblazer (Adventure of Koya Koya Planet)",
+      ["Doraemon: Nobita and the Adventure of Koya Koya Planet", "Doraemon: The New Record of Nobita's Spaceblazer"],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1hJAFSM3I7VimVnMy5v-E5lkjgVkL6Ets/preview",
     thumbnail:
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/AdventureOfKoyaKoyaPlanet.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheAdventureOfKoyaKoyaPlanet.jpg",
     rating: 4.4,
     year: 2009,
     releaseDate: "2009-03-07",
@@ -836,22 +911,25 @@ export function getRecommendedMovies(excludeId, cartoonId = "doraemon") {
 
 // Per-movie likes & comment counts shown on the grid cards
 const MOVIE_STATS = {
-  "d-steel-troops":                          { likes: 248, commentsCount: 13 },
-  "d-parallel-visit-to-the-west":            { likes: 87,  commentsCount: 6  },
-  "d-tin-labyrinth":                         { likes: 156, commentsCount: 8  },
-  "d-three-visionary-swordsmen":             { likes: 203, commentsCount: 11 },
-  "d-adventure-in-south-seas":               { likes: 178, commentsCount: 7  },
-  "d-legend-of-the-sun-king":                { likes: 215, commentsCount: 9  },
-  "d-stand-by-me":                           { likes: 512, commentsCount: 34 },
-  "d-nobitas-treasure-island":               { likes: 342, commentsCount: 21 },
-  "d-little-space-war":                      { likes: 167, commentsCount: 10 },
-  "d-stand-by-me-2":                         { likes: 423, commentsCount: 28 },
-  "d-nobitas-new-dinosaur":                  { likes: 289, commentsCount: 15 },
-  "d-nobitas-chronicle-of-the-moon-exploration": { likes: 198, commentsCount: 12 },
-  "d-nobitas-space-heroes":                  { likes: 134, commentsCount: 7  },
-  "d-nobitas-great-demon-peko":              { likes: 176, commentsCount: 9  },
-  "d-secret-gadget-museum":                  { likes: 231, commentsCount: 14 },
-  "d-adventure-of-koya-koya-planet":         { likes: 145, commentsCount: 8  },
+  "d-steel-troops": { likes: 248, commentsCount: 13 },
+  "d-parallel-visit-to-the-west": { likes: 87, commentsCount: 6 },
+  "d-tin-labyrinth": { likes: 156, commentsCount: 8 },
+  "d-three-visionary-swordsmen": { likes: 203, commentsCount: 11 },
+  "d-adventure-in-south-seas": { likes: 178, commentsCount: 7 },
+  "d-legend-of-the-sun-king": { likes: 215, commentsCount: 9 },
+  "d-stand-by-me": { likes: 512, commentsCount: 34 },
+  "d-nobitas-treasure-island": { likes: 342, commentsCount: 21 },
+  "d-little-space-war": { likes: 167, commentsCount: 10 },
+  "d-stand-by-me-2": { likes: 423, commentsCount: 28 },
+  "d-nobitas-new-dinosaur": { likes: 289, commentsCount: 15 },
+  "d-nobitas-chronicle-of-the-moon-exploration": {
+    likes: 198,
+    commentsCount: 12,
+  },
+  "d-nobitas-space-heroes": { likes: 134, commentsCount: 7 },
+  "d-nobitas-great-demon-peko": { likes: 176, commentsCount: 9 },
+  "d-secret-gadget-museum": { likes: 231, commentsCount: 14 },
+  "d-adventure-of-koya-koya-planet": { likes: 145, commentsCount: 8 },
 };
 
 MOVIE_DETAILS.forEach((m) => {
@@ -865,8 +943,8 @@ export const ALL_MOVIES = MOVIE_DETAILS;
 
 /** Returns the primary display title, handling both string and array formats */
 export function getMovieTitle(movie) {
-  if (!movie) return '';
-  return Array.isArray(movie.title) ? movie.title[0] : (movie.title ?? '');
+  if (!movie) return "";
+  return Array.isArray(movie.title) ? movie.title[0] : movie.title ?? "";
 }
 
 export const CONTINUE_WATCHING = MOVIE_DETAILS.filter(

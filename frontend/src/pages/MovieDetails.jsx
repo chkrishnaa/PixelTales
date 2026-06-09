@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useWatch } from "../context/WatchContext";
 import { Film, BookOpen, Users, Image, MessageSquare, Star } from "lucide-react";
 import { getMovieTitle } from "../utils/movie";
 
@@ -22,6 +23,8 @@ const TABS = [
 
 export default function MovieDetails() {
   const { id } = useParams();
+  const { trackVisit } = useWatch();
+
   const [activeTab, setActiveTab] = useState("overview");
   const [isNavVisible, setIsNavVisible] = useState(false);
   const [isPageLoaded, setIsPageLoaded] = useState(false);
@@ -42,10 +45,12 @@ export default function MovieDetails() {
   const movie = getMovieById(id);
 
   useEffect(() => {
+    // Track this visit in history
+    if (id) trackVisit(id);
     // Trigger page entry animation
     const timer = setTimeout(() => setIsPageLoaded(true), 50);
     return () => clearTimeout(timer);
-  }, []);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     // Show sticky tab nav after scrolling past the player
