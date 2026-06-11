@@ -65,26 +65,32 @@ export const ALL_MOVIES = [
   // ==========================================
   // DORAEMON MOVIES
   // ==========================================
-  makeMovie("d1", "Doraemon: Nobita's Dinosaur", "doraemon", 1980, {    rating: 4.6,
-    thumbnail: "",
-  }),
-  makeMovie(
-    "d2",
-    "Doraemon: The Records of Nobita, Spaceblazer",
-    "doraemon",
-    1981,
-    { cartoon: "doraemon", rating: 4.4, thumbnail: "" }
-  ),
-  makeMovie("d3", "Doraemon: Nobita and the Haunts of Evil", "doraemon", 1982, {    rating: 4.5,
-    thumbnail: "",
-  }),
-  makeMovie(
-    "d4",
-    "Doraemon: Nobita and the Castle of the Undersea Devil",
-    "doraemon",
-    1983,
-    { cartoon: "doraemon", rating: 4.6, thumbnail: "" }
-  ),
+
+
+  //error due to remaike version information of little dynasour
+  // makeMovie("d1", "Doraemon: Nobita's Dinosaur", "doraemon", 1980, {    rating: 4.6,
+  //   thumbnail: "",
+  // }),
+
+  // makeMovie(
+  //   "d2",
+  //   "Doraemon: The Records of Nobita, Spaceblazer",
+  //   "doraemon",
+  //   1981,
+  //   { cartoon: "doraemon", rating: 4.4, thumbnail: "" }
+  // ),
+
+  // makeMovie("d3", "Doraemon: Nobita and the Haunts of Evil", "doraemon", 1982, {    rating: 4.5,
+  //   thumbnail: "",
+  // }),
+  
+  // makeMovie(
+  //   "d4",
+  //   "Doraemon: Nobita and the Castle of the Undersea Devil",
+  //   "doraemon",
+  //   1983,
+  //   { cartoon: "doraemon", rating: 4.6, thumbnail: "" }
+  // ),
   // makeMovie(
   //   "d5",
   //   "Doraemon: Nobita's Great Adventure into the Underworld",
@@ -92,9 +98,9 @@ export const ALL_MOVIES = [
   //   1984,
   //   { cartoon: "doraemon", rating: 4.7, thumbnail: "" }
   // ),
-  makeMovie("d6", "Doraemon: Nobita's Little Star Wars", "doraemon", 1985, {    rating: 4.5,
-    thumbnail: "",
-  }),
+  // makeMovie("d6", "Doraemon: Nobita's Little Star Wars", "doraemon", 1985, {    rating: 4.5,
+  //   thumbnail: "",
+  // }),
   // makeMovie(
   //   "d7",
   //   "Doraemon: Nobita and the Steel Troops",
@@ -102,13 +108,13 @@ export const ALL_MOVIES = [
   //   1986,
   //   { cartoon: "doraemon", rating: 4.8, favorited: true, thumbnail: "" }
   // ),
-  makeMovie(
-    "d8",
-    "Doraemon: Nobita and the Knights on Dinosaurs",
-    "doraemon",
-    1987,
-    { cartoon: "doraemon", rating: 4.4, thumbnail: "" }
-  ),
+  // makeMovie(
+  //   "d8",
+  //   "Doraemon: Nobita and the Knights on Dinosaurs",
+  //   "doraemon",
+  //   1987,
+  //   { cartoon: "doraemon", rating: 4.4, thumbnail: "" }
+  // ),
   // makeMovie(
   //   "d9",
   //   "Doraemon: The Record of Nobita's Parallel Visit to the West",
@@ -116,26 +122,26 @@ export const ALL_MOVIES = [
   //   1988,
   //   { cartoon: "doraemon", rating: 4.3, thumbnail: "" }
   // ),
-  makeMovie(
-    "d10",
-    "Doraemon: Nobita and the Birth of Japan",
-    "doraemon",
-    1989,
-    { cartoon: "doraemon", rating: 4.6, thumbnail: "" }
-  ),
-  makeMovie("d11", "Doraemon: Nobita and the Animal Planet", "doraemon", 1990, {    rating: 4.5,
-    thumbnail: "",
-  }),
+  // makeMovie(
+  //   "d10",
+  //   "Doraemon: Nobita and the Birth of Japan",
+  //   "doraemon",
+  //   1989,
+  //   { cartoon: "doraemon", rating: 4.6, thumbnail: "" }
+  // ),
+  // makeMovie("d11", "Doraemon: Nobita and the Animal Planet", "doraemon", 1990, {    rating: 4.5,
+  //   thumbnail: "",
+  // }),
   // makeMovie("d12", "Doraemon: Nobita's Dorabian Nights", "doraemon", 1991, {    rating: 4.6,
   //   thumbnail: "",
   // }),
-  makeMovie(
-    "d13",
-    "Doraemon: Nobita and the Kingdom of Clouds",
-    "doraemon",
-    1992,
-    { cartoon: "doraemon", rating: 4.7, progress: 85, thumbnail: "" }
-  ),
+  // makeMovie(
+  //   "d13",
+  //   "Doraemon: Nobita and the Kingdom of Clouds",
+  //   "doraemon",
+  //   1992,
+  //   { cartoon: "doraemon", rating: 4.7, progress: 85, thumbnail: "" }
+  // ),
   // makeMovie("d14", "Doraemon: Nobita and the Tin Labyrinth", "doraemon", 1993, {    rating: 4.4,
   //   thumbnail: "",
   // }),
@@ -146,13 +152,13 @@ export const ALL_MOVIES = [
   //   1994,
   //   { cartoon: "doraemon", rating: 4.5, thumbnail: "" }
   // ),
-  makeMovie(
-    "d16",
-    "Doraemon: Nobita's Diary on the Creation of the World",
-    "doraemon",
-    1995,
-    { cartoon: "doraemon", rating: 4.2, thumbnail: "" }
-  ),
+  // makeMovie(
+  //   "d16",
+  //   "Doraemon: Nobita's Diary on the Creation of the World",
+  //   "doraemon",
+  //   1995,
+  //   { cartoon: "doraemon", rating: 4.2, thumbnail: "" }
+  // ),
   // makeMovie(
   //   "d17",
   //   "Doraemon: Nobita and the Galaxy Super-express",
@@ -160,9 +166,9 @@ export const ALL_MOVIES = [
   //   1996,
   //   { cartoon: "doraemon", rating: 4.7, progress: 40, thumbnail: "" }
   // ),
-  makeMovie("d18", "Doraemon: Nobita and the Spiral City", "doraemon", 1997, {    rating: 4.4,
-    thumbnail: "",
-  }),
+  // makeMovie("d18", "Doraemon: Nobita and the Spiral City", "doraemon", 1997, {    rating: 4.4,
+  //   thumbnail: "",
+  // }),
   // makeMovie(
   //   "d19",
   //   "Doraemon: Nobita's Great Adventure in the South Seas",
@@ -170,13 +176,13 @@ export const ALL_MOVIES = [
   //   1998,
   //   { cartoon: "doraemon", rating: 4.5, thumbnail: "" }
   // ),
-  makeMovie(
-    "d20",
-    "Doraemon: Nobita Drifts in the Universe",
-    "doraemon",
-    1999,
-    { cartoon: "doraemon", rating: 4.4, thumbnail: "" }
-  ),
+  // makeMovie(
+  //   "d20",
+  //   "Doraemon: Nobita Drifts in the Universe",
+  //   "doraemon",
+  //   1999,
+  //   { cartoon: "doraemon", rating: 4.4, thumbnail: "" }
+  // ),
   // makeMovie(
   //   "d21",
   //   "Doraemon: Nobita and the Legend of the Sun King",
@@ -184,15 +190,15 @@ export const ALL_MOVIES = [
   //   2000,
   //   { cartoon: "doraemon", rating: 4.6, thumbnail: "" }
   // ),
-  makeMovie("d22", "Doraemon: Nobita and the Winged Braves", "doraemon", 2001, {    rating: 4.5,
-    thumbnail: "",
-  }),
-  makeMovie("d23", "Doraemon: Nobita in the Robot Kingdom", "doraemon", 2002, {    rating: 4.3,
-    thumbnail: "",
-  }),
-  makeMovie("d24", "Doraemon: Nobita and the Windmasters", "doraemon", 2003, {    rating: 4.6,
-    thumbnail: "",
-  }),
+  // makeMovie("d22", "Doraemon: Nobita and the Winged Braves", "doraemon", 2001, {    rating: 4.5,
+  //   thumbnail: "",
+  // }),
+  // makeMovie("d23", "Doraemon: Nobita in the Robot Kingdom", "doraemon", 2002, {    rating: 4.3,
+  //   thumbnail: "",
+  // }),
+  // makeMovie("d24", "Doraemon: Nobita and the Windmasters", "doraemon", 2003, {    rating: 4.6,
+  //   thumbnail: "",
+  // }),
   // makeMovie(
   //   "d25",
   //   "Doraemon: Nobita in the Wan-Nyan Spacetime Odyssey", // Itchi mera Dost
@@ -200,10 +206,10 @@ export const ALL_MOVIES = [
   //   2004,
   //   { cartoon: "doraemon", rating: 4.7, thumbnail: "" }
   // ),
-  makeMovie("d26", "Doraemon: Nobita's Dinosaur 2006", "doraemon", 2006, {    rating: 4.5,
-    progress: 62,
-    thumbnail: "",
-  }),
+  // makeMovie("d26", "Doraemon: Nobita's Dinosaur 2006", "doraemon", 2006, {    rating: 4.5,
+  //   progress: 62,
+  //   thumbnail: "",
+  // }),
   // makeMovie(
   //   "d27",
   //   "Doraemon: Nobita's New Great Adventure into the Underworld",
@@ -211,13 +217,13 @@ export const ALL_MOVIES = [
   //   2007,
   //   { cartoon: "doraemon", rating: 4.6, thumbnail: "" }
   // ),
-  makeMovie(
-    "d28",
-    "Doraemon: Nobita and the Green Giant Legend",
-    "doraemon",
-    2008,
-    { cartoon: "doraemon", rating: 4.2, thumbnail: "" }
-  ),
+  // makeMovie(
+  //   "d28",
+  //   "Doraemon: Nobita and the Green Giant Legend",
+  //   "doraemon",
+  //   2008,
+  //   { cartoon: "doraemon", rating: 4.2, thumbnail: "" }
+  // ),
   // makeMovie(
   //   "d29",
   //   "Doraemon: Adventure of Koya Koya Planet", //koya koya planet
@@ -225,13 +231,13 @@ export const ALL_MOVIES = [
   //   2009,
   //   { cartoon: "doraemon", rating: 4.4, thumbnail: "" }
   // ),
-  makeMovie(
-    "d30",
-    "Doraemon: Nobita's Great Battle of the Mermaid King",
-    "doraemon",
-    2010,
-    { cartoon: "doraemon", rating: 4.3, thumbnail: "" }
-  ),
+  // makeMovie(
+  //   "d30",
+  //   "Doraemon: Nobita's Great Battle of the Mermaid King",
+  //   "doraemon",
+  //   2010,
+  //   { cartoon: "doraemon", rating: 4.3, thumbnail: "" }
+  // ),
   // makeMovie(
   //   "d31",
   //   "Doraemon: Nobita and the New Steel Troops ~Winged Angels~",
@@ -268,13 +274,13 @@ export const ALL_MOVIES = [
   // makeMovie("d36", "Doraemon: Nobita's Space Heroes", "doraemon", 2015, {    rating: 4.3,
   //   thumbnail: "",
   // }),
-  makeMovie(
-    "d37",
-    "Doraemon: Nobita and the Birth of Japan 2016",
-    "doraemon",
-    2016,
-    { cartoon: "doraemon", rating: 4.6, thumbnail: "" }
-  ),
+  // makeMovie(
+  //   "d37",
+  //   "Doraemon: Nobita and the Birth of Japan 2016",
+  //   "doraemon",
+  //   2016,
+  //   { cartoon: "doraemon", rating: 4.6, thumbnail: "" }
+  // ),
   // makeMovie(
   //   "d38",
   //   "Doraemon: Nobita's Great Adventure in the Antarctic Kachi Kochi",
@@ -299,13 +305,13 @@ export const ALL_MOVIES = [
   //   progress: 12,
   //   thumbnail: "",
   // }),
-  makeMovie(
-    "d43",
-    "Doraemon: Nobita's Little Star Wars 2021",
-    "doraemon",
-    2022,
-    { cartoon: "doraemon", rating: 4.4, thumbnail: "" }
-  ),
+  // makeMovie(
+  //   "d43",
+  //   "Doraemon: Nobita's Little Star Wars 2021",
+  //   "doraemon",
+  //   2022,
+  //   { cartoon: "doraemon", rating: 4.4, thumbnail: "" }
+  // ),
   // makeMovie("d44", "Doraemon: Nobita's Sky Utopia", "doraemon", 2023, {    rating: 4.7,
   //   thumbnail: "",
   // }),
