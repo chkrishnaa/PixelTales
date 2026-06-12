@@ -23,8 +23,8 @@ function buildCommentTree(flatComments, meId) {
       replyTo:    c.replyToName ?? null,
       text:       c.text,
       likes:      c.likedBy.length,
-      likedByMe:  meId ? c.likedBy.some((id) => id.toString() === meId) : false,
-      likedBy:    c.likedBy.map((id) => ({ name: 'User', email: '' })),
+      likedByMe:  meId ? c.likedBy.some((u) => (u._id ?? u).toString() === meId) : false,
+      likedBy:    c.likedBy.map((u) => ({ name: u?.name ?? 'User', userId: u?._id?.toString() ?? '' })),
       timestamp:  timeAgo(c.createdAt),
       createdAt:  c.createdAt,
       userId:     c.userId?.toString() ?? null,
@@ -146,6 +146,7 @@ export const getComments = async (req, res, next) => {
 
     const flat = await MovieComment.find({ movieId, isDeleted: false })
       .sort({ createdAt: 1 })
+      .populate('likedBy', 'name')
       .lean();
 
     const tree = buildCommentTree(flat, meId);

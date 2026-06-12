@@ -1,17 +1,49 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MessageCircle, Send } from 'lucide-react'
 import { FEEDBACK_TYPES, SENTIMENT_EMOJIS } from '../utils/data'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const MAX = 1000
 
 export default function Feedback() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
+  const { user, API } = useAuth()
+
+  const [name,         setName]         = useState(user?.name  ?? '')
+  const [email,        setEmail]        = useState(user?.email ?? '')
   const [feedbackType, setFeedbackType] = useState('bug')
-  const [sentiment, setSentiment] = useState('happy')
-  const [message, setMessage] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [sentiment,    setSentiment]    = useState('happy')
+  const [message,      setMessage]      = useState('')
+  const [submitted,    setSubmitted]    = useState(false)
+  const [loading,      setLoading]      = useState(false)
+  const [error,        setError]        = useState('')
+
+  useEffect(() => {
+    if (user?.name)  setName(user.name)
+    if (user?.email) setEmail(user.email)
+  }, [user])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError(''); setLoading(true)
+    try {
+      const res  = await fetch(`${API}/api/feedback`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ name, email, feedbackType, sentiment, message }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.errors?.[0]?.msg ?? data.message ?? 'Submission failed.')
+        setLoading(false)
+        return
+      }
+      setSubmitted(true)
+    } catch {
+      setError('Something went wrong. Please try again.')
+    }
+    setLoading(false)
+  }
 
   return (
     <div className="page-container max-w-2xl py-10">
@@ -36,7 +68,7 @@ export default function Feedback() {
           <button
             type="button"
             className="btn-primary mt-6"
-            onClick={() => setSubmitted(false)}
+            onClick={() => { setSubmitted(false); setMessage('') }}
           >
             Send another
           </button>
@@ -44,11 +76,14 @@ export default function Feedback() {
       ) : (
         <form
           className="card-surface space-y-5 p-6 md:p-8"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSubmitted(true);
-          }}
+          onSubmit={handleSubmit}
         >
+          {error && (
+            <p className="rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
+              {error}
+            </p>
+          )}
+
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block">
               <span className="mb-1 block text-sm font-bold">Your Name</span>
@@ -57,6 +92,7 @@ export default function Feedback() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                disabled={!!user}
               />
             </label>
             <label className="block">
@@ -69,6 +105,7 @@ export default function Feedback() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={!!user}
               />
             </label>
           </div>
@@ -130,9 +167,9 @@ export default function Feedback() {
             </span>
           </label>
 
-          <button type="submit" className="btn-primary w-full py-3">
+          <button type="submit" disabled={loading} className="btn-primary w-full py-3 disabled:opacity-50">
             <Send size={18} />
-            Send Feedback
+            {loading ? 'Sending…' : 'Send Feedback'}
           </button>
         </form>
       )}

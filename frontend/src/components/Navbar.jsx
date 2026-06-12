@@ -4,10 +4,10 @@ import {
   Globe,
   MessageCircle,
   PartyPopper,
-  Search,
 } from "lucide-react";
 import ProfileDropdown from "./ProfileDropdown";
 import Logo from "../assets/Logo";
+import NavSearchBar from "./NavSearchBar";
 
 const NAV_ITEMS = [
   // { to: '/home', label: 'Home', icon: Home },
@@ -69,46 +69,8 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div
-          className="relative
-    hidden
-    lg:flex
-    w-72
-    ml-auto
-    justify-start items-center"
-        >
-          <Search
-            size={18}
-            className="
-    absolute
-    left-3
-    top-1/2
-    -translate-y-1/2
-    text-gray-600 dark:text-gray-300
-  "
-            aria-hidden
-          />
-          <input
-            type="search"
-            className="w-full
-  rounded-xl
-  border-2 border-emerald-500 dark:border-emerald-400
-  
-  placeholder:text-gray-600 dark:placeholder:text-gray-300
-  py-2.5
-  pl-10
-  pr-4
-  text-sm
-  outline-none
-  transition-all
-  focus:border-emerald-600 dark:focus:border-emerald-300
-  focus:bg-white dark:focus:bg-gray-900
-  focus:ring-4
-  focus:ring-emerald-200/50 dark:focus:ring-emerald-700/50
-  "
-            placeholder="Search cartoons..."
-            aria-label="Search cartoons"
-          />
+        <div className="relative hidden lg:flex w-72 ml-auto justify-start items-center">
+          <NavSearchBar className="w-full" />
         </div>
 
         <div

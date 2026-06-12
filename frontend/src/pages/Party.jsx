@@ -20,6 +20,7 @@ import {
   X,
 } from 'lucide-react'
 import { PARTY_MOVIE_OPTIONS, CARTOON_OPTIONS, getMovieTitle } from '../utils/movie'
+import MovieHoverPreview from '../components/MovieHoverPreview'
 
 /* ─── Custom Cartoon Select ──────────────────────────── */
 function CartoonSelect({ value, onChange, disabled }) {
@@ -87,13 +88,31 @@ function CartoonSelect({ value, onChange, disabled }) {
 
 /* ─── Custom Movie Select ────────────────────────────── */
 function MovieSelect({ value, onChange, options, disabled }) {
-  const [open, setOpen] = useState(false)
+  const [open,    setOpen]    = useState(false)
+  const [hovered, setHovered] = useState(null)
+  const hideTimer = useRef(null)
   const ref = useRef(null)
   const selected = options.find((m) => m.id === value)
 
+  const showPreview = (movie, e) => {
+    clearTimeout(hideTimer.current)
+    setHovered({ movie, rect: e.currentTarget.getBoundingClientRect() })
+  }
+  const hidePreview = () => {
+    hideTimer.current = setTimeout(() => setHovered(null), 180)
+  }
+  const keepPreview = () => {
+    clearTimeout(hideTimer.current)
+  }
+
   useEffect(() => {
     const handler = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+      if (e.target.closest('[data-movie-preview]')) return
+      if (ref.current && !ref.current.contains(e.target)) {
+        setOpen(false)
+        clearTimeout(hideTimer.current)
+        setHovered(null)
+      }
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
@@ -128,26 +147,41 @@ function MovieSelect({ value, onChange, options, disabled }) {
             <li key={m.id}>
               <button
                 type="button"
-                onClick={() => { onChange(m.id); setOpen(false) }}
+                onMouseEnter={(e) => showPreview(m, e)}
+                onMouseLeave={hidePreview}
+                onClick={() => { onChange(m.id); setOpen(false); clearTimeout(hideTimer.current); setHovered(null) }}
                 className={`flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors hover:bg-turquoise-50 dark:hover:bg-turquoise-950/40 ${
                   m.id === value
                     ? 'bg-turquoise-50 font-bold text-turquoise-700 dark:bg-turquoise-950/40 dark:text-turquoise-300'
                     : 'text-gray-700 dark:text-gray-300'
                 }`}
               >
-                {m.thumbnail && (
-                  <img
-                    src={m.thumbnail}
-                    alt=""
-                    className="h-8 w-12 shrink-0 rounded-lg object-cover"
-                  />
+                {m.thumbnail ? (
+                  <img src={m.thumbnail} alt="" className={`h-8 w-12 shrink-0 object-cover ${m.modern === false ? 'rounded-sm' : 'rounded-lg'}`} />
+                ) : (
+                  <div className="h-8 w-12 shrink-0 rounded-lg bg-gray-100 dark:bg-gray-800" />
                 )}
                 <span className="truncate">{getMovieTitle(m)}</span>
+                {m.modern === false && (
+                  <span className="ml-auto shrink-0 rounded-sm bg-amber-100 px-1.5 py-0.5 text-[9px] font-black text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
+                    CLASSIC
+                  </span>
+                )}
               </button>
             </li>
           ))}
         </ul>
       )}
+
+      {/* Hover preview */}
+      <MovieHoverPreview
+        movie={hovered?.movie}
+        anchorRect={hovered?.rect}
+        side="left"
+        onEnter={keepPreview}
+        onLeave={hidePreview}
+      />
+
       {disabled && (
         <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
           🔒 Pre-selected from movie page

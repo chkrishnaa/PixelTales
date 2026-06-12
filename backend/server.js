@@ -1,5 +1,5 @@
+import 'dotenv/config';
 import express      from 'express';
-import dotenv        from 'dotenv';
 import cors          from 'cors';
 import morgan        from 'morgan';
 import cookieParser  from 'cookie-parser';
@@ -14,8 +14,6 @@ import chatRoutes          from './routes/chatRoutes.js';
 import movieRoutes         from './routes/movieRoutes.js';
 import collectionRoutes    from './routes/collectionRoutes.js';
 import { errorHandler }    from './middlewares/errorHandler.js';
-
-dotenv.config();
 
 const app = express();
 

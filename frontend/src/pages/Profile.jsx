@@ -5,11 +5,11 @@ import {
   Bookmark, Trash2, ChevronLeft, Loader2,
   FolderPlus, FilmIcon,
 } from 'lucide-react'
-import { CURRENT_USER, USER_STATS } from '../utils/data'
 import { getMovieById, MOVIE_DETAILS } from '../utils/movie'
 import { useWatch }   from '../context/WatchContext'
 import { useAuth }    from '../context/AuthContext'
 import MovieGrid      from '../components/MovieGrid'
+import EmptyState     from '../components/EmptyState'
 import CommonPagination from '../components/Utility/CommonPagination'
 import Logo from '../assets/Logo'
 
@@ -145,8 +145,8 @@ function CollectionDetail({ col, token, API, onBack, onDeleted }) {
 /* Collections tab                                             */
 /* ─────────────────────────────────────────────────────────── */
 function CollectionsTab({ token, API, user }) {
-  /* Start with dummy data so the UI is always visually rich */
-  const [collections, setCollections] = useState(DUMMY_COLLECTIONS)
+  /* Start with dummy data only for guests; logged-in users get real data */
+  const [collections, setCollections] = useState(user ? [] : DUMMY_COLLECTIONS)
   const [loading,     setLoading]     = useState(false)
   const [selectedCol, setSelectedCol] = useState(null)
   const [showCreate,  setShowCreate]  = useState(false)
@@ -164,8 +164,8 @@ function CollectionsTab({ token, API, user }) {
       .then((r) => r.json())
       .then(({ success, data }) => {
         if (success) {
-          // Replace dummy data with real collections once loaded
-          setCollections(data.length > 0 ? data : DUMMY_COLLECTIONS)
+          // Logged-in users see only their real collections (empty state if none)
+          setCollections(data.length > 0 ? data : [])
         }
       })
       .catch(() => {})
@@ -278,6 +278,15 @@ function CollectionsTab({ token, API, user }) {
         <div className="flex items-center justify-center py-10">
           <Loader2 size={28} className="animate-spin text-turquoise-400" />
         </div>
+      ) : collections.length === 0 ? (
+        <EmptyState
+          icon={Bookmark}
+          title={user ? 'No collections yet' : 'Log in to create collections'}
+          description={user
+            ? "Click New above to create your first collection and start saving movies."
+            : "Sign in to organise your favourite movies into personal collections."}
+          action={!user ? { label: 'Sign In', to: '/login' } : undefined}
+        />
       ) : (
         <>
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -372,9 +381,12 @@ function HistoryTab({ watchHistory, clearHistory }) {
       </div>
 
       {movies.length === 0 ? (
-        <p className="card-surface p-8 text-center text-gray-500">
-          No history yet — browse some movies!
-        </p>
+        <EmptyState
+          icon={Clock}
+          title="No watch history yet"
+          description="Visit any movie page and it will be recorded here so you can easily find it again."
+          action={{ label: 'Browse Movies', to: '/dashboard' }}
+        />
       ) : (
         <>
           <MovieGrid movies={movies} />
@@ -403,8 +415,31 @@ export default function Profile() {
     TABS.some((t) => t.id === initialTab) ? initialTab : 'continue',
   )
   const [page, setPage] = useState(1)
+  const [avatarUploading, setAvatarUploading] = useState(false)
 
-  const { user, token, API } = useAuth()
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file || !token) return
+    setAvatarUploading(true)
+    try {
+      const form = new FormData()
+      form.append('avatar', file)
+      const res  = await fetch(`${API}/api/auth/avatar`, {
+        method:  'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body:    form,
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        updateUser({ avatar: data.avatar })
+      } else {
+        alert(data.message || 'Upload failed. Please try again.')
+      }
+    } catch { alert('Upload failed. Please check your connection.') }
+    finally { setAvatarUploading(false) }
+  }
+
+  const { user, token, API, updateUser } = useAuth()
 
   const {
     continueMovieIds,
@@ -465,26 +500,47 @@ export default function Profile() {
           <Logo size="xl" />
         </div>
         <div className="flex flex-col items-center gap-2">
-          <span
-            className="size-24 rounded-full border-4 border-turquoise-100 dark:border-turquoise-900"
-            style={{ background: CURRENT_USER.avatarGradient }}
-          />
-          <button
-            type="button"
-            className="flex items-center gap-1 text-xs font-bold text-turquoise-600"
-          >
+          {/* Avatar: real photo or gradient initials */}
+          {user?.avatar ? (
+            <img
+              src={user.avatar}
+              alt={user.name}
+              className="size-24 rounded-full border-4 border-turquoise-100 object-cover dark:border-turquoise-900"
+            />
+          ) : (
+            <span
+              className="flex size-24 items-center justify-center rounded-full border-4 border-turquoise-100 text-3xl font-black text-white dark:border-turquoise-900"
+              style={{
+                background: (() => {
+                  let hash = 0
+                  for (const c of (user?.name ?? '')) hash = c.charCodeAt(0) + ((hash << 5) - hash)
+                  const h1 = Math.abs(hash) % 360
+                  return `linear-gradient(135deg, hsl(${h1},70%,50%), hsl(${(h1 + 40) % 360},70%,35%))`
+                })(),
+              }}
+            >
+              {(user?.name ?? '?').split(' ').slice(0, 2).map((w) => w[0]?.toUpperCase() ?? '').join('')}
+            </span>
+          )}
+          <label className={`flex cursor-pointer items-center gap-1 text-xs font-bold text-turquoise-600 ${avatarUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+            <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} disabled={avatarUploading} />
             <Camera size={14} />
-            Change avatar
-          </button>
+            {avatarUploading ? 'Uploading…' : 'Change avatar'}
+          </label>
         </div>
         <div>
           <h1 className="font-display text-2xl text-turquoise-700 dark:text-turquoise-400 md:text-3xl">
-            {CURRENT_USER.name}
+            {user?.name ?? 'Guest'}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">{CURRENT_USER.email}</p>
+          <p className="text-gray-600 dark:text-gray-400">{user?.email ?? ''}</p>
+          {user?.role === 'admin' && (
+            <span className="mt-1 inline-block rounded bg-turquoise-600 px-2 py-0.5 text-xs font-bold text-white">
+              Admin
+            </span>
+          )}
           <div className="mt-4 flex flex-wrap gap-8">
             {[
-              ['Watched',     USER_STATS.watched],
+              ['Watched',     watchHistory.length],
               ['Favorites',   allMovies.filter((m) => m.favorited).length],
               ['In Progress', continueMovieIds.length],
             ].map(([label, val]) => (
@@ -526,12 +582,12 @@ export default function Profile() {
 
       {/* ── Tab content ──────────────────────────────────────── */}
       {activeTab === 'rooms' ? (
-        <p className="card-surface p-8 text-center text-gray-600 dark:text-gray-400">
-          No watch parties yet.{' '}
-          <Link to="/party" className="font-bold text-turquoise-600">
-            Create or join a room
-          </Link>
-        </p>
+        <EmptyState
+          icon={PartyPopper}
+          title="No watch parties yet"
+          description="Create or join a room and enjoy movies together with friends in real time."
+          action={{ label: 'Start a Party', to: '/party' }}
+        />
 
       ) : activeTab === 'collections' ? (
         <CollectionsTab user={user} token={token} API={API} />
@@ -560,7 +616,14 @@ export default function Profile() {
           )}
         </>
       ) : (
-        <p className="card-surface p-8 text-center text-gray-600">Nothing here yet.</p>
+        <EmptyState
+          icon={activeTab === 'continue' ? FastForward : Heart}
+          title={activeTab === 'continue' ? 'Nothing in progress yet' : 'No favourites yet'}
+          description={activeTab === 'continue'
+            ? 'Start watching a movie and it will appear here so you can pick up where you left off.'
+            : 'Like a movie to add it to your favourites and find it here anytime.'}
+          action={{ label: 'Browse Movies', to: '/dashboard' }}
+        />
       )}
     </div>
   )

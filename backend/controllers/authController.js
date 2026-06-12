@@ -2,8 +2,9 @@ import jwt      from 'jsonwebtoken';
 import bcrypt   from 'bcryptjs';
 import { validationResult } from 'express-validator';
 
-import User from '../models/User.js';
-import OTP  from '../models/OTP.js';
+import User       from '../models/User.js';
+import OTP        from '../models/OTP.js';
+import cloudinary from '../config/cloudinary.js';
 import { sendOTPEmail } from '../config/email.js';
 
 /* ── Helper ──────────────────────────────────────────────── */
@@ -158,6 +159,47 @@ export const verifyOTP = async (req, res, next) => {
     );
 
     res.json({ success: true, resetToken, message: 'OTP verified. You may now set a new password.' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ── Upload Avatar ───────────────────────────────────────── */
+export const uploadAvatar = async (req, res, next) => {
+  try {
+    if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded.' });
+
+    const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
+    if (!CLOUDINARY_CLOUD_NAME || CLOUDINARY_CLOUD_NAME === 'your_cloud_name' ||
+        !CLOUDINARY_API_KEY    || !CLOUDINARY_API_SECRET) {
+      return res.status(503).json({
+        success: false,
+        message: 'Avatar upload is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET to your .env file.',
+      });
+    }
+
+    // Upload buffer to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+        { folder: 'pixeltales/avatars', transformation: [{ width: 200, height: 200, crop: 'fill', gravity: 'face' }] },
+        (err, result) => err ? reject(err) : resolve(result)
+      ).end(req.file.buffer);
+    });
+
+    // Delete old avatar from Cloudinary if it's a Cloudinary URL
+    if (req.user.avatar?.includes('cloudinary')) {
+      const publicId = req.user.avatar.split('/').pop().split('.')[0];
+      await cloudinary.uploader.destroy(`pixeltales/avatars/${publicId}`).catch(() => {});
+    }
+
+    req.user.avatar = result.secure_url;
+    await req.user.save();
+
+    res.json({
+      success: true,
+      avatar: result.secure_url,
+      user: { id: req.user._id, name: req.user.name, email: req.user.email, role: req.user.role, avatar: result.secure_url },
+    });
   } catch (err) {
     next(err);
   }

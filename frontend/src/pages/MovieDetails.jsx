@@ -43,6 +43,7 @@ export default function MovieDetails() {
   };
 
   const movie = getMovieById(id);
+  const isClassic = movie?.modern === false;
 
   useEffect(() => {
     // Track this visit in history
@@ -113,7 +114,7 @@ export default function MovieDetails() {
     <div
       className={`transition-all duration-700 ease-out ${
         isPageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      }`}
+      } ${isClassic ? "bg-[#faf0d0] dark:bg-[#1a1005]" : ""}`}
     >
       {/* ── Sticky Tab Navigation ─────────────────────────────── */}
       <div
@@ -123,11 +124,18 @@ export default function MovieDetails() {
             : "-translate-y-full opacity-0 pointer-events-none"
         }`}
       >
-        <div className="border-b border-gray-200 bg-white/90 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/90">
+        <div className={`border-b px-4 backdrop-blur-md ${
+            isClassic
+              ? "border-amber-700/40 bg-[#fdf3d8]/90 dark:border-amber-800/40 dark:bg-[#1e1508]/90"
+              : "border-gray-200 bg-white/90 dark:border-gray-800 dark:bg-gray-950/90"
+          }`}>
           <div className="page-container">
             <div className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide">
               {/* Movie mini-title */}
-              <span className="mr-4 shrink-0 font-display text-sm font-bold text-turquoise-700 dark:text-turquoise-400">
+              <span className={`mr-4 shrink-0 text-sm font-bold ${
+                isClassic ? "text-amber-800 dark:text-amber-400" : "font-display text-turquoise-700 dark:text-turquoise-400"
+              }`}
+                style={isClassic ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}>
                 🎬 {getMovieTitle(movie).length > 28 ? getMovieTitle(movie).slice(0, 28) + "…" : getMovieTitle(movie)}
               </span>
 
@@ -137,9 +145,14 @@ export default function MovieDetails() {
                   onClick={() => scrollToSection(tabId)}
                   className={`flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                     activeTab === tabId
-                      ? "bg-turquoise-700 text-white shadow-md"
-                      : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                      ? isClassic
+                        ? "bg-amber-700 text-amber-100 shadow-md"
+                        : "bg-turquoise-700 text-white shadow-md"
+                      : isClassic
+                        ? "text-amber-800/70 hover:bg-amber-100/60 dark:text-amber-400 dark:hover:bg-amber-900/30"
+                        : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
                   }`}
+                  style={isClassic ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}
                 >
                   <Icon size={14} />
                   {label}
@@ -168,7 +181,7 @@ export default function MovieDetails() {
         <MovieGallery movie={movie} />
       </div>
 
-      <RecommendedMovies movies={recommendedMovies} />
+      <RecommendedMovies movies={recommendedMovies} isClassic={isClassic} />
 
       <div ref={reviewsRef}>
         <MovieComments movie={movie} />

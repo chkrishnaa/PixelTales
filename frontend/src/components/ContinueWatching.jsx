@@ -5,6 +5,7 @@ import { getMovieById }      from '../utils/movie'
 import SectionTitle          from './SectionTitle'
 import MovieGrid             from './MovieGrid'
 import CommonPagination      from './Utility/CommonPagination'
+import EmptyState            from './EmptyState'
 
 const PAGE_SIZE = 12
 
@@ -16,7 +17,6 @@ export default function ContinueWatching() {
   const toggleFavorite = (id) =>
     setLocalFav((prev) => ({ ...prev, [id]: !prev[id] }))
 
-  // Build full movie objects from stored IDs, injecting live progress
   const allMovies = continueMovieIds
     .map((id) => {
       const base = getMovieById(id)
@@ -30,26 +30,31 @@ export default function ContinueWatching() {
     })
     .filter(Boolean)
 
-  if (allMovies.length === 0) return null
-
   const paged = allMovies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
     <section className="page-container py-6">
       <SectionTitle icon={FastForward}>Continue Watching</SectionTitle>
-      <MovieGrid
-        movies={paged}
-        showContinue
-        onToggleFavorite={toggleFavorite}
-      />
-      {allMovies.length > PAGE_SIZE && (
-        <CommonPagination
-          currentPage={page}
-          setCurrentPage={setPage}
-          totalItems={allMovies.length}
-          itemsPerPage={PAGE_SIZE}
-          itemLabel="movies"
+      {allMovies.length === 0 ? (
+        <EmptyState
+          icon={FastForward}
+          title="Nothing in progress yet"
+          description="Start watching any movie and come back here to pick up right where you left off."
+          action={{ label: 'Browse Movies', to: '/dashboard' }}
         />
+      ) : (
+        <>
+          <MovieGrid movies={paged} showContinue onToggleFavorite={toggleFavorite} />
+          {allMovies.length > PAGE_SIZE && (
+            <CommonPagination
+              currentPage={page}
+              setCurrentPage={setPage}
+              totalItems={allMovies.length}
+              itemsPerPage={PAGE_SIZE}
+              itemLabel="movies"
+            />
+          )}
+        </>
       )}
     </section>
   )

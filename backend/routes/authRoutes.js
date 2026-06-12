@@ -1,18 +1,21 @@
 import express  from 'express';
 import passport from 'passport';
+import multer   from 'multer';
 import { body } from 'express-validator';
 import {
   register,
   login,
   googleCallback,
   getMe,
+  uploadAvatar,
   forgotPassword,
   verifyOTP,
   resetPassword,
 } from '../controllers/authController.js';
 import { protect } from '../middlewares/auth.js';
 
-const router = express.Router();
+const router  = express.Router();
+const upload  = multer({ storage: multer.memoryStorage(), limits: { fileSize: 4 * 1024 * 1024 } });
 
 /* ── Email / Password ──────────────────────────────────── */
 router.post('/register', [
@@ -38,6 +41,9 @@ router.get('/google/callback',
 
 /* ── Auth user info ─────────────────────────────────────── */
 router.get('/me', protect, getMe);
+
+/* ── Avatar upload ──────────────────────────────────────── */
+router.post('/avatar', protect, upload.single('avatar'), uploadAvatar);
 
 /* ── Forgot Password / OTP / Reset ─────────────────────── */
 router.post('/forgot-password',  forgotPassword);

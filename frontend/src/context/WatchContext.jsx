@@ -1,16 +1,15 @@
 /**
  * WatchContext
  *
- * Manages two localStorage-backed lists:
- *   - watchHistory   : every movie whose detail page was visited
- *   - continueWatching: movies the user has actively watched for ≥ 3 minutes
+ * Manages two localStorage-backed lists, scoped per logged-in user:
+ *   - watchHistory       : every movie whose detail page was visited
+ *   - continueWatching   : movies the user has actively watched for ≥ 3 minutes
  *
- * Both are keyed by movie.id (the static catalog string ID).
+ * Keys are namespaced by userId so different accounts never share data.
+ * When user logs out (userId = 'guest') the guest data is used.
  */
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-
-const HISTORY_KEY  = 'pt_watch_history';
-const CONTINUE_KEY = 'pt_continue_watching';
+import { useAuth } from './AuthContext';
 
 const MIN_WATCH_SECONDS = 180; // 3 minutes
 
@@ -27,16 +26,27 @@ function save(key, data) {
 const WatchContext = createContext(null);
 
 export function WatchProvider({ children }) {
-  const [watchHistory,    setWatchHistoryState]    = useState(() => load(HISTORY_KEY));
-  const [continueWatching, setContinueWatchingState] = useState(() => load(CONTINUE_KEY));
+  const { user } = useAuth();
+  const userId = user?._id ?? user?.id ?? 'guest';
+
+  const historyKey  = `pt_watch_history_${userId}`;
+  const continueKey = `pt_continue_watching_${userId}`;
+
+  const [watchHistory,     setWatchHistoryState]     = useState(() => load(historyKey));
+  const [continueWatching, setContinueWatchingState] = useState(() => load(continueKey));
+
+  /* Re-load the correct user's data whenever the account changes */
+  useEffect(() => {
+    setWatchHistoryState(load(historyKey));
+    setContinueWatchingState(load(continueKey));
+  }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* Keep localStorage in sync whenever state changes */
-  useEffect(() => { save(HISTORY_KEY,  watchHistory);    }, [watchHistory]);
-  useEffect(() => { save(CONTINUE_KEY, continueWatching); }, [continueWatching]);
+  useEffect(() => { save(historyKey,  watchHistory);    }, [watchHistory,     historyKey]);
+  useEffect(() => { save(continueKey, continueWatching); }, [continueWatching, continueKey]);
 
   /* ── History ────────────────────────────────────────────── */
 
-  /** Called when user navigates to a movie's detail page */
   const trackVisit = useCallback((movieId) => {
     setWatchHistoryState((prev) => {
       const filtered = prev.filter((h) => h.movieId !== movieId);
@@ -44,26 +54,16 @@ export function WatchProvider({ children }) {
     });
   }, []);
 
-  /** Remove a single movie from history */
   const removeFromHistory = useCallback((movieId) => {
     setWatchHistoryState((prev) => prev.filter((h) => h.movieId !== movieId));
   }, []);
 
-  /** Clear entire history */
   const clearHistory = useCallback(() => setWatchHistoryState([]), []);
 
   /* ── Continue Watching ──────────────────────────────────── */
 
-  /**
-   * Called by MoviePlayer every few seconds.
-   * Only updates the store once watchedSeconds ≥ MIN_WATCH_SECONDS.
-   *
-   * @param {string} movieId
-   * @param {number} watchedSeconds  — total active seconds spent on the player page
-   * @param {number} totalDuration   — movie duration in seconds (0 if unknown)
-   */
   const updateProgress = useCallback((movieId, watchedSeconds, totalDuration) => {
-    if (watchedSeconds < MIN_WATCH_SECONDS) return; // 3-min gate
+    if (watchedSeconds < MIN_WATCH_SECONDS) return;
 
     const progress = totalDuration > 0
       ? Math.min(95, Math.round((watchedSeconds / totalDuration) * 100))
@@ -71,28 +71,18 @@ export function WatchProvider({ children }) {
 
     setContinueWatchingState((prev) => {
       const existing = prev.find((c) => c.movieId === movieId);
-      const entry = {
-        movieId,
-        watchedSeconds,
-        progress,
-        lastWatched: new Date().toISOString(),
-      };
-      if (existing) {
-        return prev.map((c) => (c.movieId === movieId ? entry : c));
-      }
+      const entry = { movieId, watchedSeconds, progress, lastWatched: new Date().toISOString() };
+      if (existing) return prev.map((c) => (c.movieId === movieId ? entry : c));
       return [entry, ...prev];
     });
   }, []);
 
-  /** Remove a movie from continue-watching (e.g. user finished it) */
   const removeFromContinue = useCallback((movieId) => {
     setContinueWatchingState((prev) => prev.filter((c) => c.movieId !== movieId));
   }, []);
 
-  /** Ordered list of movieIds the user has actively started */
   const continueMovieIds = continueWatching.map((c) => c.movieId);
 
-  /** Get progress info for a specific movie */
   const getProgress = useCallback((movieId) =>
     continueWatching.find((c) => c.movieId === movieId) ?? null,
   [continueWatching]);

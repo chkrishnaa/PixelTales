@@ -771,6 +771,7 @@ export const MOVIE_DETAILS = [
     title: [
       " Doraemon The Movie: Nobita The Explorer Bow! Bow!",
       "Doraemon: New Nobita's Great Demon Peko and the Exploration Party of 5",
+      "Doraemon: Nobita and the Haunts of Evil",
     ],
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
@@ -1267,6 +1268,7 @@ export const MOVIE_DETAILS = [
   //Pisuke
   {
     id: "d-nobita-aur-pisuke",
+    modern: false,
     title: [
       "Doraemon The Movie: Nobita Aur Pisuke",
       "Doraemon The Movie: Nobita's Dinosaur",
@@ -1348,7 +1350,7 @@ export const MOVIE_DETAILS = [
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
-    videoUrl: "",
+    videoUrl: "https://drive.google.com/file/d/11xljJ0iQ2ihOtWx1GGrHT_kEcwWAlv3i/preview",
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAurEkJalpari.jpg",
     rating: 4.3,
@@ -1790,6 +1792,187 @@ export const MOVIE_DETAILS = [
     ],
     comments: [],
   },
+
+  {
+    id: "d-nobita-and-the-adventure-of-koya-koya-planet-classic",
+    modern: false,
+    title: [
+      "Doraemon: Nobita and the Adventure of Koya Koya Planet (Classic)",
+      "Doraemon: The Record of Nobita's Spaceblazer (Classic)",
+    ],
+    cartoonId: "doraemon",
+    gradient: DORAEMON_GRADIENT,
+    progress: 0,
+    videoUrl: "",
+    thumbnail: "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheAdventureOfKoyaKoyaPlanetClassic.jpg",
+    rating: 4.5,
+    year: 1981,
+    releaseDate: "1981-03-14",
+    duration: 90,
+    language: "Japanese / English Subbed",
+    quality: "1080p",
+    studio: "Shin-Ei Animation",
+    favorited: false,
+    director: "Hideo Nishimaki",
+    country: "Japan",
+    genres: ["Adventure", "Sci-Fi", "Action", "Family"],
+    description: "The second feature-length Doraemon film! Due to a freak space warp distortion under the tatami mat in Nobita's room, a door unexpectedly opens into the cargo hold of an interstellar spaceship. Nobita and Doraemon meet its pilot, a young alien boy named Roppuru, and his cute rabbit-like companion, Chami. They hail from Koya Koya Planet, a distant, resource-rich world with significantly weaker gravity than Earth. Upon visiting, Nobita and Doraemon discover that this gravitational shift grants them Superman-like strength and invulnerability. However, the peaceful planet is being terrorized by the Gargantua Mining Corporation, a ruthless corporate syndicate out to violently strip-mine the planet's rare minerals. Nobita and Doraemon must step up as cosmic superheroes to fight off the corporation's high-tech mercenaries and protect their new friends' home.",
+    characters: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasSpaceblazer1981.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasSpaceblazer1981.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasSpaceblazer1981.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasSpaceblazer1981.jpg"
+    ],
+    comments: []
+  },
+  {
+    id: "d-nobita-the-explorer-bow-bow-classic",
+    modern: false,
+    title: [
+      " Doraemon The Movie: Nobita The Explorer Bow! Bow! (Classic)",
+      "Doraemon: New Nobita's Great Demon Peko and the Exploration Party of 5 (Classic)",
+      "Doraemon: Nobita and the Haunts of Evil (Classic)",
+    ],
+    cartoonId: "doraemon",
+    gradient: DORAEMON_GRADIENT,
+    progress: 0,
+    videoUrl: "",
+    thumbnail: "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaTheExplorerBowBowClassic.jpg",
+    rating: 4.5,
+    year: 1982,
+    releaseDate: "1982-03-13",
+    duration: 92,
+    language: "Japanese / English Subbed",
+    quality: "1080p",
+    studio: "Shin-Ei Animation",
+    favorited: false,
+    director: "Hideo Nishimaki",
+    country: "Japan",
+    genres: ["Adventure", "Fantasy", "Family", "Sci-Fi"],
+    description: "Seeking an unforgettable summer adventure, Nobita and his friends use Doraemon's satellite gadgets to find an unexplored region on Earth. Meanwhile, Nobita adopts a stray white dog named Peko. Unbeknownst to the gang, Peko is actually Prince Kuntakku, the exiled crown prince of the Bow-Wow Kingdom—a secret, highly advanced nation of intelligent, bipedal canine humanoids hidden deep within the dense, misty jungles of Africa. The kingdom has been seized by a tyrannical warlord named Minister Daburanda, who plans to build ancient, world-conquering superweapons to attack the human world. Guided by Peko, Nobita and his crew brave wild beasts and treacherous traps to enter the hidden valley, fulfill an ancient legendary prophecy, and help the rightful prince reclaim his throne.",
+    characters: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheHauntsOfEvil1982.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheHauntsOfEvil1982.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheHauntsOfEvil1982.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheHauntsOfEvil1982.jpg"
+    ],
+    comments: []
+  },
+  {
+    id: "d-jadoo-mantar-aur-jahnoom-classic",
+    modern: false,
+    title: [
+      "Doraemon The Movie: Jadoo Mantar Aur Jahnoom (Classic)",
+      "Doraemon: Nobita's New Great Adventure into the Underworld (Classic)",
+      "Doraemon: Nobita's Magic World Adventure (Classic)",
+    ],
+    cartoonId: "doraemon",
+    gradient: DORAEMON_GRADIENT,
+    progress: 0,
+    videoUrl: "",
+    thumbnail: "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/JadooMantarAurJahnoomClassic.jpg",
+    rating: 4.6,
+    year: 1984,
+    releaseDate: "1984-03-17",
+    duration: 98,
+    language: "Japanese / English Subbed",
+    quality: "1080p",
+    studio: "Shin-Ei Animation",
+    favorited: false,
+    director: "Tsutomu Shibayama",
+    country: "Japan",
+    genres: ["Adventure", "Fantasy", "Action", "Family"],
+    description: "Tired of schoolwork and wishing that magic was real, Nobita uses Doraemon's 'What-If Telephone Booth' to rearrange reality, transforming the world into a parallel universe where magic and sorcery replace modern science. While enchanted carpets fly through the skies, Nobita hilariously discovers he is still terrible at magic spells. However, this mystical reality harbors a fatal threat: a dark, demonic planet inhabited by the Underworld Army is rapidly closing in to consume Earth. Alongside a skilled young mage named Miyoko and her father, the gang uncovers a grim prophecy. To save both worlds, Nobita and his friends must journey deep into the terrifying, monster-infested Devildom Star to pierce the heart of the ruthless Demon King Demaon with silver magic arrows.",
+    characters: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatAdventureIntoTheUnderworld1984.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatAdventureIntoTheUnderworld1984.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatAdventureIntoTheUnderworld1984.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatAdventureIntoTheUnderworld1984.jpg"
+    ],
+    comments: []
+  },
+  {
+     id: "d-nobita-and-the-steel-troops-classic",
+    modern: false,
+    title: "Doraemon: Nobita and the Steel Troops (Classic)",
+    cartoonId: "doraemon",
+    gradient: DORAEMON_GRADIENT,
+    progress: 0,
+    videoUrl: "https://drive.google.com/file/d/1giulaEfaTvFgHWlk5Fv9UQ5MEu4ilNNu/preview",
+    thumbnail: "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroopsClassic.jpg",
+    rating: 4.7,
+    year: 1986,
+    releaseDate: "1986-03-15",
+    duration: 97,
+    language: "Japanese / English Subbed",
+    quality: "1080p",
+    studio: "Shin-Ei Animation",
+    favorited: false,
+    director: "Tsutomu Shibayama",
+    country: "Japan",
+    genres: ["Adventure", "Sci-Fi", "Drama", "Action", "Family"],
+    description: "The legendary original masterpiece! While playing, Nobita discovers strange, giant metallic blocks falling from the sky. Using Doraemon's Mirror World gadget, he and Doraemon assemble the pieces inside a vacant, reflection universe, creating a colossal robotic warrior named Zanda Claus. The adventure turns terrifying when a mysterious, cold girl named Riruru appears, revealing herself to be a scout spy for a massive, unyielding robot army from the planet Mecha-topia. The Steel Troops are marching toward Earth to completely enslave the human race. Left completely isolated to defend their planet, Nobita, Doraemon, and their small group of friends must mount a desperate, final stand in the mirror world while Shizuka attempts to touch Riruru's robotic heart to change the fate of the universe.",
+    characters: [
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo: "",
+        bio: "Doraemon is a robotic cat from the 22nd century sent to help Nobita. In this film, his futuristic gadgets and unwavering loyalty are put to the ultimate test as he helps Nobita navigate the mirror world and stand against a mechanical army far more powerful than anything they have faced before.",
+      },
+      {
+        name: "Nobita",
+        role: "Main Character",
+        photo: "",
+        bio: "Nobita is the kind-hearted but clumsy hero who accidentally triggers the robot invasion. Driven by guilt and love for his friends, he undergoes remarkable growth in this movie — transforming from a boy who always gives up into someone willing to sacrifice everything to protect the world.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character",
+        photo: "",
+        bio: "Shizuka is Nobita's gentle and compassionate friend whose courage proves crucial at pivotal moments. Her bond with Riruru becomes one of the movie's most touching storylines, showing that friendship can transcend even the greatest of conflicts.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character",
+        photo: "",
+        bio: "Gian, usually the bully of the group, reveals a surprisingly brave and self-sacrificing side in this film. When the stakes rise to a planetary level, he steps up without hesitation — proving that true strength comes from protecting the people you care about.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character",
+        photo: "",
+        bio: "Suneo's mechanical knowledge and clever thinking prove surprisingly useful during the robot crisis. Though he can be self-serving, his loyalty to his friends shines through when the group faces seemingly impossible odds in the mirror world.",
+      },
+      {
+        name: "Zanda Claus",
+        role: "Robot Ally",
+        photo: "",
+        bio: "Zanda Claus is a giant robotic warrior that Nobita secretly assembles inside the mirror world. Initially a source of fun and adventure, it becomes the group's last line of defence — a symbol of Nobita's determination to fight for peace.",
+      },
+      {
+        name: "Pippo",
+        role: "Antagonist / Ally",
+        photo: "",
+        bio: "Pippo is a small robotic soldier who begins as part of the invading army but gradually reveals a more complex nature. His interactions with Nobita force him to question the purpose of war, making him one of the film's most memorable and layered characters.",
+      },
+      {
+        name: "Riruru",
+        role: "Key Antagonist / Ally",
+        photo: "",
+        bio: "Riruru starts as the primary antagonist — a brilliant and ruthless robot general — but her arc is one of the most emotionally powerful in the entire Doraemon series. Her evolving relationship with Shizuka transforms her from enemy to the story's most heartbreaking hero.",
+      },
+    ],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops1986.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops1986.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops1986.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops1986.jpg"
+    ],
+    comments: []
+  }
 ];
 
 /** Full detail rows (detail page lookup) */

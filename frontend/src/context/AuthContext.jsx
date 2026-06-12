@@ -59,6 +59,9 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  /** Update local user state (e.g. after avatar upload) */
+  const updateUser = (patch) => setUser((prev) => prev ? { ...prev, ...patch } : prev);
+
   /** Called from /auth/callback after Google OAuth redirect */
   const loginWithToken = (t) => {
     saveToken(t);
@@ -72,7 +75,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout, loginWithToken, API }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout, updateUser, loginWithToken, API }}>
       {children}
     </AuthContext.Provider>
   );

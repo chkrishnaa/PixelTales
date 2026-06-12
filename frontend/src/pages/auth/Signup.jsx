@@ -1,5 +1,6 @@
 import { useState }   from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import GoogleSignInButton from '../../components/GoogleSignInButton';
 import { useAuth }        from '../../context/AuthContext';
 
@@ -10,6 +11,7 @@ export default function Signup() {
   const [name,     setName]     = useState('');
   const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
+  const [showPwd,  setShowPwd]  = useState(false);
   const [error,    setError]    = useState('');
   const [loading,  setLoading]  = useState(false);
 
@@ -67,14 +69,24 @@ export default function Signup() {
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-bold">Password</span>
-            <input
-              type="password"
-              className="input-field"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              minLength={8}
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPwd ? 'text' : 'password'}
+                className="input-field pr-10"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                minLength={8}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPwd(v => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                tabIndex={-1}
+              >
+                {showPwd ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </label>
           <button type="submit" disabled={loading} className="btn-primary w-full py-3">
             {loading ? 'Creating account…' : 'Create Account'}

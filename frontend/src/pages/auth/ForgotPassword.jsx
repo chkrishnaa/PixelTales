@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const STEPS = ['email', 'otp', 'reset'];
@@ -15,6 +15,8 @@ export default function ForgotPassword() {
   const [resetToken,   setResetToken]   = useState('');
   const [password,     setPassword]     = useState('');
   const [confirm,      setConfirm]      = useState('');
+  const [showPwd,      setShowPwd]      = useState(false);
+  const [showConfirm,  setShowConfirm]  = useState(false);
   const [loading,      setLoading]      = useState(false);
   const [error,        setError]        = useState('');
   const [success,      setSuccess]      = useState('');
@@ -202,27 +204,47 @@ export default function ForgotPassword() {
         <form className="mt-6 space-y-4" onSubmit={handleResetPassword}>
           <label className="block">
             <span className="mb-1 block text-sm font-bold">New Password</span>
-            <input
-              type="password"
-              className="input-field"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              minLength={8}
-              required
-              placeholder="Min. 8 characters"
-            />
+            <div className="relative">
+              <input
+                type={showPwd ? 'text' : 'password'}
+                className="input-field pr-10"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                minLength={8}
+                required
+                placeholder="Min. 8 characters"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPwd(v => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                tabIndex={-1}
+              >
+                {showPwd ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-bold">Confirm Password</span>
-            <input
-              type="password"
-              className="input-field"
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
-              minLength={8}
-              required
-              placeholder="Re-enter password"
-            />
+            <div className="relative">
+              <input
+                type={showConfirm ? 'text' : 'password'}
+                className="input-field pr-10"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                minLength={8}
+                required
+                placeholder="Re-enter password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirm(v => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                tabIndex={-1}
+              >
+                {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </label>
           <button type="submit" disabled={loading} className="btn-primary w-full py-3">
             {loading ? 'Saving…' : 'Set New Password'}

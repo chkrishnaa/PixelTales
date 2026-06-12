@@ -38,7 +38,7 @@ export default function HomeNavbar({ isLoggedIn = false }) {
 
         {/* Actions */}
         <div className="flex items-center gap-3">
-          {!isLoggedIn ? (
+          {isLoggedIn ? (
             <NavLink to="/dashboard" className="btn-primary">
               Dashboard
             </NavLink>

@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  Play,
   Sparkles,
   Star,
   Download,
@@ -12,14 +11,14 @@ import {
 import HomeNavbar from "../components/HomeNavbar";
 import MovieGridCard from '../components/MovieGridCard'
 import Footer from '../components/Footer'
-import { FEATURES, TESTIMONIALS, FAQ_ITEMS, CARTOONS, GENRES, COMMUNITY_REVIEWS } from '../utils/data'
+import { FEATURES, FAQ_ITEMS, CARTOONS, GENRES } from '../utils/data'
 import { MOVIE_DETAILS } from '../utils/movie'
-
-const ALL_MOVIES = MOVIE_DETAILS
-import pokemonBanner from '../assets/banner-images/pokemon.png'
 import HomeHeroCarousel from '../components/home/HomeHeroCarousel'
 import ReviewCard from '../components/ReviewCard';
 import CommonPagination from '../components/Utility/CommonPagination';
+import { useReviews } from '../hooks/useReviews';
+
+const ALL_MOVIES = MOVIE_DETAILS
 
 // function Stars({ rating }) {
 //   const full = Math.max(0, Math.min(5, Math.round(rating)));
@@ -46,10 +45,11 @@ export default function Home() {
 
   const [selectedReview, setSelectedReview] = useState(null);
 
+  const { reviews, loading: reviewsLoading } = useReviews();
   const REVIEWS_PER_PAGE = 6;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const paginatedReviews = COMMUNITY_REVIEWS.slice(
+  const paginatedReviews = reviews.slice(
     (currentPage - 1) * REVIEWS_PER_PAGE,
     currentPage * REVIEWS_PER_PAGE
   );
@@ -173,7 +173,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TESTIMONIALS */}
+        {/* TESTIMONIALS — only shown once 3+ real reviews exist */}
+        {!reviewsLoading && reviews.length >= 3 && (
         <section className="page-container pb-10 md:pb-14">
           <h2 className="font-display text-xl text-turquoise-700 dark:text-turquoise-400 md:text-2xl">
             Testimonials
@@ -186,18 +187,18 @@ export default function Home() {
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {paginatedReviews.map((review) => (
               <ReviewCard
-                key={review.id}
+                key={review._id}
                 review={review}
                 onOpen={setSelectedReview}
               />
             ))}
           </div>
 
-          {COMMUNITY_REVIEWS.length > REVIEWS_PER_PAGE && (
+          {reviews.length > REVIEWS_PER_PAGE && (
             <CommonPagination
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
-              totalItems={COMMUNITY_REVIEWS.length}
+              totalItems={reviews.length}
               itemsPerPage={REVIEWS_PER_PAGE}
               itemLabel="reviews"
             />
@@ -205,81 +206,52 @@ export default function Home() {
 
           {selectedReview && (
             <div
-              className="
-        fixed inset-0 z-[100]
-        flex items-center justify-center
-        bg-black/60 backdrop-blur-sm
-        p-4
-      "
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
               onClick={() => setSelectedReview(null)}
             >
               <div
-                className="
-          w-full max-w-2xl
-          rounded-3xl
-          bg-white
-          p-6
-          shadow-2xl
-          dark:bg-gray-900
-        "
+                className="w-full max-w-2xl rounded-3xl bg-white p-6 shadow-2xl dark:bg-gray-900"
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Header */}
-
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="size-12 rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600" />
-
+                    <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600 font-bold text-white text-lg uppercase">
+                      {(selectedReview.name ?? selectedReview.user)?.[0] ?? '?'}
+                    </div>
                     <div>
                       <h3 className="font-bold text-gray-900 dark:text-white">
-                        {selectedReview.user}
+                        {selectedReview.name ?? selectedReview.user}
                       </h3>
-
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         {selectedReview.email}
                       </p>
                     </div>
                   </div>
-
                   <div className="mt-2 flex items-center gap-1">
-                    {Array.from({ length: selectedReview.rating }).map(
-                      (_, index) => (
-                        <Star
-                          key={index}
-                          size={16}
-                          className="fill-turquoise-600 dark:fill-turquoise-400 text-turquoise-600 dark:text-turquoise-400"
-                        />
-                      )
-                    )}
+                    {Array.from({ length: selectedReview.rating }).map((_, index) => (
+                      <Star key={index} size={16}
+                        className="fill-turquoise-600 dark:fill-turquoise-400 text-turquoise-600 dark:text-turquoise-400"
+                      />
+                    ))}
                   </div>
                 </div>
-
-                {/* Full Review */}
 
                 <p className="mt-5 text-sm text-justify leading-relaxed text-gray-700 dark:text-gray-300">
                   {selectedReview.review}
                 </p>
 
-                {/* Likes */}
-
                 <div className="mt-5 flex items-center justify-between gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
-                  <p className="flex items-center gap-2 text-sm font-semibold text-gray-500 transition dark:text-gray-400">
-                    {selectedReview.date}
+                  <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                    {selectedReview.date ?? (selectedReview.createdAt
+                      ? new Date(selectedReview.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                      : '')}
                   </p>
-                  <div className="flex justify-between items-center gap-4">
-                    <button className="flex items-center gap-2 text-sm font-semibold text-gray-500 transition hover:text-green-600 dark:text-gray-400">
-                      <ThumbsUp size={16} />
-                      {selectedReview.likes}
-                    </button>
-
-                    <button className="flex items-center gap-2 text-sm font-semibold text-gray-500 transition hover:text-red-600 dark:text-gray-400">
-                      <ThumbsDown size={16} />
-                      {selectedReview.dislikes}
-                    </button>
+                  <div className="flex items-center gap-4">
+                    <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-500">
+                      <Star size={14} /> {selectedReview.likedBy?.length ?? selectedReview.likes ?? 0}
+                    </span>
                   </div>
                 </div>
-
-                {/* Close */}
 
                 <button
                   onClick={() => setSelectedReview(null)}
@@ -291,6 +263,7 @@ export default function Home() {
             </div>
           )}
         </section>
+        )}
 
         {/* FAQ */}
         <section className="page-container pb-10 md:pb-14">

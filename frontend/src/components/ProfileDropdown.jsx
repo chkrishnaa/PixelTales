@@ -12,7 +12,7 @@ import {
   Moon,
   Sun,
 } from 'lucide-react'
-import { CURRENT_USER } from '../utils/data'
+import { useAuth }  from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
 
 const MENU_ITEMS = [
@@ -25,10 +25,50 @@ const MENU_ITEMS = [
   { to: '/feedback', label: 'Feedback', icon: MessageCircle },
 ]
 
+/* Generate a consistent gradient from the user's name */
+function nameToGradient(name = '') {
+  let hash = 0
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash)
+  const h1 = Math.abs(hash) % 360
+  const h2 = (h1 + 40) % 360
+  return `linear-gradient(135deg, hsl(${h1},70%,50%), hsl(${h2},70%,35%))`
+}
+
+/* Avatar: real photo if available, otherwise coloured initials */
+function Avatar({ user, size = 9 }) {
+  const [err, setErr] = useState(false)
+  const initials = (user?.name ?? '?')
+    .split(' ')
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? '')
+    .join('')
+  const gradient = nameToGradient(user?.name)
+
+  if (user?.avatar && !err) {
+    return (
+      <img
+        src={user.avatar}
+        alt={user.name}
+        onError={() => setErr(true)}
+        className={`size-${size} rounded-full object-cover`}
+      />
+    )
+  }
+  return (
+    <span
+      className={`flex size-${size} items-center justify-center rounded-full text-xs font-black text-white`}
+      style={{ background: gradient }}
+    >
+      {initials}
+    </span>
+  )
+}
+
 export default function ProfileDropdown() {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
   const navigate = useNavigate()
+  const { user, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
 
   useEffect(() => {
@@ -46,6 +86,12 @@ export default function ProfileDropdown() {
     }
   }, [])
 
+  const handleSignOut = () => {
+    setOpen(false)
+    logout()
+    navigate('/login')
+  }
+
   return (
     <div className="relative" ref={ref}>
       <button
@@ -56,10 +102,7 @@ export default function ProfileDropdown() {
         aria-haspopup="true"
         aria-label="Account menu"
       >
-        <span
-          className="block size-9 rounded-full"
-          style={{ background: CURRENT_USER.avatarGradient }}
-        />
+        <Avatar user={user} size={9} />
       </button>
 
       {open && (
@@ -67,16 +110,19 @@ export default function ProfileDropdown() {
           className="absolute right-0 top-[calc(100%+0.5rem)] z-[100] w-64 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900"
           role="menu"
         >
+          {/* User info header */}
           <div className="flex items-center gap-3 border-b border-gray-200 bg-turquoise-50 p-4 dark:border-gray-700 dark:bg-turquoise-950/40">
-            <span
-              className="size-11 shrink-0 rounded-full"
-              style={{ background: CURRENT_USER.avatarGradient }}
-            />
+            <Avatar user={user} size={11} />
             <div className="min-w-0">
               <p className="truncate text-sm font-extrabold text-gray-800 dark:text-gray-100">
-                {CURRENT_USER.name}
+                {user?.name ?? 'Guest'}
               </p>
-              <p className="truncate text-xs text-gray-500">{CURRENT_USER.email}</p>
+              <p className="truncate text-xs text-gray-500">{user?.email ?? ''}</p>
+              {user?.role === 'admin' && (
+                <span className="mt-0.5 inline-block rounded bg-turquoise-600 px-1.5 py-[1px] text-[10px] font-bold text-white">
+                  Admin
+                </span>
+              )}
             </div>
           </div>
 
@@ -100,15 +146,9 @@ export default function ProfileDropdown() {
             type="button"
             role="menuitem"
             className="flex w-full items-center gap-2.5 border-t border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
-            onClick={() => {
-              toggleTheme()
-            }}
+            onClick={toggleTheme}
           >
-            {theme === 'light' ? (
-              <Moon size={18} aria-hidden />
-            ) : (
-              <Sun size={18} aria-hidden />
-            )}
+            {theme === 'light' ? <Moon size={18} aria-hidden /> : <Sun size={18} aria-hidden />}
             {theme === 'light' ? 'Dark mode' : 'Light mode'}
           </button>
 
@@ -116,10 +156,7 @@ export default function ProfileDropdown() {
             type="button"
             role="menuitem"
             className="flex w-full items-center gap-2.5 border-t border-gray-200 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 dark:border-gray-700 dark:hover:bg-red-950/30"
-            onClick={() => {
-              setOpen(false)
-              navigate('/login')
-            }}
+            onClick={handleSignOut}
           >
             <LogOut size={18} aria-hidden />
             Sign Out

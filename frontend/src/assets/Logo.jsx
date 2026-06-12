@@ -29,12 +29,12 @@ export const SITE_NAME    = 'PixelTales';
 export const SITE_ICON    = '🎬';
 export const SITE_TAGLINE = 'Your magical pocket for cartoons.';
 
-/* Height classes per size (width is auto so aspect ratio is preserved) */
+/* Height + matching max-width per size (keeps both light/dark logos identical visual size) */
 const HEIGHTS = {
-  sm: 'h-7',
-  md: 'h-9',
-  lg: 'h-11',
-  xl: 'h-14',
+  sm: 'h-7  max-w-[100px]',
+  md: 'h-9  max-w-[130px]',
+  lg: 'h-11 max-w-[160px]',
+  xl: 'h-14 max-w-[200px]',
 };
 
 export default function Logo({
