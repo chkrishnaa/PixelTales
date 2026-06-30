@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 
-const API = import.meta.env.PROD ? "" : "http://localhost:5000";
-
+const API =
+  import.meta.env.MODE === "production" ? "" : "http://localhost:5000";
+  
 export function useAnalytics() {
   const [stats,   setStats]   = useState(null);
   const [loading, setLoading] = useState(true);
