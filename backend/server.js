@@ -27,10 +27,31 @@ configurePassport();
 app.use(passport.initialize());
 
 // ── Middleware ────────────────────────────────────────────
-app.use(cors({
-  origin:      process.env.CLIENT_URL || 'http://localhost:5173',
+const allowedOrigins = (process.env.CLIENT_URL || "")
+  .split(",")
+  .map((url) => url.trim())
+  .filter(Boolean);
+
+const corsOptions = {
+  origin(origin, cb) {
+    if (!origin) return cb(null, true);
+
+    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+      return cb(null, true);
+    }
+
+    if (allowedOrigins.includes(origin)) {
+      return cb(null, true);
+    }
+
+    return cb(new Error(`Origin ${origin} not allowed by CORS`));
+  },
+
   credentials: true,
-}));
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
