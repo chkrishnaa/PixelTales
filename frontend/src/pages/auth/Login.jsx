@@ -32,6 +32,10 @@ export default function Login() {
     window.location.href = `${API}/api/auth/google`;
   };
 
+  console.log("MODE:", import.meta.env.MODE);
+  console.log("PROD:", import.meta.env.PROD);
+  console.log("API:", API);
+
   return (
     <div className="card-surface p-8">
       <h1 className="font-display text-center text-2xl text-turquoise-700 dark:text-turquoise-400">
