@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-// const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const API = import.meta.env.PROD ? "" : "http://localhost:5000";
 
 // How long before we consider a user "inactive" and auto-logout (2 months in ms)
