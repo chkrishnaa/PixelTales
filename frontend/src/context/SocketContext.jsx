@@ -18,7 +18,11 @@ export function SocketProvider({ children }) {
   useEffect(() => {
     if (socketRef.current) return; // Prevent duplicate connections
 
-    const socketUrl = API?.replace(/\/api\/?$/, '') || 'http://localhost:5000';
+    // const socketUrl = API?.replace(/\/api\/?$/, '') || 'http://localhost:5000';
+    const socketUrl =
+      import.meta.env.MODE === "production"
+        ? window.location.origin
+        : "http://localhost:5000";
     const socket = io(`${socketUrl}/party`, {
       transports: ['websocket', 'polling'],
       reconnection: true,
