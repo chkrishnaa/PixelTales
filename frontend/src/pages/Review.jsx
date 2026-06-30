@@ -1,38 +1,82 @@
-import { useState }     from 'react';
-import { Star, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Star, Send, CheckCircle, AlertCircle, Pencil } from 'lucide-react';
 import { Link }          from 'react-router-dom';
 import { useAuth }       from '../context/AuthContext';
+import LoginModal        from '../components/LoginModal';
 
 const MAX = 1000;
 
 export default function Review() {
-  const { user, API }    = useAuth();
+  const { user, API } = useAuth();
 
-  const [name,      setName]      = useState(user?.name  ?? '');
-  const [email,     setEmail]     = useState(user?.email ?? '');
-  const [rating,    setRating]    = useState(0);
-  const [review,    setReview]    = useState('');
-  const [hover,     setHover]     = useState(0);
-  const [busy,      setBusy]      = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error,     setError]     = useState('');
+  const [name,       setName]       = useState(user?.name  ?? '');
+  const [email,      setEmail]      = useState(user?.email ?? '');
+  const [rating,     setRating]     = useState(0);
+  const [review,     setReview]     = useState('');
+  const [hover,      setHover]      = useState(0);
+  const [busy,       setBusy]       = useState(false);
+  const [loading,    setLoading]    = useState(false);
+  const [submitted,  setSubmitted]  = useState(false);
+  const [error,      setError]      = useState('');
+  const [reviewId,   setReviewId]   = useState(null);
+  const [isEditing,  setIsEditing]  = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  useEffect(() => {
+    if (user?.name)  setName(user.name);
+    if (user?.email) setEmail(user.email);
+  }, [user]);
+
+  /* Load existing review so user can edit */
+  useEffect(() => {
+    const lookupEmail = (user?.email ?? email)?.trim();
+    if (!lookupEmail) return;
+
+    setLoading(true);
+    fetch(`${API}/api/reviews/me?email=${encodeURIComponent(lookupEmail)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success && data.hasReview && data.data) {
+          const existing = data.data;
+          setReviewId(existing._id);
+          setIsEditing(true);
+          setName(existing.name ?? lookupEmail);
+          setEmail(existing.email ?? lookupEmail);
+          setRating(existing.rating ?? 0);
+          setReview(existing.review ?? '');
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [user?.email, email, API]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user) { setShowLoginModal(true); return; }
     if (!rating) return;
     setBusy(true);
     setError('');
     try {
-      const res  = await fetch(`${API}/api/reviews`, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ name, email, rating, review }),
-      });
+      const isUpdate = Boolean(reviewId);
+      const res = await fetch(
+        isUpdate ? `${API}/api/reviews/${reviewId}` : `${API}/api/reviews`,
+        {
+          method:  isUpdate ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(
+            isUpdate
+              ? { email, rating, review }
+              : { name, email, rating, review },
+          ),
+        },
+      );
       const data = await res.json();
       if (data.success) {
+        if (!isUpdate && data.data?._id) setReviewId(data.data._id);
+        setIsEditing(true);
         setSubmitted(true);
       } else {
-        setError(data.message || 'Could not submit review. Please try again.');
+        setError(data.message || data.errors?.[0]?.msg || 'Could not submit review. Please try again.');
       }
     } catch {
       setError('Network error. Please check your connection and try again.');
@@ -43,13 +87,23 @@ export default function Review() {
 
   return (
     <div className="page-container max-w-2xl py-10">
+      {showLoginModal && (
+        <LoginModal
+          onClose={() => setShowLoginModal(false)}
+          title="Login to Write a Review"
+          description="Sign in to share your thoughts with the PixelTales community."
+          icon="⭐"
+        />
+      )}
       <header className="mb-8 text-center">
         <Star className="mx-auto size-10 fill-turquoise-500 text-turquoise-500" />
         <h1 className="font-display mt-2 text-3xl text-turquoise-700 dark:text-turquoise-400">
-          Write a Review
+          {isEditing ? 'Edit Your Review' : 'Write a Review'}
         </h1>
         <p className="mt-2 text-gray-600 dark:text-gray-400">
-          Share your thoughts with the PixelTales community.
+          {isEditing
+            ? 'Your previous review is loaded below — update it anytime.'
+            : 'Share your thoughts with the PixelTales community.'}
         </p>
       </header>
 
@@ -57,7 +111,7 @@ export default function Review() {
         <div className="card-surface p-8 text-center">
           <CheckCircle className="mx-auto size-14 text-emerald-500" />
           <p className="font-display mt-4 text-2xl text-turquoise-700 dark:text-turquoise-400">
-            Review Submitted ⭐
+            {isEditing ? 'Review Updated ⭐' : 'Review Submitted ⭐'}
           </p>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             Thank you for sharing your review, {name}!
@@ -66,10 +120,29 @@ export default function Review() {
             <Link to="/community" className="btn-primary">
               See All Reviews
             </Link>
+            <button
+              type="button"
+              className="btn-primary bg-gray-600 hover:bg-gray-500"
+              onClick={() => setSubmitted(false)}
+            >
+              Edit Again
+            </button>
           </div>
         </div>
       ) : (
         <form className="card-surface space-y-5 p-6 md:p-8" onSubmit={handleSubmit}>
+          {loading && (
+            <p className="rounded-xl bg-turquoise-50 px-4 py-2.5 text-center text-sm font-medium text-turquoise-700 dark:bg-turquoise-950/30 dark:text-turquoise-300">
+              Loading your previous review…
+            </p>
+          )}
+
+          {isEditing && !loading && (
+            <div className="flex items-center gap-2 rounded-xl border border-turquoise-200 bg-turquoise-50 px-4 py-2.5 text-sm text-turquoise-800 dark:border-turquoise-800 dark:bg-turquoise-950/30 dark:text-turquoise-300">
+              <Pencil size={15} className="shrink-0" />
+              You already submitted a review — edit the fields below and save changes.
+            </div>
+          )}
 
           {/* Star rating */}
           <fieldset className="flex flex-col items-center">
@@ -115,6 +188,7 @@ export default function Review() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                disabled={!!user}
               />
             </label>
             <label className="block">
@@ -127,6 +201,7 @@ export default function Review() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={!!user || isEditing}
               />
             </label>
           </div>
@@ -158,11 +233,13 @@ export default function Review() {
 
           <button
             type="submit"
-            disabled={!rating || busy}
+            disabled={!rating || busy || loading}
             className="btn-primary w-full py-3 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Send size={18} />
-            {busy ? 'Submitting…' : 'Submit Review'}
+            {busy
+              ? (isEditing ? 'Updating…' : 'Submitting…')
+              : (isEditing ? 'Update Review' : 'Submit Review')}
           </button>
         </form>
       )}

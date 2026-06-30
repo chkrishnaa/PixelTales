@@ -8,10 +8,10 @@ import mongoose from 'mongoose';
 import User     from './models/User.js';
 
 const ADMIN = {
-  name:       process.env.ADMIN_NAME     || 'PixelTales Admin',
-  email:      process.env.ADMIN_EMAIL    || 'admin@pixeltales.com',
-  password:   process.env.ADMIN_PASSWORD || 'Admin@PixelTales2026',
-  role:       'admin',
+  name: process.env.ADMIN_NAME || "Krishnakumar Chaurashiya",
+  email: process.env.ADMIN_EMAIL || "admin@pixeltales.com",
+  password: process.env.ADMIN_PASSWORD || "Admin@PixelTales2026",
+  role: "admin",
   isVerified: true,
 };
 

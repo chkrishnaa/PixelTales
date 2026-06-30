@@ -5,6 +5,7 @@ import { getMovieTitle } from "../utils/movie";
 import { useAuth }  from "../context/AuthContext";
 import { useWatch } from "../context/WatchContext";
 import SaveToCollectionModal from "../components/SaveToCollectionModal";
+import LoginModal from "../components/LoginModal";
 
 export default function MoviePlayer({ movie }) {
   const navigate  = useNavigate();
@@ -19,6 +20,7 @@ export default function MoviePlayer({ movie }) {
   const [showCollection, setShowCollection] = useState(false);
   const [savedToAny, setSavedToAny] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const activeSecsRef  = useRef(0);
   const lastTickRef    = useRef(null);
@@ -58,7 +60,8 @@ export default function MoviePlayer({ movie }) {
   }, [movie.id, API, token]);
 
   const handleLike = async () => {
-    if (!user || likeLoading) return;
+    if (!user) { setShowLoginModal(true); return; }
+    if (likeLoading) return;
     const wasLiked = liked;
     setLiked(!wasLiked);
     setLikeCount((c) => (c ?? 0) + (wasLiked ? -1 : 1));
@@ -181,7 +184,7 @@ export default function MoviePlayer({ movie }) {
           </button>
 
           {/* Like */}
-          <button onClick={handleLike} disabled={!user || likeLoading}
+          <button onClick={handleLike} disabled={likeLoading}
             title={user ? (liked ? "Unlike" : "Like") : "Log in to like"}
             className={`group flex items-center gap-2 border-2 bg-transparent px-4 py-2.5 text-sm font-bold transition-all duration-200 active:scale-95 disabled:cursor-default ${
               v ? "rounded-sm" : "rounded-2xl"} ${
@@ -196,7 +199,7 @@ export default function MoviePlayer({ movie }) {
           </button>
 
           {/* Save */}
-          <button onClick={() => user ? setShowCollection(true) : null}
+          <button onClick={() => user ? setShowCollection(true) : setShowLoginModal(true)}
             title={user ? "Save to collection" : "Log in to save"}
             className={`flex items-center gap-2 border-2 bg-transparent px-4 py-2.5 text-sm font-bold transition-all duration-200 active:scale-95 ${
               v ? "rounded-sm" : "rounded-2xl"} ${
@@ -237,6 +240,14 @@ export default function MoviePlayer({ movie }) {
       {showCollection && (
         <SaveToCollectionModal movieId={movie.id}
           onClose={() => { setShowCollection(false); setSavedToAny(true); }}
+        />
+      )}
+      {showLoginModal && (
+        <LoginModal
+          onClose={() => setShowLoginModal(false)}
+          title="Login Required"
+          description="Sign in to like, save, and interact with movies on PixelTales."
+          icon="🎬"
         />
       )}
     </section>

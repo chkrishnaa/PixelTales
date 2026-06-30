@@ -1,11 +1,12 @@
 import { useState }   from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import GoogleSignInButton from '../../components/GoogleSignInButton';
 import { useAuth }        from '../../context/AuthContext';
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [params]   = useSearchParams();
   const { register, API } = useAuth();
 
   const [name,     setName]     = useState('');
@@ -20,7 +21,8 @@ export default function Signup() {
     setError(''); setLoading(true);
     try {
       await register(name, email, password);
-      navigate('/dashboard', { replace: true });
+      const redirectTo = params.get('redirect');
+      navigate(redirectTo ? decodeURIComponent(redirectTo) : '/dashboard', { replace: true });
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.');
     }

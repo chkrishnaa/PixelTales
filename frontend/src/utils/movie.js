@@ -1725,15 +1725,13 @@ export const MOVIE_DETAILS = [
   },
   {
     id: "d-nobita-and-the-birth-of-japan-remake",
-    title: [
-      "Doraemon The Movie: Nobita and the Birth of Japan (Remake)",
-      "Doraemon: Nobita and the Birth of Japan 2016 (Remake)",
-    ],
+    title: "Doraemon The Movie: Nobita and the Birth of Japan (Remake)",
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
-      "https://drive.google.com/file/d/1cHAMWQAKNh4F2XxMKCSG1pPtnLI_5zrl/preview",
+      "",
+      // https://drive.google.com/file/d/1cHAMWQAKNh4F2XxMKCSG1pPtnLI_5zrl/preview
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheBirthOfJapanRemake.jpg",
     rating: 4.6,
@@ -1767,7 +1765,7 @@ export const MOVIE_DETAILS = [
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
-    videoUrl: "",
+    videoUrl: "https://drive.google.com/file/d/1Eos3nNqgM9lzYaxyax8r8fiO4_kntUoZ/preview",
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasLittleSpaceWarRemake.jpg",
     rating: 4.4,

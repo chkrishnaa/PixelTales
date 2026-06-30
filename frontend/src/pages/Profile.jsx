@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import {
   Camera, FastForward, Heart, Clock, PartyPopper,
   Bookmark, Trash2, ChevronLeft, Loader2,
-  FolderPlus, FilmIcon,
+  FolderPlus, FilmIcon, Play,
 } from 'lucide-react'
 import { getMovieById, MOVIE_DETAILS } from '../utils/movie'
 import { useWatch }   from '../context/WatchContext'
@@ -406,6 +406,124 @@ function HistoryTab({ watchHistory, clearHistory }) {
 }
 
 /* ─────────────────────────────────────────────────────────── */
+/* My Rooms Tab                                                */
+/* ─────────────────────────────────────────────────────────── */
+
+function MyRoomsTab({ rooms, loading, user }) {
+  if (!user) return (
+    <EmptyState
+      icon={PartyPopper}
+      title="Sign in to see your rooms"
+      description="Your watch party history will appear here after you log in."
+      action={{ label: 'Log In', to: '/login' }}
+    />
+  )
+
+  if (loading) return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="card-surface animate-pulse rounded-2xl p-5 space-y-3">
+          <div className="h-4 w-2/3 rounded-full bg-gray-200 dark:bg-gray-700" />
+          <div className="h-3 w-1/3 rounded-full bg-gray-200 dark:bg-gray-700" />
+          <div className="h-3 w-full rounded-full bg-gray-200 dark:bg-gray-700" />
+        </div>
+      ))}
+    </div>
+  )
+
+  if (rooms.length === 0) return (
+    <EmptyState
+      icon={PartyPopper}
+      title="No watch parties yet"
+      description="Create a room on the Party page and enjoy movies together with friends in real time."
+      action={{ label: 'Start a Party', to: '/party' }}
+    />
+  )
+
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      {rooms.map((room) => {
+        const movie     = MOVIE_DETAILS.find((m) => m.id === room.movieId)
+        const guestList = room.members.filter((m) => m.role === 'guest')
+        const dateObj   = new Date(room.createdAt)
+        const dateStr   = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+        const timeStr   = dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+
+        return (
+          <div key={room.code} className="card-surface flex flex-col gap-3 rounded-2xl p-5">
+            {/* movie thumbnail + title */}
+            <div className="flex gap-3">
+              {movie?.thumbnail ? (
+                <img
+                  src={movie.thumbnail}
+                  alt={movie.title}
+                  className="h-16 w-11 shrink-0 rounded-lg object-cover shadow"
+                />
+              ) : (
+                <div className="flex h-16 w-11 shrink-0 items-center justify-center rounded-lg bg-turquoise-100 dark:bg-turquoise-900/30">
+                  <FilmIcon size={20} className="text-turquoise-500" />
+                </div>
+              )}
+              <div className="min-w-0">
+                <p className="truncate font-bold text-gray-900 dark:text-white">
+                  {movie?.title ?? room.movieId ?? 'Unknown Movie'}
+                </p>
+                <span className="mt-0.5 inline-block rounded-full bg-turquoise-100 px-2 py-0.5 text-xs font-bold text-turquoise-700 dark:bg-turquoise-900/30 dark:text-turquoise-300">
+                  {room.code}
+                </span>
+              </div>
+            </div>
+
+            {/* meta row */}
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
+              <span className="flex items-center gap-1">
+                <Clock size={12} />
+                {dateStr} · {timeStr}
+              </span>
+              <span className="flex items-center gap-1">
+                <PartyPopper size={12} />
+                {room.memberCount} member{room.memberCount !== 1 ? 's' : ''}
+              </span>
+            </div>
+
+            {/* members */}
+            {room.members.length > 0 && (
+              <div>
+                <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-400">Members</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {room.members.map((m, i) => (
+                    <span
+                      key={i}
+                      className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${
+                        m.role === 'host'
+                          ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                          : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300'
+                      }`}
+                    >
+                      {m.role === 'host' && <span>👑</span>}
+                      {m.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* rejoin button */}
+            <Link
+              to={`/party/room?code=${room.code}&movie=${room.movieId}`}
+              className="mt-auto flex items-center justify-center gap-1.5 rounded-xl bg-turquoise-600 py-2 text-xs font-bold text-white transition hover:bg-turquoise-500"
+            >
+              <Play size={13} className="fill-white" />
+              Rejoin Room
+            </Link>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────────────────── */
 /* Main Profile page                                           */
 /* ─────────────────────────────────────────────────────────── */
 export default function Profile() {
@@ -449,6 +567,20 @@ export default function Profile() {
   } = useWatch()
 
   const [allMovies, setAllMovies] = useState(() => MOVIE_DETAILS)
+
+  /* ── My Rooms state ─────────────────────────────────── */
+  const [myRooms,      setMyRooms]      = useState([])
+  const [roomsLoading, setRoomsLoading] = useState(false)
+
+  useEffect(() => {
+    if (activeTab !== 'rooms' || !user || !token) return
+    setRoomsLoading(true)
+    fetch(`${API}/api/party/my`, { headers: { Authorization: `Bearer ${token}` } })
+      .then((r) => r.json())
+      .then((d) => { if (d.success) setMyRooms(d.data) })
+      .catch(() => {})
+      .finally(() => setRoomsLoading(false))
+  }, [activeTab, user, token, API])
 
   useEffect(() => {
     if (TABS.some((t) => t.id === initialTab)) setActiveTab(initialTab)
@@ -582,11 +714,12 @@ export default function Profile() {
 
       {/* ── Tab content ──────────────────────────────────────── */}
       {activeTab === 'rooms' ? (
-        <EmptyState
-          icon={PartyPopper}
-          title="No watch parties yet"
-          description="Create or join a room and enjoy movies together with friends in real time."
-          action={{ label: 'Start a Party', to: '/party' }}
+        <MyRoomsTab
+          rooms={myRooms}
+          loading={roomsLoading}
+          user={user}
+          token={token}
+          API={API}
         />
 
       ) : activeTab === 'collections' ? (

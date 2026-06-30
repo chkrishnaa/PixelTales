@@ -22,6 +22,12 @@ const messageSchema = new mongoose.Schema(
       trim:     true,
     },
 
+    // Denormalised avatar URL for fast reads (no join needed in most cases)
+    userAvatar: {
+      type:    String,
+      default: '',
+    },
+
     text: {
       type:      String,
       required:  [true, 'Message text is required'],

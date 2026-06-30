@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import { PARTY_MOVIE_OPTIONS, CARTOON_OPTIONS, getMovieTitle } from '../utils/movie'
 import MovieHoverPreview from '../components/MovieHoverPreview'
+import { useAuth } from '../context/AuthContext'
 
 /* ─── Custom Cartoon Select ──────────────────────────── */
 function CartoonSelect({ value, onChange, disabled }) {
@@ -254,6 +255,7 @@ function QrScanner({ onResult, onClose }) {
 export default function Party() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const { user, token, API } = useAuth()
 
   // Detect if we arrived from a movie details page (locked selections)
   const urlCartoon = searchParams.get('cartoon') ?? ''
@@ -298,7 +300,7 @@ export default function Party() {
   }, [searchParams])
 
   const partyUrl = generatedCode
-    ? `${window.location.origin}/party?code=${generatedCode}`
+    ? `${window.location.origin}/party/room?code=${generatedCode}&movie=${selectedMovie}`
     : ''
 
   const handleCreate = () => {
@@ -307,6 +309,21 @@ export default function Party() {
     setCreated(true)
     setInviteTab('code')
     setCodeCopied(false)
+    // Persist room metadata so join-by-code works from same device
+    localStorage.setItem(`pt_room_${code}`, JSON.stringify({
+      code,
+      movieId:    selectedMovie,
+      movieTitle: getMovieTitle(selectedMovie_obj),
+      createdAt:  new Date().toISOString(),
+    }))
+    // Register session in backend so cross-device join works
+    if (user && token) {
+      fetch(`${API}/api/party`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body:    JSON.stringify({ code, movieId: selectedMovie }),
+      }).catch(() => {})
+    }
   }
 
   const handleCopyCode = () => {
@@ -331,6 +348,53 @@ export default function Party() {
       setRoomCode(url.toUpperCase().slice(0, 8))
       setJoinTab('code')
     }
+  }
+
+  const handleJoin = async () => {
+    const code = roomCode.trim().toUpperCase()
+    if (code.length < 6) return
+
+    // 1. Try localStorage (same device, instant)
+    const stored = localStorage.getItem(`pt_room_${code}`)
+    if (stored) {
+      const room = JSON.parse(stored)
+      navigate(`/party/room?code=${code}&movie=${room.movieId}`)
+      return
+    }
+
+    // 2. Look up from backend (cross-device)
+    try {
+      const res  = await fetch(`${API}/api/party/${code}`)
+      const data = await res.json()
+      if (data.success) {
+        navigate(`/party/room?code=${code}&movie=${data.data.movieId}`)
+        return
+      }
+    } catch {}
+
+    alert(`Room "${code}" not found.\n\nMake sure:\n• The host has clicked "Start Party" first\n• You typed the code correctly`)
+  }
+
+  const handleStartParty = async () => {
+    let code = generatedCode
+    if (!code) {
+      code = `PT${Math.floor(100000 + Math.random() * 900000)}`
+      setGeneratedCode(code)
+      setCreated(true)
+      localStorage.setItem(`pt_room_${code}`, JSON.stringify({
+        code, movieId: selectedMovie,
+        movieTitle: getMovieTitle(selectedMovie_obj),
+        createdAt: new Date().toISOString(),
+      }))
+      if (user && token) {
+        await fetch(`${API}/api/party`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body:    JSON.stringify({ code, movieId: selectedMovie }),
+        }).catch(() => {})
+      }
+    }
+    navigate(`/party/room?code=${code}&movie=${selectedMovie}`)
   }
 
   return (
@@ -460,6 +524,18 @@ export default function Party() {
               </div>
             </div>
           )}
+
+          {/* Start Party CTA — shown only once room is created */}
+          {created && (
+          <button
+            type="button"
+            onClick={handleStartParty}
+            className="mt-4 w-full rounded-2xl bg-gradient-to-r from-turquoise-600 to-turquoise-500 py-3.5 text-sm font-extrabold text-white shadow-lg transition hover:from-turquoise-500 hover:to-turquoise-400 active:scale-95 flex items-center justify-center gap-2"
+          >
+            <Play size={17} className="fill-white" />
+            🎬 Start Party
+          </button>
+          )}
         </div>
 
         {/* ── Join a Room ── */}
@@ -507,6 +583,7 @@ export default function Party() {
               </label>
               <button
                 type="button"
+                onClick={handleJoin}
                 className="mt-4 w-full rounded-full bg-turquoise-100 py-3 text-sm font-extrabold text-turquoise-800 transition hover:bg-turquoise-200 disabled:opacity-50 dark:bg-turquoise-900/50 dark:text-turquoise-300"
                 disabled={roomCode.length < 6}
               >

@@ -88,10 +88,11 @@ export const sendCommunityMessage = async (req, res, next) => {
     const room = await getCommunityRoomDoc();
 
     const msg = await Message.create({
-      room:     room._id,
-      userId:   req.user._id,
-      userName: req.user.name,
-      text:     req.body.text.trim(),
+      room:       room._id,
+      userId:     req.user._id,
+      userName:   req.user.name,
+      userAvatar: req.user.avatar ?? '',
+      text:       req.body.text.trim(),
     });
 
     await ChatRoom.findByIdAndUpdate(room._id, { $inc: { messageCount: 1 } });

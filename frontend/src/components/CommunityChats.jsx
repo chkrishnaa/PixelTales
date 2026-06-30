@@ -4,6 +4,7 @@ import EmojiPicker from 'emoji-picker-react';
 import { createPortal } from 'react-dom';
 import { COMMUNITY_ROOM } from '../utils/data';
 import { useAuth } from '../context/AuthContext';
+import LoginModal from './LoginModal';
 
 /* ── Helpers ─────────────────────────────────────────────── */
 function formatBubbleTime(iso) {
@@ -29,7 +30,19 @@ function avatarGrad(name = '') {
   return `linear-gradient(135deg,${a},${b})`;
 }
 
-function Avatar({ name, size = 40 }) {
+function Avatar({ name, avatar, size = 40 }) {
+  const [imgErr, setImgErr] = useState(false);
+  if (avatar && !imgErr) {
+    return (
+      <img
+        src={avatar}
+        alt={name}
+        onError={() => setImgErr(true)}
+        style={{ width: size, height: size }}
+        className="rounded-full object-cover flex-shrink-0"
+      />
+    );
+  }
   return (
     <div style={{
       width: size, height: size, borderRadius: '50%',
@@ -55,18 +68,25 @@ function DateSep({ label }) {
   );
 }
 
-function Bubble({ msg, prevMsg, isOwn }) {
+function Bubble({ msg, prevMsg, isOwn, ownUser }) {
   const sameAuthor = prevMsg && prevMsg.userId === msg.userId;
-  const showAvatar = !isOwn && !sameAuthor;
+  const showAvatar = !sameAuthor; // show avatar for BOTH sides on first in a group
   const showName   = !isOwn && !sameAuthor;
+
+  // For own messages: use real avatar from auth context if available
+  const ownAvatar  = ownUser?.avatar || null;
+  const ownName    = ownUser?.name || msg.userName;
 
   return (
     <div className={`flex items-end gap-2 px-4 ${isOwn ? 'flex-row-reverse' : 'flex-row'} ${sameAuthor ? 'mt-0.5' : 'mt-3'}`}>
-      {!isOwn && (
-        <div className="w-8 shrink-0">
-          {showAvatar && <Avatar name={msg.userName} size={32} />}
-        </div>
-      )}
+      {/* Avatar slot — both sides */}
+      <div className="w-8 shrink-0 flex justify-center">
+        {showAvatar && (
+          isOwn
+            ? <Avatar name={ownName} avatar={ownAvatar} size={32} />
+            : <Avatar name={msg.userName} size={32} />
+        )}
+      </div>
 
       <div className={`flex max-w-[68%] flex-col gap-0.5 ${isOwn ? 'items-end' : 'items-start'}`}>
         {showName && (
@@ -123,6 +143,7 @@ export default function CommunityChats() {
   const [showEmoji,   setShowEmoji]   = useState(false);
   const [emojiAnchor, setEmojiAnchor] = useState(null);
   const [memberCount, setMemberCount] = useState(COMMUNITY_ROOM.memberCount);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const bottomRef    = useRef(null);
   const inputRef     = useRef(null);
@@ -285,6 +306,7 @@ export default function CommunityChats() {
                   msg={item.msg}
                   prevMsg={item.prevMsg}
                   isOwn={item.msg.userId?.toString() === meId}
+                  ownUser={user}
                 />
           )
         )}
@@ -294,9 +316,12 @@ export default function CommunityChats() {
       {/* ── Input bar ───────────────────────────────────── */}
       <div className="border-t border-gray-200 bg-[#f0f2f5] px-4 py-3 dark:border-gray-700 dark:bg-[#202c33] shrink-0">
         {!user && (
-          <p className="mb-2 text-center text-xs text-gray-400">
-            <span className="font-semibold text-turquoise-600">Log in</span> to send messages
-          </p>
+          <button
+            onClick={() => setShowLoginModal(true)}
+            className="mb-2 w-full rounded-xl bg-turquoise-50 py-2 text-center text-xs font-semibold text-turquoise-600 transition hover:bg-turquoise-100 dark:bg-turquoise-950/30 dark:text-turquoise-400"
+          >
+            🔒 Login to join the conversation
+          </button>
         )}
 
         <div className="flex items-end gap-2">
@@ -315,7 +340,10 @@ export default function CommunityChats() {
           )}
 
           {/* Text input */}
-          <div className="flex flex-1 items-end gap-2 rounded-2xl bg-white px-4 py-2 shadow-sm dark:bg-[#2a3942]">
+          <div
+            className="flex flex-1 items-end gap-2 rounded-2xl bg-white px-4 py-2 shadow-sm dark:bg-[#2a3942] cursor-text"
+            onClick={() => { if (!user) setShowLoginModal(true); }}
+          >
             <textarea
               ref={inputRef}
               rows={1}
@@ -323,8 +351,8 @@ export default function CommunityChats() {
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
               disabled={!user}
-              placeholder={user ? 'Type a message…' : 'Login to chat'}
-              className="max-h-28 flex-1 resize-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-gray-100 dark:placeholder:text-gray-500"
+              placeholder={user ? 'Type a message…' : 'Login to chat…'}
+              className="max-h-28 flex-1 resize-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-gray-100 dark:placeholder:text-gray-500 cursor-text"
             />
             {draft && (
               <button type="button" onClick={() => setDraft('')} className="shrink-0 text-gray-400 hover:text-gray-600">
@@ -335,14 +363,24 @@ export default function CommunityChats() {
 
           {/* Send */}
           <button
-            onClick={send}
-            disabled={!draft.trim() || !user || sending}
+            onClick={() => { if (!user) { setShowLoginModal(true); return; } send(); }}
+            disabled={(!draft.trim() && !!user) || sending}
             className="flex size-10 shrink-0 items-center justify-center rounded-full bg-turquoise-600 text-white shadow transition hover:bg-turquoise-500 active:scale-95 disabled:opacity-40"
           >
             <Send size={16} />
           </button>
         </div>
       </div>
+
+      {/* ── Login Modal ──────────────────────────────────── */}
+      {showLoginModal && (
+        <LoginModal
+          onClose={() => setShowLoginModal(false)}
+          title="Join the Conversation"
+          description="Login to send messages and chat with the PixelTales community."
+          icon="💬"
+        />
+      )}
 
       {/* ── Emoji picker portal ──────────────────────────── */}
       {showEmoji && emojiAnchor && createPortal(

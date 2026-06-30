@@ -3,6 +3,8 @@ import { body } from 'express-validator';
 import {
   submitFeedback,
   getAllFeedback,
+  getMyFeedback,
+  deleteFeedback,
   updateFeedbackStatus,
 } from '../controllers/feedbackController.js';
 
@@ -38,11 +40,17 @@ const feedbackValidation = [
     .isLength({ max: 1000 }).withMessage('Message cannot exceed 1000 characters'),
 ];
 
-// Public — submit feedback (multiple submissions allowed, no edit/delete)
+// Public — submit feedback (multiple submissions allowed)
 router.post('/', feedbackValidation, submitFeedback);
 
-// Admin — get all feedbacks with optional filters
+// Public — get feedbacks by email (?email=)
+router.get('/mine', getMyFeedback);
+
+// Public — get all feedbacks with optional filters
 router.get('/', getAllFeedback);
+
+// Public — delete own feedback (verified by email in body)
+router.delete('/:id', deleteFeedback);
 
 // Admin — update status of a feedback
 router.patch('/:id/status', updateFeedbackStatus);

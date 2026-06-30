@@ -2,7 +2,7 @@ import Hero from '../components/Hero'
 import ContinueWatching from '../components/ContinueWatching'
 import AllMoviesSection from '../components/AllMoviesSection'
 import SectionTitle from '../components/SectionTitle'
-import { COMMUNITY_STATS } from '../utils/data'
+import { COMMUNITY_STATS, FEEDBACK_TYPES, SENTIMENT_EMOJIS } from '../utils/data'
 import { Link } from 'react-router-dom'
 import { MessageCircle, Plus } from 'lucide-react'
 import CommonPagination from '../components/Utility/CommonPagination'
@@ -10,26 +10,20 @@ import EmptyState from '../components/EmptyState'
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../context/AuthContext'
 
-/* sentiment → emoji mapping */
-const SENTIMENT_EMOJI = {
-  positive: '😊', neutral: '😐', negative: '😞',
-  excited: '🤩', confused: '😕',
-};
+/* sentiment → emoji mapping (aligned with Feedback form) */
+const SENTIMENT_EMOJI = Object.fromEntries(
+  SENTIMENT_EMOJIS.map(({ id, emoji }) => [id, emoji]),
+);
 /* feedbackType → icon + label mapping */
-const TYPE_META = {
-  bug:      { icon: '🐛', label: 'Bug Report' },
-  feature:  { icon: '✨', label: 'Feature Request' },
-  general:  { icon: '💬', label: 'General' },
-  content:  { icon: '🎬', label: 'Content' },
-  ui:       { icon: '🎨', label: 'UI/UX' },
-};
+const TYPE_META = Object.fromEntries(
+  FEEDBACK_TYPES.map(({ id, icon, label }) => [id, { icon, label }]),
+);
 
 function formatDate(iso) {
   if (!iso) return '';
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-const MIN_TO_SHOW = 3;
 const FEEDBACKS_PER_PAGE = 12;
 
 export default function Dashboard() {
@@ -76,8 +70,14 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* Feedback section — only shown when 3+ feedbacks exist */}
-        {!feedbackLoading && feedbacks.length >= MIN_TO_SHOW && (
+        {/* Feedback section */}
+        {feedbackLoading ? (
+          <div className="grid gap-4 md:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800" />
+            ))}
+          </div>
+        ) : feedbacks.length > 0 ? (
           <>
             <SectionTitle
               icon={MessageCircle}
@@ -142,10 +142,7 @@ export default function Dashboard() {
               />
             )}
           </>
-        )}
-
-        {/* Prompt to be first to give feedback when < 3 */}
-        {!feedbackLoading && feedbacks.length < MIN_TO_SHOW && (
+        ) : (
           <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-turquoise-300 bg-turquoise-50 p-8 text-center dark:border-turquoise-800 dark:bg-turquoise-950/20">
             <span className="text-4xl">💬</span>
             <p className="font-bold text-turquoise-700 dark:text-turquoise-400">
@@ -157,6 +154,7 @@ export default function Dashboard() {
             </Link>
           </div>
         )}
+
       </div>
 
       {/* Feedback detail modal */}

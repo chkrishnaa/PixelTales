@@ -1,17 +1,33 @@
 import { X, LogIn, UserPlus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 /**
- * Popup shown when an unauthenticated user tries to like/dislike a review.
+ * Generic login-required popup.
+ *
  * Props:
- *   onClose — close the modal
+ *   onClose     — close the modal
+ *   title       — optional heading  (default: "Login Required")
+ *   description — optional subtext
+ *   icon        — optional emoji    (default: "🔒")
+ *
+ * After closing, the user is navigated to /login?redirect=<currentPath>
+ * so Login/Signup can send them back here after success.
  */
-export default function LoginModal({ onClose }) {
+export default function LoginModal({
+  onClose,
+  title       = 'Login Required',
+  description = 'You need to be logged in to do this.',
+  icon        = '🔒',
+}) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Encode the current page so we can return after login
+  const redirectParam = encodeURIComponent(location.pathname + location.search);
 
   const go = (path) => {
     onClose();
-    navigate(path);
+    navigate(`${path}?redirect=${redirectParam}`);
   };
 
   return (
@@ -22,7 +38,7 @@ export default function LoginModal({ onClose }) {
     >
       {/* Card */}
       <div
-        className="relative w-full max-w-sm rounded-3xl bg-white p-8 shadow-2xl dark:bg-gray-900"
+        className="relative w-full max-w-sm rounded-3xl bg-white p-8 shadow-2xl dark:bg-gray-900 animate-in fade-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
@@ -36,15 +52,15 @@ export default function LoginModal({ onClose }) {
         {/* Icon */}
         <div className="mb-4 flex justify-center">
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-turquoise-100 text-3xl dark:bg-turquoise-950/40">
-            👍
+            {icon}
           </span>
         </div>
 
         <h2 className="text-center font-display text-xl font-bold text-gray-900 dark:text-white">
-          Login to React
+          {title}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">
-          You need to be logged in to like or dislike reviews.
+          {description}
         </p>
 
         <div className="mt-6 flex flex-col gap-3">

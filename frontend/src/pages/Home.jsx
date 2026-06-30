@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 import {
   Sparkles,
   Star,
-  Download,
   Users,
   MessageCircle,
   Clapperboard,
+  MessageSquare,
+  PlayCircle,
 } from 'lucide-react'
 import HomeNavbar from "../components/HomeNavbar";
 import MovieGridCard from '../components/MovieGridCard'
@@ -17,6 +18,8 @@ import HomeHeroCarousel from '../components/home/HomeHeroCarousel'
 import ReviewCard from '../components/ReviewCard';
 import CommonPagination from '../components/Utility/CommonPagination';
 import { useReviews } from '../hooks/useReviews';
+import { useAnalytics, formatCount } from '../hooks/useAnalytics';
+import { useAuth } from '../context/AuthContext';
 
 const ALL_MOVIES = MOVIE_DETAILS
 
@@ -32,11 +35,14 @@ const ALL_MOVIES = MOVIE_DETAILS
 // }
 
 export default function Home() {
+  const { user } = useAuth();
   const [movies, setMovies] = useState(ALL_MOVIES)
   const [openFaq, setOpenFaq] = useState(0)
 
+  const { stats: analyticsStats, loading: analyticsLoading } = useAnalytics();
+
   const latestMovies = useMemo(() => {
-    return [...movies].sort((a, b) => b.year - a.year).slice(0, 6)
+    return [...movies].sort((a, b) => b.year - a.year).slice(0, 12)
   }, [movies])
 
   const toggleFavorite = (id) => {
@@ -56,7 +62,7 @@ export default function Home() {
 
   return (
     <>
-      <HomeNavbar isLoggedIn={false} />
+      <HomeNavbar isLoggedIn={!!user} />
       <div className="flex flex-1 flex-col font-text">
         {/* HERO */}
 
@@ -137,7 +143,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {latestMovies.map((movie) => (
               <MovieGridCard
                 key={movie.id}
@@ -173,96 +179,111 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TESTIMONIALS — only shown once 3+ real reviews exist */}
-        {!reviewsLoading && reviews.length >= 3 && (
-        <section className="page-container pb-10 md:pb-14">
-          <h2 className="font-display text-xl text-turquoise-700 dark:text-turquoise-400 md:text-2xl">
-            Testimonials
-          </h2>
+        {/* TESTIMONIALS */}
+        {!reviewsLoading && reviews.length > 5 && (
+          <section className="page-container pb-10 md:pb-14">
+            <h2 className="font-display text-xl text-turquoise-700 dark:text-turquoise-400 md:text-2xl">
+              Testimonials
+            </h2>
 
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-            What our users have to say about PixelTales.
-          </p>
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+              What our users have to say about PixelTales.
+            </p>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {paginatedReviews.map((review) => (
-              <ReviewCard
-                key={review._id}
-                review={review}
-                onOpen={setSelectedReview}
-              />
-            ))}
-          </div>
-
-          {reviews.length > REVIEWS_PER_PAGE && (
-            <CommonPagination
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              totalItems={reviews.length}
-              itemsPerPage={REVIEWS_PER_PAGE}
-              itemLabel="reviews"
-            />
-          )}
-
-          {selectedReview && (
-            <div
-              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-              onClick={() => setSelectedReview(null)}
-            >
-              <div
-                className="w-full max-w-2xl rounded-3xl bg-white p-6 shadow-2xl dark:bg-gray-900"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600 font-bold text-white text-lg uppercase">
-                      {(selectedReview.name ?? selectedReview.user)?.[0] ?? '?'}
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-900 dark:text-white">
-                        {selectedReview.name ?? selectedReview.user}
-                      </h3>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {selectedReview.email}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="mt-2 flex items-center gap-1">
-                    {Array.from({ length: selectedReview.rating }).map((_, index) => (
-                      <Star key={index} size={16}
-                        className="fill-turquoise-600 dark:fill-turquoise-400 text-turquoise-600 dark:text-turquoise-400"
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <p className="mt-5 text-sm text-justify leading-relaxed text-gray-700 dark:text-gray-300">
-                  {selectedReview.review}
-                </p>
-
-                <div className="mt-5 flex items-center justify-between gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
-                  <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-                    {selectedReview.date ?? (selectedReview.createdAt
-                      ? new Date(selectedReview.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                      : '')}
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-500">
-                      <Star size={14} /> {selectedReview.likedBy?.length ?? selectedReview.likes ?? 0}
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => setSelectedReview(null)}
-                  className="btn-primary mt-6 w-full"
-                >
-                  Close Review
-                </button>
-              </div>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {paginatedReviews.map((review) => (
+                <ReviewCard
+                  key={review._id}
+                  review={review}
+                  onOpen={setSelectedReview}
+                />
+              ))}
             </div>
-          )}
-        </section>
+
+            {reviews.length > REVIEWS_PER_PAGE && (
+              <CommonPagination
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                totalItems={reviews.length}
+                itemsPerPage={REVIEWS_PER_PAGE}
+                itemLabel="reviews"
+              />
+            )}
+
+            {selectedReview && (
+              <div
+                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+                onClick={() => setSelectedReview(null)}
+              >
+                <div
+                  className="w-full max-w-2xl rounded-3xl bg-white p-6 shadow-2xl dark:bg-gray-900"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600 font-bold text-white text-lg uppercase">
+                        {(selectedReview.name ?? selectedReview.user)?.[0] ??
+                          "?"}
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-900 dark:text-white">
+                          {selectedReview.name ?? selectedReview.user}
+                        </h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {selectedReview.email}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-2 flex items-center gap-1">
+                      {Array.from({ length: selectedReview.rating }).map(
+                        (_, index) => (
+                          <Star
+                            key={index}
+                            size={16}
+                            className="fill-turquoise-600 dark:fill-turquoise-400 text-turquoise-600 dark:text-turquoise-400"
+                          />
+                        ),
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="mt-5 text-sm text-justify leading-relaxed text-gray-700 dark:text-gray-300">
+                    {selectedReview.review}
+                  </p>
+
+                  <div className="mt-5 flex items-center justify-between gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
+                    <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                      {selectedReview.date ??
+                        (selectedReview.createdAt
+                          ? new Date(
+                              selectedReview.createdAt,
+                            ).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })
+                          : "")}
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-500">
+                        <Star size={14} />{" "}
+                        {selectedReview.likedBy?.length ??
+                          selectedReview.likes ??
+                          0}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setSelectedReview(null)}
+                    className="btn-primary mt-6 w-full"
+                  >
+                    Close Review
+                  </button>
+                </div>
+              </div>
+            )}
+          </section>
         )}
 
         {/* FAQ */}
@@ -296,7 +317,7 @@ export default function Home() {
         {/* ANALYTICS */}
         <section className="page-container pb-14">
           <div className="mb-6 flex items-center gap-3">
-            <Star className="size-6 text-turquoise-500" aria-hidden />
+            <Sparkles className="size-6 text-turquoise-500" aria-hidden />
             <h2 className="font-display text-xl text-turquoise-700 dark:text-turquoise-400 md:text-2xl">
               Analytics
             </h2>
@@ -304,28 +325,36 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
-                icon: Download,
-                label: "Downloads",
-                value: "120K+",
-                hint: "Saved for offline (coming soon)",
-              },
-              {
                 icon: Users,
                 label: "Users",
-                value: "2.3M+",
-                hint: "Watching daily worldwide",
+                value: analyticsLoading
+                  ? null
+                  : formatCount(analyticsStats?.totalUsers),
+                hint: "Registered on PixelTales",
               },
               {
-                icon: MessageCircle,
+                icon: Star,
+                label: "Reviews",
+                value: analyticsLoading
+                  ? null
+                  : formatCount(analyticsStats?.totalReviews),
+                hint: "Written by our community",
+              },
+              {
+                icon: MessageSquare,
                 label: "Feedback",
-                value: "18K+",
+                value: analyticsLoading
+                  ? null
+                  : formatCount(analyticsStats?.totalFeedback),
                 hint: "Your suggestions power updates",
               },
               {
-                icon: Sparkles,
-                label: "Servers",
-                value: "50+",
-                hint: "Stable streams & low buffering",
+                icon: PlayCircle,
+                label: "Videos Watched",
+                value: analyticsLoading
+                  ? null
+                  : formatCount(analyticsStats?.videosWatched),
+                hint: "Total community engagements",
               },
             ].map(({ icon: Icon, label, value, hint }) => (
               <div key={label} className="card-surface p-5">
@@ -336,9 +365,13 @@ export default function Home() {
                 <p className="mt-2 text-sm font-bold text-gray-700 dark:text-gray-200">
                   {label}
                 </p>
-                <p className="mt-1 font-display text-2xl text-turquoise-700 dark:text-turquoise-400">
-                  {value}
-                </p>
+                {value == null ? (
+                  <div className="mt-1 h-8 w-16 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700" />
+                ) : (
+                  <p className="mt-1 font-display text-2xl text-turquoise-700 dark:text-turquoise-400">
+                    {value}
+                  </p>
+                )}
                 <p className="mt-1 text-xs font-semibold text-gray-500 dark:text-gray-400">
                   {hint}
                 </p>

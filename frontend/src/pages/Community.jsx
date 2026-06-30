@@ -8,6 +8,8 @@ import CommonPagination   from '../components/Utility/CommonPagination';
 import CommunityChats     from '../components/CommunityChats';
 import EmptyState         from '../components/EmptyState';
 import { useReviews }     from '../hooks/useReviews';
+import LoginModal         from '../components/LoginModal';
+import { useAuth }        from '../context/AuthContext';
 
 const TABS = [
   { id: 'reviews', label: 'Reviews',         icon: Star },
@@ -15,8 +17,10 @@ const TABS = [
 ];
 
 export default function Community() {
+  const { user } = useAuth();
   const [activeTab,      setActiveTab]      = useState('reviews');
   const [selectedReview, setSelectedReview] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const { reviews, loading } = useReviews();
 
@@ -30,6 +34,14 @@ export default function Community() {
 
   return (
     <div className="page-container py-8">
+      {showLoginModal && (
+        <LoginModal
+          onClose={() => setShowLoginModal(false)}
+          title="Login to Write a Review"
+          description="You need to be logged in to share your review with the community."
+          icon="⭐"
+        />
+      )}
 
       {/* ── Community Stats banner (always visible) ────────── */}
       <div className="mb-6 grid gap-4 rounded-2xl bg-turquoise-100 p-6 sm:grid-cols-3 dark:bg-turquoise-950/40">
@@ -77,10 +89,20 @@ export default function Community() {
           <SectionTitle
             icon={Star}
             action={
-              <Link to="/write-review" className="btn-primary text-sm">
-                <Plus size={16} />
-                Write Review
-              </Link>
+              user ? (
+                <Link to="/write-review" className="btn-primary text-sm">
+                  <Plus size={16} />
+                  Write Review
+                </Link>
+              ) : (
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="btn-primary text-sm"
+                >
+                  <Plus size={16} />
+                  Write Review
+                </button>
+              )
             }
           >
             Community Reviews
@@ -96,10 +118,10 @@ export default function Community() {
                 <div key={i} className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800" />
               ))}
             </div>
-          ) : reviews.length < 3 ? (
+          ) : reviews.length === 0 ? (
             <EmptyState
               title="No Reviews Yet"
-              description="Be the first to share your thoughts about PixelTales! Your review will appear here once at least 3 reviews have been submitted."
+              description="Be the first to share your thoughts about PixelTales! Write a review and it will appear here."
               cta={{ label: 'Write the First Review', to: '/write-review' }}
             />
           ) : (

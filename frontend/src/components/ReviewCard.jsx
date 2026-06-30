@@ -3,6 +3,47 @@ import { ThumbsUp, ThumbsDown, Star } from 'lucide-react';
 import { useAuth }     from '../context/AuthContext';
 import LoginModal      from './LoginModal';
 
+/* ── Deterministic gradient from a name ─────────────────────── */
+const GRAD_PAIRS = [
+  ['#0891b2','#0e7490'], ['#7c3aed','#6d28d9'], ['#db2777','#be185d'],
+  ['#d97706','#b45309'], ['#059669','#047857'], ['#4f46e5','#4338ca'],
+  ['#dc2626','#b91c1c'], ['#0f766e','#0d9488'],
+];
+function nameGradient(name = '') {
+  let h = 0;
+  for (const c of name) h = (h * 31 + c.charCodeAt(0)) & 0xffff;
+  const [a, b] = GRAD_PAIRS[h % GRAD_PAIRS.length];
+  return `linear-gradient(135deg,${a},${b})`;
+}
+
+/* ── Smart avatar: real photo → coloured initials fallback ──── */
+function ReviewAvatar({ name, avatar, size = 12 }) {
+  const [imgErr, setImgErr] = useState(false);
+  const initial   = (name?.[0] ?? '?').toUpperCase();
+  const gradient  = nameGradient(name);
+  const px        = size * 4; // Tailwind size-N = N*4px
+
+  if (avatar && !imgErr) {
+    return (
+      <img
+        src={avatar}
+        alt={name}
+        onError={() => setImgErr(true)}
+        style={{ width: px, height: px }}
+        className="rounded-full object-cover flex-shrink-0"
+      />
+    );
+  }
+  return (
+    <div
+      style={{ width: px, height: px, background: gradient }}
+      className="flex items-center justify-center rounded-full font-bold text-white text-lg uppercase select-none flex-shrink-0"
+    >
+      {initial}
+    </div>
+  );
+}
+
 export default function ReviewCard({ review, onOpen }) {
   const { user, token, API } = useAuth();
 
@@ -36,15 +77,21 @@ export default function ReviewCard({ review, onOpen }) {
 
   return (
     <>
-      {showModal && <LoginModal onClose={() => setShowModal(false)} />}
+      {showModal && <LoginModal
+        onClose={() => setShowModal(false)}
+        title="Login to Vote"
+        description="You need to be logged in to like or dislike reviews."
+        icon="👍"
+      />}
 
       <article onClick={() => onOpen?.(review)} className="card-surface p-5">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             {/* Avatar */}
-            <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600 font-bold text-white text-lg uppercase select-none">
-              {review.name?.[0] ?? review.user?.[0] ?? '?'}
-            </div>
+            <ReviewAvatar
+              name={review.name ?? review.user}
+              avatar={review.avatar}
+            />
 
             <div>
               <h3 className="font-bold text-gray-900 dark:text-white">

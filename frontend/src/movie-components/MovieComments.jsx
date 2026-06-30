@@ -7,6 +7,7 @@ import {
 import EmojiPicker from "emoji-picker-react";
 import { ADMIN_USER } from "../utils/movie";
 import { useAuth }    from "../context/AuthContext";
+import LoginModal     from "../components/LoginModal";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -127,19 +128,27 @@ function MentionBadge({ name, isClassic }) {
 
   return (
     <span className="group/mention relative mr-0.5 inline-block">
-      <span className={`cursor-pointer font-semibold hover:underline ${isClassic ? "text-amber-700 dark:text-amber-500" : "text-turquoise-600 dark:text-turquoise-400"}`}>
+      <span
+        className={`cursor-pointer font-semibold hover:underline ${isClassic ? "text-amber-700 dark:text-amber-500" : "text-turquoise-600 dark:text-turquoise-400"}`}
+      >
         @{name}
       </span>
       <div className="pointer-events-none invisible absolute bottom-full left-0 z-50 mb-2 w-56 opacity-0 transition-all duration-200 group-hover/mention:visible group-hover/mention:pointer-events-auto group-hover/mention:opacity-100">
         <div className="rounded-2xl border border-gray-100 bg-white p-3 shadow-xl dark:border-gray-700 dark:bg-gray-800">
           <div className="flex items-center gap-2.5">
-            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm ${avatarBg} ${isAdminUser ? `ring-2 ${isClassic ? "ring-amber-500" : "ring-turquoise-400"} ring-offset-1` : ""}`}>
+            <div
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm ${avatarBg} ${isAdminUser ? `ring-2 ${isClassic ? "ring-amber-500" : "ring-turquoise-400"} ring-offset-1` : ""}`}
+            >
               {initials}
             </div>
             <div className="min-w-0">
-              <p className="truncate text-sm font-bold text-gray-900 dark:text-white">{name}</p>
-              <p className={`mt-0.5 text-[10px] font-semibold ${isClassic ? "text-amber-600 dark:text-amber-400" : "text-turquoise-600 dark:text-turquoise-400"}`}>
-                {isAdminUser ? "PixelTales Admin" : "PixelTales Member"}
+              <p className="truncate text-sm font-bold text-gray-900 dark:text-white">
+                {name}
+              </p>
+              <p
+                className={`mt-0.5 text-[10px] font-semibold ${isClassic ? "text-amber-600 dark:text-amber-400" : "text-turquoise-600 dark:text-turquoise-400"}`}
+              >
+                {isAdminUser ? "Krishnakumar Chaurashiya" : "PixelTales Member"}
               </p>
             </div>
           </div>
@@ -496,6 +505,8 @@ export default function MovieComments({ movie }) {
   const [openReplies,   setOpenReplies]   = useState(new Set());
   const [showEmoji,     setShowEmoji]     = useState(false);
   const [emojiAnchor,   setEmojiAnchor]   = useState(null);
+  const [showLoginModal,setShowLoginModal]= useState(false);
+  const [avatarErr,     setAvatarErr]     = useState(false);
   const commentInputRef = useRef(null);
   const emojiBtnRef     = useRef(null);
 
@@ -530,7 +541,7 @@ export default function MovieComments({ movie }) {
   }, [movie.id, API, token]);
 
   const handleLike = async (localId, dbId) => {
-    if (!user) return;
+    if (!user) { setShowLoginModal(true); return; }
     setComments((prev) => {
       const node = findNodeAnywhere(prev, localId);
       if (!node) return prev;
@@ -563,9 +574,9 @@ export default function MovieComments({ movie }) {
     setComments((prev) => applyEdit(prev, localId, newText));
 
   const handleReply = async (parentLocalId, parentAuthor, localReply) => {
+    if (!user) { setShowLoginModal(true); return; }
     setComments((prev) => insertReply(prev, parentLocalId, localReply));
     setOpenReplies((prev) => new Set([...prev, parentLocalId]));
-    if (!user) return;
     const parentDbId = findDbId(comments, parentLocalId);
     try {
       const res  = await fetch(`${API}/api/movies/${movie.id}/comments`, {
@@ -588,7 +599,8 @@ export default function MovieComments({ movie }) {
 
   const handleAddComment = async () => {
     const text = newComment.trim();
-    if (!text || !user) return;
+    if (!text) return;
+    if (!user) { setShowLoginModal(true); return; }
     const localId    = `local-${nextLocalId++}`;
     const optimistic = {
       id: localId, _dbId: localId, user: user.name ?? "You",
@@ -615,166 +627,225 @@ export default function MovieComments({ movie }) {
 
   return (
     <section className="page-container py-6 pb-10">
-      <div className={`overflow-hidden shadow-lg ${v ? "rounded-md" : "rounded-3xl"} ${
-        v
-          ? "border-2 border-dashed border-amber-700/50 dark:border-amber-800/40 bg-[#fdf3d8] dark:bg-[#1e1508]"
-          : "border border-turquoise-100 dark:border-turquoise-900/30 bg-white dark:bg-gray-900"
-      }`}>
-
-        {/* ── Header ── */}
-        <div className={`flex items-center justify-between px-6 py-4 ${
+      <div
+        className={`overflow-hidden shadow-lg ${v ? "rounded-md" : "rounded-3xl"} ${
           v
-            ? "border-b-2 border-dashed border-amber-700/30 dark:border-amber-800/30 bg-[#f0dca0]/50 dark:bg-[#150f04]/50"
-            : "border-b border-turquoise-100 dark:border-turquoise-900/30 bg-linear-to-r from-turquoise-50 to-white dark:from-turquoise-950/30 dark:to-gray-900"
-        }`}>
+            ? "border-2 border-dashed border-amber-700/50 dark:border-amber-800/40 bg-[#fdf3d8] dark:bg-[#1e1508]"
+            : "border border-turquoise-100 dark:border-turquoise-900/30 bg-white dark:bg-gray-900"
+        }`}
+      >
+        {/* ── Header ── */}
+        <div
+          className={`flex items-center justify-between px-6 py-4 ${
+            v
+              ? "border-b-2 border-dashed border-amber-700/30 dark:border-amber-800/30 bg-[#f0dca0]/50 dark:bg-[#150f04]/50"
+              : "border-b border-turquoise-100 dark:border-turquoise-900/30 bg-linear-to-r from-turquoise-50 to-white dark:from-turquoise-950/30 dark:to-gray-900"
+          }`}
+        >
           <div className="flex items-center gap-2">
-            <MessageCircle size={20} className={v ? "text-amber-700 dark:text-amber-500" : "text-turquoise-600 dark:text-turquoise-400"} />
-            <h2 className={`font-display text-2xl font-bold ${v ? "text-amber-900 dark:text-amber-100" : "text-gray-900 dark:text-white"}`}
-              style={v ? vFont : undefined}>
+            <MessageCircle
+              size={20}
+              className={
+                v
+                  ? "text-amber-700 dark:text-amber-500"
+                  : "text-turquoise-600 dark:text-turquoise-400"
+              }
+            />
+            <h2
+              className={`font-display text-2xl font-bold ${v ? "text-amber-900 dark:text-amber-100" : "text-gray-900 dark:text-white"}`}
+              style={v ? vFont : undefined}
+            >
               {v ? "📜 Comments" : "Comments"}
             </h2>
           </div>
-          <span className={`px-3 py-1 text-sm font-bold ${
-            v
-              ? "rounded-sm border border-amber-700/40 bg-amber-100/60 dark:bg-amber-900/20 text-amber-800 dark:text-amber-400"
-              : "rounded-full bg-turquoise-100 dark:bg-turquoise-900/40 text-turquoise-700 dark:text-turquoise-300"
-          }`} style={v ? vFont : undefined}>
+          <span
+            className={`px-3 py-1 text-sm font-bold ${
+              v
+                ? "rounded-sm border border-amber-700/40 bg-amber-100/60 dark:bg-amber-900/20 text-amber-800 dark:text-amber-400"
+                : "rounded-full bg-turquoise-100 dark:bg-turquoise-900/40 text-turquoise-700 dark:text-turquoise-300"
+            }`}
+            style={v ? vFont : undefined}
+          >
             {totalCount} {totalCount === 1 ? "Comment" : "Comments"}
           </span>
         </div>
 
-        <div className={`p-4 md:p-6 ${v ? "bg-[#fdf3d8] dark:bg-[#1e1508]" : ""}`}>
-
+        <div
+          className={`p-4 md:p-6 ${v ? "bg-[#fdf3d8] dark:bg-[#1e1508]" : ""}`}
+        >
           {/* ── Write comment ── */}
           <div className="mb-5">
             <div className="flex items-center gap-3">
-              <div className={`flex h-9 w-9 shrink-0 items-center justify-center text-[11px] font-bold ${v ? "rounded-sm" : "rounded-full"} ${
-                user
-                  ? v ? "bg-amber-700/20 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400" : "bg-turquoise-100 text-turquoise-700 dark:bg-turquoise-900/40 dark:text-turquoise-400"
-                  : v ? "bg-amber-700/10 text-amber-700/50 dark:bg-amber-900/15" : "bg-gray-100 text-gray-400 dark:bg-gray-800"
-              }`} style={v ? vFont : undefined}>
-                {user ? (user.name?.[0]?.toUpperCase() ?? "?") : "?"}
-              </div>
-              <div className="relative flex flex-1 flex-col gap-0">
-                {/* Input row */}
-                <div className={`flex items-center gap-2 border-2 px-4 py-2 transition-all ${v ? "rounded-sm" : "rounded-full"} ${
+              {/* Smart avatar for logged-in user */}
+              {user?.avatar && !avatarErr ? (
+                <img
+                  src={user.avatar}
+                  alt={user.name}
+                  onError={() => setAvatarErr(true)}
+                  className={`h-9 w-9 shrink-0 object-cover shadow-sm ${v ? "rounded-sm" : "rounded-full"}`}
+                />
+              ) : (
+                <div
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center text-[11px] font-bold ${v ? "rounded-sm" : "rounded-full"} ${
+                    user
+                      ? v
+                        ? "bg-amber-700/20 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+                        : "bg-turquoise-100 text-turquoise-700 dark:bg-turquoise-900/40 dark:text-turquoise-400"
+                      : v
+                        ? "bg-amber-700/10 text-amber-700/50 dark:bg-amber-900/15"
+                        : "bg-gray-100 text-gray-400 dark:bg-gray-800"
+                  }`}
+                  style={v ? vFont : undefined}
+                >
+                  {user ? (user.name?.[0]?.toUpperCase() ?? "?") : "?"}
+                </div>
+              )}
+
+              <div
+                className={`flex flex-1 items-center gap-2 border-2 px-4 py-2 transition-all ${v ? "rounded-sm" : "rounded-full"} ${
                   v
                     ? "border-amber-700/30 bg-[#f5e6c8]/60 dark:border-amber-800/30 dark:bg-[#1a1005]/60 focus-within:border-amber-600 focus-within:bg-[#fdf3d8] dark:focus-within:border-amber-600 dark:focus-within:bg-[#1e1508]"
                     : "border-gray-200 bg-gray-50 focus-within:border-turquoise-400 focus-within:bg-white dark:border-gray-700 dark:bg-gray-800/60 dark:focus-within:border-turquoise-600 dark:focus-within:bg-gray-900"
-                }`}>
-                  {user && (
-                    <>
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); setShowEmoji((s) => !s); setShowSticker(false); }}
-                        className={`shrink-0 transition ${v ? "text-amber-700/60 hover:text-amber-700" : "text-gray-400 hover:text-turquoise-600"}`}
-                        title="Emoji"
-                      >
-                        <Smile size={16} />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); setShowSticker((s) => !s); setShowEmoji(false); }}
-                        className={`shrink-0 transition ${v ? "text-amber-700/60 hover:text-amber-700" : "text-gray-400 hover:text-turquoise-600"}`}
-                        title="Stickers"
-                      >
-                        <Sticker size={16} />
-                      </button>
-                    </>
-                  )}
-                  <input
-                    ref={commentInputRef}
-                    type="text"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleAddComment()}
-                    disabled={!user}
-                    placeholder={user ? "Write a comment…" : "Log in to comment"}
-                    className={`flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400 disabled:cursor-not-allowed ${v ? "text-amber-900 dark:text-amber-200" : "text-gray-700 dark:text-gray-300"}`}
-                    style={v ? vFont : undefined}
-                  />
-                  <button onClick={handleAddComment} disabled={!newComment.trim() || !user || posting}
-                    className={`transition disabled:cursor-not-allowed disabled:opacity-30 ${v ? "text-amber-700 hover:text-amber-800 dark:text-amber-500" : "text-turquoise-600 hover:text-turquoise-700 dark:text-turquoise-400"}`}>
-                    {posting ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}
-                  </button>
-                </div>
-
-                {/* Emoji picker */}
-                {showEmoji && (
-                  <div
-                    className="absolute bottom-full left-0 mb-2 z-50"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <EmojiPicker
-                      onEmojiClick={(d) => {
-                        setNewComment((p) => p + d.emoji);
-                        setShowEmoji(false);
-                        commentInputRef.current?.focus();
+                }`}
+              >
+                {user && (
+                  <div ref={emojiBtnRef}>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!showEmoji) {
+                          const rect =
+                            emojiBtnRef.current?.getBoundingClientRect();
+                          setEmojiAnchor(rect ?? null);
+                        }
+                        setShowEmoji((s) => !s);
                       }}
-                      theme="auto"
-                      lazyLoadEmojis
-                      height={350}
-                      width={300}
-                      searchPlaceholder="Search emoji…"
-                    />
+                      className={`shrink-0 transition ${v ? "text-amber-700/60 hover:text-amber-700" : "text-gray-400 hover:text-turquoise-600"}`}
+                      title="Emoji"
+                    >
+                      <Smile size={16} />
+                    </button>
                   </div>
                 )}
-
-                {/* Sticker quick-panel */}
-                {showSticker && (
-                  <div
-                    className="absolute bottom-full left-0 mb-2 z-50 w-72 rounded-2xl border border-gray-200 bg-white p-3 shadow-xl dark:border-gray-700 dark:bg-gray-900"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <p className="mb-2 text-[11px] font-bold text-gray-500 dark:text-gray-400">Quick Stickers</p>
-                    <div className="grid grid-cols-4 gap-1">
-                      {COMMENT_STICKERS.map((s) => (
-                        <button
-                          key={s}
-                          onClick={() => {
-                            setNewComment((p) => p + s);
-                            setShowSticker(false);
-                            commentInputRef.current?.focus();
-                          }}
-                          className="flex items-center justify-center rounded-xl p-2 text-base hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        >
-                          {s}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <input
+                  ref={commentInputRef}
+                  type="text"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleAddComment()}
+                  onClick={() => { if (!user) setShowLoginModal(true); }}
+                  disabled={!user}
+                  placeholder={user ? "Write a comment…" : "Log in to comment"}
+                  className={`flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400 disabled:cursor-pointer ${v ? "text-amber-900 dark:text-amber-200" : "text-gray-700 dark:text-gray-300"}`}
+                  style={v ? vFont : undefined}
+                />
+                <button
+                  onClick={() => { if (!user) { setShowLoginModal(true); return; } handleAddComment(); }}
+                  disabled={(!newComment.trim() && !!user) || posting}
+                  className={`transition disabled:cursor-not-allowed disabled:opacity-30 ${v ? "text-amber-700 hover:text-amber-800 dark:text-amber-500" : "text-turquoise-600 hover:text-turquoise-700 dark:text-turquoise-400"}`}
+                >
+                  {posting ? (
+                    <Loader2 size={15} className="animate-spin" />
+                  ) : (
+                    <Send size={15} />
+                  )}
+                </button>
               </div>
             </div>
+
+            {/* Emoji picker portal — rendered outside overflow containers */}
+            {showEmoji &&
+              emojiAnchor &&
+              createPortal(
+                <div
+                  style={{
+                    position: "fixed",
+                    top: Math.max(10, emojiAnchor.top - 360),
+                    left: Math.min(
+                      emojiAnchor.left,
+                      (window.innerWidth ?? 1200) - 320,
+                    ),
+                    zIndex: 9999,
+                  }}
+                  onMouseDown={(e) => e.stopPropagation()}
+                >
+                  <EmojiPicker
+                    onEmojiClick={(d) => {
+                      setNewComment((p) => p + d.emoji);
+                      setShowEmoji(false);
+                      commentInputRef.current?.focus();
+                    }}
+                    theme="auto"
+                    lazyLoadEmojis
+                    height={350}
+                    width={300}
+                    searchPlaceholder="Search emoji…"
+                  />
+                </div>,
+                document.body,
+              )}
           </div>
 
           {/* ── Comment threads ── */}
           {loading ? (
             <div className="flex items-center justify-center py-10">
-              <Loader2 size={28} className={`animate-spin ${v ? "text-amber-600/70" : "text-turquoise-400"}`} />
+              <Loader2
+                size={28}
+                className={`animate-spin ${v ? "text-amber-600/70" : "text-turquoise-400"}`}
+              />
             </div>
           ) : comments.length > 0 ? (
             <div className="space-y-3">
               {comments.map((comment) => (
-                <CommentThread key={comment.id} comment={comment} depth={0} parentId={null}
-                  onReply={handleReply} onLike={handleLike} onDelete={handleDelete} onEdit={handleEdit}
-                  onToggleReplies={handleToggleReplies} openReplies={openReplies}
-                  activeReplyId={activeReplyId} onSetActiveReply={setActiveReplyId}
-                  currentUserId={currentUserId} isClassic={v}
+                <CommentThread
+                  key={comment.id}
+                  comment={comment}
+                  depth={0}
+                  parentId={null}
+                  onReply={handleReply}
+                  onLike={handleLike}
+                  onDelete={handleDelete}
+                  onEdit={handleEdit}
+                  onToggleReplies={handleToggleReplies}
+                  openReplies={openReplies}
+                  activeReplyId={activeReplyId}
+                  onSetActiveReply={setActiveReplyId}
+                  currentUserId={currentUserId}
+                  isClassic={v}
                 />
               ))}
             </div>
           ) : (
             <div className="py-8 text-center">
-              <MessageCircle size={36} className={`mx-auto mb-3 ${v ? "text-amber-700/40 dark:text-amber-800" : "text-turquoise-300 dark:text-turquoise-700"}`} />
-              <p className={v ? "text-amber-800/60 dark:text-amber-700" : "text-gray-500 dark:text-gray-400"}
-                style={v ? vFont : undefined}>
+              <MessageCircle
+                size={36}
+                className={`mx-auto mb-3 ${v ? "text-amber-700/40 dark:text-amber-800" : "text-turquoise-300 dark:text-turquoise-700"}`}
+              />
+              <p
+                className={
+                  v
+                    ? "text-amber-800/60 dark:text-amber-700"
+                    : "text-gray-500 dark:text-gray-400"
+                }
+                style={v ? vFont : undefined}
+              >
                 No comments yet. Be the first!
               </p>
             </div>
           )}
         </div>
       </div>
+
+      {/* ── Login Modal ── */}
+      {showLoginModal && (
+        <LoginModal
+          onClose={() => setShowLoginModal(false)}
+          title="Login to Comment"
+          description="Sign in to like, reply, and leave comments on movies."
+          icon="💬"
+        />
+      )}
     </section>
   );
 }

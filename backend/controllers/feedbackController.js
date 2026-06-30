@@ -57,6 +57,57 @@ export const getAllFeedback = async (req, res, next) => {
 };
 
 /**
+ * GET /api/feedback/mine?email=
+ * Returns all feedback submitted by a given email (newest first).
+ */
+export const getMyFeedback = async (req, res, next) => {
+  try {
+    const { email } = req.query;
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email query param is required' });
+    }
+
+    const feedbacks = await Feedback.find({
+      email: email.toLowerCase().trim(),
+    }).sort({ createdAt: -1 });
+
+    res.json({ success: true, count: feedbacks.length, data: feedbacks });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * DELETE /api/feedback/:id
+ * Delete own feedback — verified by matching email in body.
+ */
+export const deleteFeedback = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email is required to delete feedback' });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const feedback = await Feedback.findById(req.params.id);
+
+    if (!feedback) {
+      return res.status(404).json({ success: false, message: 'Feedback not found' });
+    }
+
+    if (feedback.email !== normalizedEmail) {
+      return res.status(403).json({ success: false, message: 'You can only delete your own feedback' });
+    }
+
+    await feedback.deleteOne();
+
+    res.json({ success: true, message: 'Feedback deleted successfully.' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  * PATCH /api/feedback/:id/status
  * Admin: update the status of a feedback (pending → reviewed → resolved).
  */
