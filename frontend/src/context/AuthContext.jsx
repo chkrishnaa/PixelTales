@@ -113,17 +113,23 @@ export function AuthProvider({ children }) {
   };
 
   /** Called from /auth/callback after Google OAuth redirect */
-  const loginWithToken = (t) => {
+  const loginWithToken = async (t) => {
     saveToken(t);
-    fetch(`${API}/api/auth/me`, {
-      headers: { Authorization: `Bearer ${t}` },
-    })
-      .then((r) => r.json())
-      .then(({ user }) => {
-        setUser(user);
-        lsSet('pt_user', user);
-      })
-      .catch(() => {});
+
+    const res = await fetch(`${API}/api/auth/me`, {
+      headers: {
+        Authorization: `Bearer ${t}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch user");
+    }
+
+    const { user } = await res.json();
+
+    setUser(user);
+    lsSet("pt_user", user);
   };
 
   return (

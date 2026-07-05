@@ -76,10 +76,8 @@ export const login = async (req, res, next) => {
 
 /* ── Google OAuth callback ───────────────────────────────── */
 export const googleCallback = (req, res) => {
-  // req.user is set by Passport GoogleStrategy
-  const token       = signToken(req.user._id);
-  const clientURL   = process.env.CLIENT_URL || 'http://localhost:5173';
-  // Redirect frontend to handle token storage
+  const token = signToken(req.user._id);
+  const clientURL = (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/$/, '');
   res.redirect(`${clientURL}/auth/callback?token=${token}`);
 };
 

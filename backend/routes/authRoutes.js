@@ -34,8 +34,10 @@ router.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'], session: false })
 );
 
+const clientURL = (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/$/, '');
+
 router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: `${process.env.CLIENT_URL}/login?error=google_failed`, session: false }),
+  passport.authenticate('google', { failureRedirect: `${clientURL}/login?error=google_failed`, session: false }),
   googleCallback
 );
 

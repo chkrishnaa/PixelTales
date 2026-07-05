@@ -8,15 +8,38 @@ export default function AuthCallback() {
   const { loginWithToken } = useAuth();
   const navigate    = useNavigate();
 
+  // useEffect(() => {
+  //   const token = params.get('token');
+  //   if (token) {
+  //     loginWithToken(token);
+  //     navigate('/dashboard', { replace: true });
+  //   } else {
+  //     navigate('/login?error=google_failed', { replace: true });
+  //   }
+  // }, []);
+
+
   useEffect(() => {
     const token = params.get('token');
-    if (token) {
-      loginWithToken(token);
-      navigate('/dashboard', { replace: true });
-    } else {
-      navigate('/login?error=google_failed', { replace: true });
-    }
-  }, []);
+
+    const completeLogin = async () => {
+      if (!token) {
+        navigate('/login?error=google_failed', { replace: true });
+        return;
+      }
+
+      try {
+        await loginWithToken(token);
+        const redirectTo = sessionStorage.getItem('pt_auth_redirect');
+        sessionStorage.removeItem('pt_auth_redirect');
+        navigate(redirectTo || '/dashboard', { replace: true });
+      } catch {
+        navigate('/login?error=google_failed', { replace: true });
+      }
+    };
+
+    completeLogin();
+  }, [loginWithToken, navigate, params]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">

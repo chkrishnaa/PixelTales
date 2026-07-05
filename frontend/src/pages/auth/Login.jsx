@@ -29,12 +29,12 @@ export default function Login() {
   };
 
   const handleGoogle = () => {
+    const redirectTo = params.get('redirect');
+    if (redirectTo) {
+      sessionStorage.setItem('pt_auth_redirect', decodeURIComponent(redirectTo));
+    }
     window.location.href = `${API}/api/auth/google`;
   };
-
-  console.log("MODE:", import.meta.env.MODE);
-  console.log("PROD:", import.meta.env.PROD);
-  console.log("API:", API);
 
   return (
     <div className="card-surface p-8">
