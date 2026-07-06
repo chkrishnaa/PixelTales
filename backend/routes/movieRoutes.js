@@ -8,10 +8,18 @@ import {
   addComment,
   deleteComment,
   toggleCommentLike,
-} from '../controllers/movieController.js';
+  getMovieDetails,
+  getMovies,
+} from "../controllers/movieController.js";
 import { protect, optionalAuth } from '../middlewares/auth.js';
 
 const router = express.Router();
+
+/* ── Public movies list / query ───────────────────────────── */
+router.get('/', getMovies);
+
+/* ── Per-movie detail ─────────────────────────────────────── */
+router.get('/:movieId', getMovieDetails);
 
 /* ── Batch stats ─────────────────────────────────────────── */
 router.post('/stats/batch', optionalAuth, getBatchStats);

@@ -10,8 +10,10 @@ import {
   uploadAvatar,
   forgotPassword,
   verifyOTP,
+  verifySignupOTP,
+  resendSignupOTP,
   resetPassword,
-} from '../controllers/authController.js';
+} from "../controllers/authController.js";
 import { protect } from '../middlewares/auth.js';
 
 const router  = express.Router();
@@ -28,6 +30,9 @@ router.post('/login', [
   body('email').isEmail().withMessage('Valid email required').normalizeEmail(),
   body('password').notEmpty().withMessage('Password is required'),
 ], login);
+
+router.post("/register/verify", verifySignupOTP);
+router.post("/register/resend-otp", resendSignupOTP);
 
 /* ── Google OAuth ───────────────────────────────────────── */
 router.get('/google',

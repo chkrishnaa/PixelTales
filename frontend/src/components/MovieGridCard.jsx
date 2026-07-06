@@ -66,20 +66,40 @@ export default function MovieGridCard({
   const v = isClassic
   const hasVideo = Boolean(movie.videoUrl?.trim())
 
+  // Support multiple possible flag names coming from different data sources
+  const isPrimeFlag = movie.isPrime ?? movie.is_prime ?? movie.prime ?? movie.isprime ?? false;
+  const isRecommendedFlag = movie.isRecommended ?? movie.is_recommended ?? movie.recommended ?? movie.isrecommended ?? false;
+
+  // Debug in development: log flag values for each card
+  if (import.meta.env.DEV) {
+    // eslint-disable-next-line no-console
+    console.debug('MovieGridCard flags', { id: movie.id ?? movie.movieId, isPrime: isPrimeFlag, isRecommended: isRecommendedFlag });
+  }
+
   return (
     <Link
       to={`/movie/${movie.id}`}
-      className={`group block ${compact ? 'w-[200px] shrink-0' : 'w-full'}
+      className={`group block ${compact ? "w-[200px] shrink-0" : "w-full"}
         flex flex-col
-        ${v
-          ? 'bg-[#fdf3d8] dark:bg-[#1e1508] border-2 border-dashed border-amber-700/60 dark:border-amber-800/50 rounded-2xl shadow-[3px_3px_0_rgba(139,90,43,0.25)] hover:shadow-[5px_5px_0_rgba(139,90,43,0.35)]'
-          : 'bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-[0_4px_20px_rgba(15,118,110,0.12)] hover:shadow-[0_12px_32px_rgba(15,118,110,0.22)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:dark:shadow-[0_12px_36px_rgba(0,0,0,0.55)]'}
+        ${
+          v
+            ? "bg-[#fdf3d8] dark:bg-[#1e1508] border-2 border-dashed border-amber-700/60 dark:border-amber-800/50 rounded-2xl shadow-[3px_3px_0_rgba(139,90,43,0.25)] hover:shadow-[5px_5px_0_rgba(139,90,43,0.35)]"
+            : "bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-[0_4px_20px_rgba(15,118,110,0.12)] hover:shadow-[0_12px_32px_rgba(15,118,110,0.22)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:dark:shadow-[0_12px_36px_rgba(0,0,0,0.55)]"
+        }
         overflow-hidden hover:-translate-y-1 transition-all duration-300`}
     >
       {/* ── Poster / gradient area ─── */}
       <div
         className="relative aspect-video overflow-hidden"
-        style={!hasThumbnail ? { background: v ? 'linear-gradient(135deg, #92400e, #b45309)' : movie.gradient } : undefined}
+        style={
+          !hasThumbnail
+            ? {
+                background: v
+                  ? "linear-gradient(135deg, #92400e, #b45309)"
+                  : movie.gradient,
+              }
+            : undefined
+        }
       >
         {hasThumbnail ? (
           <img
@@ -95,19 +115,28 @@ export default function MovieGridCard({
               className="absolute inset-0 opacity-20"
               style={{
                 backgroundImage: v
-                  ? 'radial-gradient(circle, rgba(253,243,216,0.5) 1px, transparent 1px)'
-                  : 'radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px)',
-                backgroundSize: '14px 14px',
+                  ? "radial-gradient(circle, rgba(253,243,216,0.5) 1px, transparent 1px)"
+                  : "radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px)",
+                backgroundSize: "14px 14px",
               }}
             />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className={`flex size-14 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 ${v ? 'bg-amber-900/30 ring-2 ring-amber-700/40' : 'bg-white/20 ring-2 ring-white/30 backdrop-blur-sm'}`}>
-                <Film size={26} className={v ? 'text-amber-200 drop-shadow' : 'text-white drop-shadow'} />
+              <div
+                className={`flex size-14 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 ${v ? "bg-amber-900/30 ring-2 ring-amber-700/40" : "bg-white/20 ring-2 ring-white/30 backdrop-blur-sm"}`}
+              >
+                <Film
+                  size={26}
+                  className={
+                    v ? "text-amber-200 drop-shadow" : "text-white drop-shadow"
+                  }
+                />
               </div>
             </div>
             {!v && (
               <div className="absolute bottom-0 left-0 right-0 px-3 py-2 backdrop-blur-sm bg-black/30">
-                <p className="line-clamp-1 text-[11px] font-bold leading-tight text-white drop-shadow">{getMovieTitle(movie)}</p>
+                <p className="line-clamp-1 text-[11px] font-bold leading-tight text-white drop-shadow">
+                  {getMovieTitle(movie)}
+                </p>
               </div>
             )}
           </>
@@ -119,18 +148,29 @@ export default function MovieGridCard({
             {/* Film perforations — top edge of image */}
             <div className="absolute top-0 left-0 right-0 flex justify-around items-center bg-[#1a1008]/80 px-1 py-[2px] z-10">
               {Array.from({ length: 9 }).map((_, i) => (
-                <div key={i} className="h-[5px] w-[8px] rounded-[1px] bg-[#fdf3d8] opacity-80" />
+                <div
+                  key={i}
+                  className="h-[5px] w-[8px] rounded-[1px] bg-[#fdf3d8] opacity-80"
+                />
               ))}
             </div>
             {/* Film perforations — bottom edge of image */}
             <div className="absolute bottom-0 left-0 right-0 flex justify-around items-center bg-[#1a1008]/80 px-1 py-[2px] z-10">
               {Array.from({ length: 9 }).map((_, i) => (
-                <div key={i} className="h-[5px] w-[8px] rounded-[1px] bg-[#fdf3d8] opacity-80" />
+                <div
+                  key={i}
+                  className="h-[5px] w-[8px] rounded-[1px] bg-[#fdf3d8] opacity-80"
+                />
               ))}
             </div>
             {/* Vignette */}
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse at center, transparent 45%, rgba(15,10,2,0.5) 100%)' }} />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(ellipse at center, transparent 45%, rgba(15,10,2,0.5) 100%)",
+              }}
+            />
             {/* Scratch marks */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               <div className="absolute left-[22%] top-0 bottom-0 w-px bg-white/25" />
@@ -138,8 +178,13 @@ export default function MovieGridCard({
               <div className="absolute left-[80%] top-0 bottom-0 w-px bg-white/20" />
             </div>
             {/* Film grain */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.15]"
-              style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E")`, backgroundSize: '150px 150px' }} />
+            <div
+              className="absolute inset-0 pointer-events-none opacity-[0.15]"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E")`,
+                backgroundSize: "150px 150px",
+              }}
+            />
             {/* CLASSIC stamp */}
             <span className="absolute top-3 left-3 z-20 -rotate-12 bg-red-700/90 border border-red-900 px-2 py-[3px] text-[8px] font-black tracking-[0.18em] text-white uppercase shadow-lg rounded-sm">
               ✦ Classic
@@ -149,14 +194,20 @@ export default function MovieGridCard({
 
         {/* UNAVAILABLE badge */}
         {!hasVideo && (
-          <div className={`absolute left-0 right-0 z-20 flex justify-center ${v ? 'bottom-4' : 'bottom-2'}`}>
+          <div
+            className={`absolute left-0 right-0 z-20 flex justify-center ${v ? "bottom-4" : "bottom-2"}`}
+          >
             <span
               className={`px-2.5 py-[3px] text-[8px] font-black tracking-[0.18em] uppercase shadow-md rounded-sm ${
                 v
-                  ? 'bg-amber-500 border border-white/50 text-gray-800 backdrop-blur-sm'
-                  : 'bg-red-700/90 border border-red-900 text-gray-300 backdrop-blur-sm'
+                  ? "bg-amber-500 border border-white/50 text-gray-800 backdrop-blur-sm"
+                  : "bg-red-700/90 border border-red-900 text-gray-300 backdrop-blur-sm"
               }`}
-              style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}
+              style={
+                v
+                  ? { fontFamily: '"Courier New", Courier, monospace' }
+                  : undefined
+              }
             >
               UNAVAILABLE
             </span>
@@ -165,8 +216,14 @@ export default function MovieGridCard({
 
         {/* Hover play overlay */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-10">
-          <div className={`flex size-11 items-center justify-center rounded-full shadow-lg ${v ? 'bg-amber-100/90 ring-2 ring-amber-700/40' : 'bg-white/90'}`}>
-            <Play size={18} className={`ml-0.5 ${v ? 'text-amber-900' : 'text-turquoise-600'}`} fill="currentColor" />
+          <div
+            className={`flex size-11 items-center justify-center rounded-full shadow-lg ${v ? "bg-amber-100/90 ring-2 ring-amber-700/40" : "bg-white/90"}`}
+          >
+            <Play
+              size={18}
+              className={`ml-0.5 ${v ? "text-amber-900" : "text-turquoise-600"}`}
+              fill="currentColor"
+            />
           </div>
         </div>
 
@@ -175,63 +232,126 @@ export default function MovieGridCard({
         )}
 
         {/* Year badge */}
-        <span className={`absolute left-2 top-2 z-20 px-2 py-0.5 text-[10px] font-extrabold shadow ${
-          v ? 'rounded bg-[#1a1008]/80 text-amber-300 tracking-wider' : 'rounded-full bg-white/90 text-turquoise-700'
-        }`}>
+        <span
+          className={`absolute left-2 top-2 z-20 px-2 py-0.5 text-[10px] font-extrabold shadow ${
+            v
+              ? "rounded bg-[#1a1008]/80 text-amber-300 tracking-wider"
+              : "rounded-full bg-white/90 text-turquoise-700"
+          }`}
+        >
           {movie.year}
         </span>
+
+        {/* Bottom badges */}
+        <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between">
+          {/* RECOMMENDED (left) */}
+          <div>
+            {isRecommendedFlag && (
+              <span
+                className={`px-2 py-0.5 text-[10px] font-extrabold tracking-wider uppercase rounded-sm italic ${
+                  v
+                    ? "bg-amber-700 text-amber-100 shadow-md border border-amber-800/40"
+                    : "bg-turquoise-700 text-white shadow-md"
+                }`}
+              >
+                RECOMMENDED
+              </span>
+            )}
+          </div>
+
+          {/* PRIME (right) */}
+          <div>
+            {isPrimeFlag && (
+              <span
+                className={`px-2 py-0.5 text-[10px] font-extrabold tracking-wider uppercase rounded-sm ${
+                  v
+                    ? "bg-amber-700 text-amber-100 shadow-md border border-amber-800/40"
+                    : "bg-turquoise-700 text-white shadow-md"
+                }`}
+              >
+                PRIME MOVIE
+              </span>
+            )}
+          </div>
+        </div>
 
         {/* Like button (top-right) */}
         <button
           type="button"
           className={`absolute right-2 top-2 z-20 flex size-8 items-center justify-center transition ${
             v
-              ? `rounded bg-[#fdf3d8]/75 shadow border border-amber-700/40 ${liked ? 'text-red-600' : 'text-amber-700 hover:text-red-600'}`
-              : `rounded-full bg-white/90 shadow ${liked ? 'text-red-500' : 'text-gray-400 hover:text-red-500'}`
-          } ${popAnim ? 'scale-125' : 'scale-100'}`}
-          aria-label={liked ? 'Unlike' : 'Like'}
+              ? `rounded bg-[#fdf3d8]/75 shadow border border-amber-700/40 ${liked ? "text-red-600" : "text-amber-700 hover:text-red-600"}`
+              : `rounded-full bg-white/90 shadow ${liked ? "text-red-500" : "text-gray-400 hover:text-red-500"}`
+          } ${popAnim ? "scale-125" : "scale-100"}`}
+          aria-label={liked ? "Unlike" : "Like"}
           onClick={handleLike}
           disabled={likeLoading}
         >
           <Heart
             size={v ? 14 : 16}
-            fill={liked ? 'currentColor' : 'none'}
-            className={`transition-transform duration-200 ${popAnim ? 'scale-150' : 'scale-100'}`}
+            fill={liked ? "currentColor" : "none"}
+            className={`transition-transform duration-200 ${popAnim ? "scale-150" : "scale-100"}`}
           />
         </button>
       </div>
 
       {/* ── Card body ── */}
-      <div className={`flex-1 px-3 pt-2.5 pb-1.5 ${v ? 'bg-[#fdf3d8] dark:bg-[#1e1508]' : ''}`}>
-        <h3 className={`line-clamp-2 text-sm leading-snug ${v ? 'font-bold text-amber-900 dark:text-amber-200' : 'font-display text-gray-800 dark:text-gray-100'}`}
-          style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}>
+      <div
+        className={`flex-1 px-3 pt-2.5 pb-1.5 ${v ? "bg-[#fdf3d8] dark:bg-[#1e1508]" : ""}`}
+      >
+        <h3
+          className={`line-clamp-2 text-sm leading-snug ${v ? "font-bold text-amber-900 dark:text-amber-200" : "font-display text-gray-800 dark:text-gray-100"}`}
+          style={
+            v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined
+          }
+        >
           {getMovieTitle(movie)}
         </h3>
 
         <div className="mt-1.5 flex items-center gap-1.5">
-          <span className={`flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold ${
-            v
-              ? 'rounded bg-amber-800/20 dark:bg-amber-700/20 text-amber-800 dark:text-amber-400'
-              : 'rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400'
-          }`}>
-            <Star size={9} className={v ? 'fill-amber-600 text-amber-600' : 'fill-amber-500 text-amber-500'} />
+          <span
+            className={`flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold ${
+              v
+                ? "rounded bg-amber-800/20 dark:bg-amber-700/20 text-amber-800 dark:text-amber-400"
+                : "rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400"
+            }`}
+          >
+            <Star
+              size={9}
+              className={
+                v
+                  ? "fill-amber-600 text-amber-600"
+                  : "fill-amber-500 text-amber-500"
+              }
+            />
             {movie.rating}
           </span>
-          <span className={`truncate text-[11px] font-semibold ${v ? 'text-amber-700/70 dark:text-amber-600/80' : 'text-gray-400 dark:text-gray-500'}`}
-            style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}>
+          <span
+            className={`truncate text-[11px] font-semibold ${v ? "text-amber-700/70 dark:text-amber-600/80" : "text-gray-400 dark:text-gray-500"}`}
+            style={
+              v
+                ? { fontFamily: '"Courier New", Courier, monospace' }
+                : undefined
+            }
+          >
             {cartoonName}
           </span>
         </div>
 
         {showContinue && movie.progress != null && (
           <div className="mt-2">
-            <div className={`h-1 w-full overflow-hidden rounded-full ${v ? 'bg-amber-800/20' : 'bg-gray-100 dark:bg-gray-700'}`}>
+            <div
+              className={`h-1 w-full overflow-hidden rounded-full ${v ? "bg-amber-800/20" : "bg-gray-100 dark:bg-gray-700"}`}
+            >
               <div
-                className={`h-full rounded-full transition-all ${v ? 'bg-amber-700' : 'bg-turquoise-500'}`}
+                className={`h-full rounded-full transition-all ${v ? "bg-amber-700" : "bg-turquoise-500"}`}
                 style={{ width: `${movie.progress}%` }}
               />
             </div>
-            <button type="button" className={`mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold ${v ? 'text-amber-700 dark:text-amber-400' : 'text-turquoise-600 dark:text-turquoise-400'}`}>
+            <button
+              type="button"
+              className={`mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold ${v ? "text-amber-700 dark:text-amber-400" : "text-turquoise-600 dark:text-turquoise-400"}`}
+            >
               <Play size={11} fill="currentColor" />
               Continue · {movie.progress}%
             </button>
@@ -240,51 +360,63 @@ export default function MovieGridCard({
       </div>
 
       {/* ── Stats bar ── */}
-      <div className={`flex items-center gap-2 border-t px-3 py-2 ${
-        v
-          ? 'border-amber-700/30 bg-[#f0dca0] dark:bg-[#150f04]'
-          : 'border-gray-100 dark:border-gray-700/50'
-      }`}>
+      <div
+        className={`flex items-center gap-2 border-t px-3 py-2 ${
+          v
+            ? "border-amber-700/30 bg-[#f0dca0] dark:bg-[#150f04]"
+            : "border-gray-100 dark:border-gray-700/50"
+        }`}
+      >
         {/* Like count — display only, not clickable */}
         <span
           className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold select-none ${
             v
               ? liked
-                ? 'text-red-600 dark:text-red-500'
-                : 'text-amber-800/70 dark:text-amber-600'
+                ? "text-red-600 dark:text-red-500"
+                : "text-amber-800/70 dark:text-amber-600"
               : liked
-                ? 'bg-rose-50 text-rose-500 dark:bg-rose-950/40 dark:text-rose-400'
-                : 'text-gray-400 dark:text-gray-500'
+                ? "bg-rose-50 text-rose-500 dark:bg-rose-950/40 dark:text-rose-400"
+                : "text-gray-400 dark:text-gray-500"
           }`}
         >
           <Heart
             size={11}
             className={`transition-all duration-200 ${
               liked
-                ? v ? 'fill-red-600 dark:fill-red-500' : 'fill-rose-500 dark:fill-rose-400'
-                : ''
-            } ${popAnim ? 'scale-150' : 'scale-100'}`}
+                ? v
+                  ? "fill-red-600 dark:fill-red-500"
+                  : "fill-rose-500 dark:fill-rose-400"
+                : ""
+            } ${popAnim ? "scale-150" : "scale-100"}`}
           />
-          <span className={`transition-all duration-150 ${popAnim ? 'scale-110' : 'scale-100'}`}>{likesCount}</span>
+          <span
+            className={`transition-all duration-150 ${popAnim ? "scale-110" : "scale-100"}`}
+          >
+            {likesCount}
+          </span>
         </span>
 
-        <span className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold transition-colors ${
-          v
-            ? 'text-amber-800/60 dark:text-amber-700'
-            : 'text-gray-400 dark:text-gray-500 group-hover:text-turquoise-500 dark:group-hover:text-turquoise-400'
-        }`}
-          title="Comments">
+        <span
+          className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold transition-colors ${
+            v
+              ? "text-amber-800/60 dark:text-amber-700"
+              : "text-gray-400 dark:text-gray-500 group-hover:text-turquoise-500 dark:group-hover:text-turquoise-400"
+          }`}
+          title="Comments"
+        >
           <MessageCircle size={11} />
           {commentsCount}
         </span>
 
         {movie.duration && (
-          <span className={`ml-auto flex items-center gap-1 text-[11px] font-semibold ${v ? 'text-amber-800/60 dark:text-amber-700' : 'text-gray-400 dark:text-gray-500'}`}>
+          <span
+            className={`ml-auto flex items-center gap-1 text-[11px] font-semibold ${v ? "text-amber-800/60 dark:text-amber-700" : "text-gray-400 dark:text-gray-500"}`}
+          >
             <Clock size={11} />
             {movie.duration}m
           </span>
         )}
       </div>
     </Link>
-  )
+  );
 }

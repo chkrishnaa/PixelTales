@@ -2,47 +2,7 @@ import { useState }   from 'react';
 import { ThumbsUp, ThumbsDown, Star } from 'lucide-react';
 import { useAuth }     from '../context/AuthContext';
 import LoginModal      from './LoginModal';
-
-/* ── Deterministic gradient from a name ─────────────────────── */
-const GRAD_PAIRS = [
-  ['#0891b2','#0e7490'], ['#7c3aed','#6d28d9'], ['#db2777','#be185d'],
-  ['#d97706','#b45309'], ['#059669','#047857'], ['#4f46e5','#4338ca'],
-  ['#dc2626','#b91c1c'], ['#0f766e','#0d9488'],
-];
-function nameGradient(name = '') {
-  let h = 0;
-  for (const c of name) h = (h * 31 + c.charCodeAt(0)) & 0xffff;
-  const [a, b] = GRAD_PAIRS[h % GRAD_PAIRS.length];
-  return `linear-gradient(135deg,${a},${b})`;
-}
-
-/* ── Smart avatar: real photo → coloured initials fallback ──── */
-function ReviewAvatar({ name, avatar, size = 12 }) {
-  const [imgErr, setImgErr] = useState(false);
-  const initial   = (name?.[0] ?? '?').toUpperCase();
-  const gradient  = nameGradient(name);
-  const px        = size * 4; // Tailwind size-N = N*4px
-
-  if (avatar && !imgErr) {
-    return (
-      <img
-        src={avatar}
-        alt={name}
-        onError={() => setImgErr(true)}
-        style={{ width: px, height: px }}
-        className="rounded-full object-cover flex-shrink-0"
-      />
-    );
-  }
-  return (
-    <div
-      style={{ width: px, height: px, background: gradient }}
-      className="flex items-center justify-center rounded-full font-bold text-white text-lg uppercase select-none flex-shrink-0"
-    >
-      {initial}
-    </div>
-  );
-}
+import Avatar from "./Avatar";
 
 export default function ReviewCard({ review, onOpen }) {
   const { user, token, API } = useAuth();
@@ -77,20 +37,23 @@ export default function ReviewCard({ review, onOpen }) {
 
   return (
     <>
-      {showModal && <LoginModal
-        onClose={() => setShowModal(false)}
-        title="Login to Vote"
-        description="You need to be logged in to like or dislike reviews."
-        icon="👍"
-      />}
+      {showModal && (
+        <LoginModal
+          onClose={() => setShowModal(false)}
+          title="Login to Vote"
+          description="You need to be logged in to like or dislike reviews."
+          icon="👍"
+        />
+      )}
 
       <article onClick={() => onOpen?.(review)} className="card-surface p-5">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             {/* Avatar */}
-            <ReviewAvatar
+            <Avatar
               name={review.name ?? review.user}
               avatar={review.avatar}
+              size={12}
             />
 
             <div>
@@ -106,7 +69,9 @@ export default function ReviewCard({ review, onOpen }) {
           {/* Stars */}
           <div className="mt-2 flex items-center gap-1">
             {Array.from({ length: review.rating }).map((_, i) => (
-              <Star key={i} size={16}
+              <Star
+                key={i}
+                size={16}
                 className="fill-turquoise-600 text-turquoise-600 dark:fill-turquoise-400 dark:text-turquoise-400"
               />
             ))}
@@ -119,35 +84,48 @@ export default function ReviewCard({ review, onOpen }) {
 
         <div className="mt-5 flex items-center justify-between gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
           <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-            {review.date ?? (review.createdAt ? new Date(review.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '')}
+            {review.date ??
+              (review.createdAt
+                ? new Date(review.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })
+                : "")}
           </p>
 
           <div className="flex items-center gap-3">
             {/* Like */}
             <button
-              onClick={(e) => { e.stopPropagation(); handleVote('like'); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleVote("like");
+              }}
               disabled={busy}
               className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold transition-all active:scale-95 ${
                 liked
-                  ? 'border-emerald-400 bg-emerald-50 text-emerald-600 dark:border-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400'
-                  : 'border-gray-200 text-gray-500 hover:border-emerald-300 hover:text-emerald-600 dark:border-gray-700 dark:text-gray-400'
+                  ? "border-emerald-400 bg-emerald-50 text-emerald-600 dark:border-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400"
+                  : "border-gray-200 text-gray-500 hover:border-emerald-300 hover:text-emerald-600 dark:border-gray-700 dark:text-gray-400"
               }`}
             >
-              <ThumbsUp size={14} fill={liked ? 'currentColor' : 'none'} />
+              <ThumbsUp size={14} fill={liked ? "currentColor" : "none"} />
               {likes}
             </button>
 
             {/* Dislike */}
             <button
-              onClick={(e) => { e.stopPropagation(); handleVote('dislike'); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleVote("dislike");
+              }}
               disabled={busy}
               className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold transition-all active:scale-95 ${
                 disliked
-                  ? 'border-rose-400 bg-rose-50 text-rose-600 dark:border-rose-600 dark:bg-rose-950/40 dark:text-rose-400'
-                  : 'border-gray-200 text-gray-500 hover:border-rose-300 hover:text-rose-600 dark:border-gray-700 dark:text-gray-400'
+                  ? "border-rose-400 bg-rose-50 text-rose-600 dark:border-rose-600 dark:bg-rose-950/40 dark:text-rose-400"
+                  : "border-gray-200 text-gray-500 hover:border-rose-300 hover:text-rose-600 dark:border-gray-700 dark:text-gray-400"
               }`}
             >
-              <ThumbsDown size={14} fill={disliked ? 'currentColor' : 'none'} />
+              <ThumbsDown size={14} fill={disliked ? "currentColor" : "none"} />
               {dislikes}
             </button>
           </div>

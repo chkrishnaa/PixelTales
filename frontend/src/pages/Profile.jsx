@@ -10,6 +10,7 @@ import { useWatch }   from '../context/WatchContext'
 import { useAuth }    from '../context/AuthContext'
 import MovieGrid      from '../components/MovieGrid'
 import EmptyState     from '../components/EmptyState'
+import Avatar from "../components/Avatar";
 import CommonPagination from '../components/Utility/CommonPagination'
 import Logo from '../assets/Logo'
 
@@ -557,7 +558,7 @@ export default function Profile() {
     finally { setAvatarUploading(false) }
   }
 
-  const { user, token, API, updateUser } = useAuth()
+  const { user, token, API, updateUser, editMode, setEditMode } = useAuth();
 
   const {
     continueMovieIds,
@@ -633,62 +634,79 @@ export default function Profile() {
         </div>
         <div className="flex flex-col items-center gap-2">
           {/* Avatar: real photo or gradient initials */}
-          {user?.avatar ? (
-            <img
-              src={user.avatar}
-              alt={user.name}
-              className="size-24 rounded-full border-4 border-turquoise-100 object-cover dark:border-turquoise-900"
+          <Avatar
+            user={user}
+            size={24}
+            className="border-4 border-turquoise-100 dark:border-turquoise-900"
+          />
+          <label
+            className={`flex cursor-pointer items-center gap-1 text-xs font-bold text-turquoise-600 ${avatarUploading ? "opacity-50 pointer-events-none" : ""}`}
+          >
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarChange}
+              disabled={avatarUploading}
             />
-          ) : (
-            <span
-              className="flex size-24 items-center justify-center rounded-full border-4 border-turquoise-100 text-3xl font-black text-white dark:border-turquoise-900"
-              style={{
-                background: (() => {
-                  let hash = 0
-                  for (const c of (user?.name ?? '')) hash = c.charCodeAt(0) + ((hash << 5) - hash)
-                  const h1 = Math.abs(hash) % 360
-                  return `linear-gradient(135deg, hsl(${h1},70%,50%), hsl(${(h1 + 40) % 360},70%,35%))`
-                })(),
-              }}
-            >
-              {(user?.name ?? '?').split(' ').slice(0, 2).map((w) => w[0]?.toUpperCase() ?? '').join('')}
-            </span>
-          )}
-          <label className={`flex cursor-pointer items-center gap-1 text-xs font-bold text-turquoise-600 ${avatarUploading ? 'opacity-50 pointer-events-none' : ''}`}>
-            <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} disabled={avatarUploading} />
             <Camera size={14} />
-            {avatarUploading ? 'Uploading…' : 'Change avatar'}
+            {avatarUploading ? "Uploading…" : "Change avatar"}
           </label>
         </div>
         <div>
           <h1 className="font-display text-2xl text-turquoise-700 dark:text-turquoise-400 md:text-3xl">
-            {user?.name ?? 'Guest'}
+            {user?.name ?? "Guest"}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">{user?.email ?? ''}</p>
-          {user?.role === 'admin' && (
-            <span className="mt-1 inline-block rounded bg-turquoise-600 px-2 py-0.5 text-xs font-bold text-white">
-              Admin
-            </span>
-          )}
+          <p className="text-gray-600 dark:text-gray-400">
+            {user?.email ?? ""}
+          </p>
           <div className="mt-4 flex flex-wrap gap-8">
             {[
-              ['Watched',     watchHistory.length],
-              ['Favorites',   allMovies.filter((m) => m.favorited).length],
-              ['In Progress', continueMovieIds.length],
+              ["Watched", watchHistory.length],
+              ["Favorites", allMovies.filter((m) => m.favorited).length],
+              ["In Progress", continueMovieIds.length],
             ].map(([label, val]) => (
               <div key={label}>
-                <strong className="block text-2xl font-extrabold text-turquoise-600">{val}</strong>
-                <span className="text-sm font-semibold text-gray-500">{label}</span>
+                <strong className="block text-2xl font-extrabold text-turquoise-600">
+                  {val}
+                </strong>
+                <span className="text-sm font-semibold text-gray-500">
+                  {label}
+                </span>
               </div>
             ))}
           </div>
         </div>
       </div>
 
+      <div className="fixed bottom-6 right-6 z-50">
+        {user?.role === "admin" && (
+          <div className="flex flex-col items-end gap-2 rounded-3xl border border-turquoise-200 bg-white/90 p-3 shadow-xl backdrop-blur dark:border-turquoise-900/40 dark:bg-gray-900/90">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-turquoise-600">
+              Edit Mode
+            </span>
+            <button
+              type="button"
+              onClick={() => setEditMode((value) => !value)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${editMode ? "bg-turquoise-600" : "bg-gray-300 dark:bg-gray-700"}`}
+            >
+              <span
+                className={`inline-block h-5 w-5 transform rounded-full bg-white transition ${editMode ? "translate-x-5" : "translate-x-1"}`}
+              />
+            </button>
+            <span
+              className={`text-sm font-semibold ${editMode ? "text-turquoise-600" : "text-gray-500"}`}
+            >
+              {editMode ? "ON" : "OFF"}
+            </span>
+          </div>
+        )}
+      </div>
+
       {/* ── Tab bar ──────────────────────────────────────────── */}
       <div className="mb-6 flex flex-wrap gap-2" role="tablist">
         {TABS.map(({ id, label, icon: Icon }) => {
-          const count = tabCount(id)
+          const count = tabCount(id);
           return (
             <button
               key={id}
@@ -697,23 +715,21 @@ export default function Profile() {
               aria-selected={activeTab === id}
               className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition ${
                 activeTab === id
-                  ? 'border-turquoise-500 bg-turquoise-500 text-white'
-                  : 'border-gray-200 bg-white text-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400'
+                  ? "border-turquoise-500 bg-turquoise-500 text-white"
+                  : "border-gray-200 bg-white text-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400"
               }`}
               onClick={() => handleTabSwitch(id)}
             >
               <Icon size={16} />
               {label}
-              {count !== '' && (
-                <span className="opacity-80">({count})</span>
-              )}
+              {count !== "" && <span className="opacity-80">({count})</span>}
             </button>
-          )
+          );
         })}
       </div>
 
       {/* ── Tab content ──────────────────────────────────────── */}
-      {activeTab === 'rooms' ? (
+      {activeTab === "rooms" ? (
         <MyRoomsTab
           rooms={myRooms}
           loading={roomsLoading}
@@ -721,27 +737,24 @@ export default function Profile() {
           token={token}
           API={API}
         />
-
-      ) : activeTab === 'collections' ? (
+      ) : activeTab === "collections" ? (
         <CollectionsTab user={user} token={token} API={API} />
-
-      ) : activeTab === 'history' ? (
-        <HistoryTab
-          watchHistory={watchHistory}
-          clearHistory={clearHistory}
-        />
-
+      ) : activeTab === "history" ? (
+        <HistoryTab watchHistory={watchHistory} clearHistory={clearHistory} />
       ) : pagedMovies.length > 0 ? (
         <>
           <MovieGrid
             movies={pagedMovies}
-            showContinue={activeTab === 'continue'}
+            showContinue={activeTab === "continue"}
             onToggleFavorite={toggleFavorite}
           />
           {allTabMovies.length > PAGE_SIZE && (
             <CommonPagination
               currentPage={page}
-              setCurrentPage={(p) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+              setCurrentPage={(p) => {
+                setPage(p);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
               totalItems={allTabMovies.length}
               itemsPerPage={PAGE_SIZE}
               itemLabel="movies"
@@ -750,14 +763,20 @@ export default function Profile() {
         </>
       ) : (
         <EmptyState
-          icon={activeTab === 'continue' ? FastForward : Heart}
-          title={activeTab === 'continue' ? 'Nothing in progress yet' : 'No favourites yet'}
-          description={activeTab === 'continue'
-            ? 'Start watching a movie and it will appear here so you can pick up where you left off.'
-            : 'Like a movie to add it to your favourites and find it here anytime.'}
-          action={{ label: 'Browse Movies', to: '/dashboard' }}
+          icon={activeTab === "continue" ? FastForward : Heart}
+          title={
+            activeTab === "continue"
+              ? "Nothing in progress yet"
+              : "No favourites yet"
+          }
+          description={
+            activeTab === "continue"
+              ? "Start watching a movie and it will appear here so you can pick up where you left off."
+              : "Like a movie to add it to your favourites and find it here anytime."
+          }
+          action={{ label: "Browse Movies", to: "/dashboard" }}
         />
       )}
     </div>
-  )
+  );
 }

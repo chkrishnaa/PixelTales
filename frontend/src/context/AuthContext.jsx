@@ -21,6 +21,10 @@ export function AuthProvider({ children }) {
   // Restore user immediately from localStorage so UI doesn't flash "not logged in"
   const [user,    setUser]    = useState(() => lsGet('pt_user'));
   const [token,   setToken]   = useState(() => localStorage.getItem('pt_token'));
+  const [editMode, setEditMode] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("pt_edit_mode") === "true";
+  });
   const [loading, setLoading] = useState(true);
 
   // On mount — check 2-month inactivity then verify stored token
@@ -68,6 +72,12 @@ export function AuthProvider({ children }) {
     setToken(t);
   };
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("pt_edit_mode", String(editMode));
+    }
+  }, [editMode]);
+
   const login = async (email, password) => {
     const res  = await fetch(`${API}/api/auth/login`, {
       method:  'POST',
@@ -83,17 +93,40 @@ export function AuthProvider({ children }) {
   };
 
   const register = async (name, email, password) => {
-    const res  = await fetch(`${API}/api/auth/register`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ name, email, password }),
+    const res = await fetch(`${API}/api/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Registration failed');
+    if (!res.ok) throw new Error(data.message || "Registration failed");
+    return data;
+  };
+
+  const verifySignupOTP = async (email, otp) => {
+    const res = await fetch(`${API}/api/auth/register/verify`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, otp }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "OTP verification failed");
+
     saveToken(data.token);
     setUser(data.user);
-    lsSet('pt_user', data.user);
-    return data.user;
+    lsSet("pt_user", data.user);
+    return data;
+  };
+
+  const resendSignupOTP = async (email) => {
+    const res = await fetch(`${API}/api/auth/register/resend-otp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Could not resend OTP");
+    return data;
   };
 
   const logout = () => {
@@ -133,7 +166,23 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout, updateUser, loginWithToken, API }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        editMode,
+        setEditMode,
+        loading,
+        login,
+        register,
+        verifySignupOTP,
+        resendSignupOTP,
+        logout,
+        updateUser,
+        loginWithToken,
+        API,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

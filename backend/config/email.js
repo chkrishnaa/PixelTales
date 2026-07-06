@@ -1,86 +1,107 @@
-import nodemailer from 'nodemailer';
+import fetch from "node-fetch";
+import { promises as fs } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
-export const transporter = nodemailer.createTransport({
-  host:   process.env.EMAIL_HOST   || 'smtp.gmail.com',
-  port:   Number(process.env.EMAIL_PORT) || 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-/**
- * Send a 6-digit OTP email for password reset.
- */
-export const sendOTPEmail = async (to, otp) => {
-  const html = `
-    <!DOCTYPE html>
-    <html>
-      <head><meta charset="UTF-8" /></head>
-      <body style="margin:0;padding:0;background:#f3f4f6;font-family:sans-serif;">
-        <table width="100%" cellpadding="0" cellspacing="0">
-          <tr>
-            <td align="center" style="padding:40px 16px;">
-              <table width="480" cellpadding="0" cellspacing="0"
-                     style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08);">
-
-                <!-- Header -->
-                <tr>
-                  <td style="background:linear-gradient(135deg,#0f766e,#06b6d4);padding:32px;text-align:center;">
-                    <span style="font-size:28px;">🎬</span>
-                    <h1 style="margin:8px 0 0;color:#fff;font-size:22px;font-weight:800;letter-spacing:-0.5px;">
-                      PixelTales
-                    </h1>
-                  </td>
-                </tr>
-
-                <!-- Body -->
-                <tr>
-                  <td style="padding:32px 36px;">
-                    <h2 style="margin:0 0 8px;font-size:18px;color:#111827;">Password Reset OTP</h2>
-                    <p style="margin:0 0 24px;color:#6b7280;font-size:14px;line-height:1.6;">
-                      Use the one-time password below to reset your PixelTales account password.
-                      This OTP is valid for <strong>10 minutes</strong>.
-                    </p>
-
-                    <!-- OTP box -->
-                    <div style="text-align:center;margin:0 0 24px;">
-                      <span style="display:inline-block;background:#f0fdfa;border:2px dashed #0d9488;
-                                   border-radius:12px;padding:16px 40px;
-                                   font-size:38px;font-weight:900;letter-spacing:12px;color:#0f766e;">
-                        ${otp}
-                      </span>
-                    </div>
-
-                    <p style="margin:0;color:#9ca3af;font-size:12px;text-align:center;">
-                      If you did not request this, you can safely ignore this email.
-                    </p>
-                  </td>
-                </tr>
-
-                <!-- Footer -->
-                <tr>
-                  <td style="background:#f9fafb;padding:16px 36px;text-align:center;
-                             border-top:1px solid #e5e7eb;">
-                    <p style="margin:0;color:#9ca3af;font-size:11px;">
-                      © ${new Date().getFullYear()} PixelTales. All rights reserved.
-                    </p>
-                  </td>
-                </tr>
-
-              </table>
-            </td>
-          </tr>
-        </table>
-      </body>
-    </html>
-  `;
-
-  await transporter.sendMail({
-    from:    process.env.EMAIL_FROM || 'PixelTales <no-reply@pixeltales.com>',
-    to,
-    subject: '🔐 Your PixelTales Password Reset OTP',
-    html,
-  });
+const loadTemplate = async (templateName) => {
+  const templatePath = join(
+    __dirname,
+    "..",
+    "emailTemplates",
+    `${templateName}.html`,
+  );
+  return fs.readFile(templatePath, "utf-8");
 };
+
+const renderTemplate = (template, values) =>
+  Object.entries(values).reduce(
+    (html, [key, value]) =>
+      html.replace(new RegExp(`{{\\s*${key}\\s*}}`, "g"), value || ""),
+    template,
+  );
+
+const sendEmail = async (to, subject, text, html, options = {}) => {
+  try {
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": process.env.BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: {
+          name: "PixelTales",
+          email: process.env.SENDER_EMAIL,
+        },
+        to: [
+          {
+            email: to,
+          },
+        ],
+        subject,
+        textContent: text,
+        htmlContent: html,
+        replyTo: options?.replyTo ? { email: options.replyTo } : undefined,
+        attachment: options?.attachments?.map((file) => ({
+          name: file.filename || "attachment",
+          content: file.content?.toString("base64"),
+        })),
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Brevo API error");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Brevo API Email Error:", error.message);
+    throw error;
+  }
+};
+
+export const sendOTPEmail = async (
+  to,
+  otp,
+  subject = "🔐 Your PixelTales Password Reset OTP",
+  message = "Use the one-time password below to reset your PixelTales account password. This OTP is valid for 10 minutes.",
+  templateName = "otp-email",
+) => {
+  const template = await loadTemplate(templateName);
+  const html = renderTemplate(template, {
+    title: subject,
+    message,
+    otp,
+    year: String(new Date().getFullYear()),
+    supportEmail: process.env.SENDER_EMAIL,
+  });
+
+  const text = `${subject}\n\n${message}\n\nYour code: ${otp}`;
+
+  return sendEmail(to, subject, text, html);
+};
+
+export const sendTemplateEmail = async (
+  to,
+  subject,
+  message,
+  templateName = "generic",
+) => {
+  const template = await loadTemplate(templateName);
+  const html = renderTemplate(template, {
+    title: subject,
+    message,
+    year: String(new Date().getFullYear()),
+    supportEmail: process.env.SENDER_EMAIL || "no-reply@pixeltales.com",
+  });
+
+  const text = `${subject}\n\n${message}`;
+
+  return sendEmail(to, subject, text, html);
+};
+
+export default sendEmail;

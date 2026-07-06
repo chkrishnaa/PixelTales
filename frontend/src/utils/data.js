@@ -24,15 +24,25 @@ export const USER_STATS = {
 /** Canonical movie catalog — single source of truth for PixelTales */
 export const cartoonGradients = {
   doraemon:
-    'linear-gradient(135deg, #0284c7 0%, #06b6d4 50%, #67e8f9 100%)',
+    "linear-gradient(135deg, #3FA9F5 0%, #1E88E5 25%, #1565C0 60%, #0D47A1 100%)",
   pokemon:
-    'linear-gradient(135deg, #b45309 0%, #fbbf24 50%, #fde68a 100%)',
+    "linear-gradient(135deg, #FFD54F 0%, #FFCA28 25%, #F9A825 65%, #E65100 100%)",
+
+  // Shinchan
   shinchan:
-    'linear-gradient(135deg, #be123c 0%, #fb7185 50%, #fecdd3 100%)',
-  'tom-jerry':
-    'linear-gradient(135deg, var(--color-turquoise-800) 0%, var(--color-turquoise-300) 100%)',
-  naruto:
-    'linear-gradient(135deg, #c2410c 0%, #f97316 50%, #fdba74 100%)',
+    "linear-gradient(135deg, #FF8A80 0%, #FF5252 30%, #E53935 65%, #B71C1C 100%)",
+
+  // Oggy and the Cockroaches
+  oggy:
+    "linear-gradient(135deg, #6DD5FA 0%, #29B6F6 35%, #0288D1 70%, #01579B 100%)",
+
+  // Pakdam Pakdai
+  "pakdam-pakdai":
+    "linear-gradient(135deg, #66BB6A 0%, #43A047 35%, #2E7D32 70%, #1B5E20 100%)",
+
+  // Perman
+  perman:
+    "linear-gradient(135deg, #7C4DFF 0%, #5E35B1 35%, #3949AB 70%, #1A237E 100%)",
 };
 
 function makeMovie(id, title, cartoonId, year, extra = {}) {
@@ -1440,7 +1450,7 @@ export const COMMUNITY_MESSAGES = [
 export const HERO_SLIDES = [
   {
     id: "h1",
-    title: "Doraemon Movie 1",
+    title: "Doraemon Movie",
     cartoonId: "doraemon",
     tagline: "Stream the latest Doraemon adventures in HD",
     gradient: cartoonGradients.doraemon,
@@ -1478,20 +1488,6 @@ export const HERO_SLIDES = [
     gradient: cartoonGradients.pokemon,
     accent: "yellow",
   },
-  // {
-  //   id: 'h6',
-  //   title: 'Naruto Movie 1',
-  //   cartoonId: 'naruto',
-  //   tagline: 'Ninja action — stream every movie now',
-  //   gradient: cartoonGradients.naruto,
-  // },
-  // {
-  //   id: 'h7',
-  //   title: 'Tom & Jerry Movie 1',
-  //   cartoonId: 'tom-jerry',
-  //   tagline: 'Classic chaos — endless cartoon fun',
-  //   gradient: cartoonGradients['tom-jerry'],
-  // },
 ];
 
 export const POPULAR_SHOWS = [

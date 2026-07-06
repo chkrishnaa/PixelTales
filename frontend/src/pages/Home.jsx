@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useMemo, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Sparkles,
   Star,
@@ -8,24 +8,21 @@ import {
   Clapperboard,
   MessageSquare,
   PlayCircle,
-} from 'lucide-react'
+} from "lucide-react";
 import HomeNavbar from "../components/HomeNavbar";
-import MovieGridCard from '../components/MovieGridCard'
-import Footer from '../components/Footer'
-import { FEATURES, FAQ_ITEMS, CARTOONS, GENRES } from '../utils/data'
-import { MOVIE_DETAILS } from '../utils/movie'
-import HomeHeroCarousel from '../components/home/HomeHeroCarousel'
-import ReviewCard from '../components/ReviewCard';
-import CommonPagination from '../components/Utility/CommonPagination';
-import { useReviews } from '../hooks/useReviews';
-import { useAnalytics, formatCount } from '../hooks/useAnalytics';
-import { useAuth } from '../context/AuthContext';
-
-const ALL_MOVIES = MOVIE_DETAILS
+import MovieGridCard from "../components/MovieGridCard";
+import Footer from "../components/Footer";
+import { FEATURES, FAQ_ITEMS, CARTOONS, GENRES } from "../utils/data";
+import HomeHeroCarousel from "../components/home/HomeHeroCarousel";
+import ReviewCard from "../components/ReviewCard";
+import CommonPagination from "../components/Utility/CommonPagination";
+import { useReviews } from "../hooks/useReviews";
+import { useAnalytics, formatCount } from "../hooks/useAnalytics";
+import { useAuth } from "../context/AuthContext";
 
 // function Stars({ rating }) {
 //   const full = Math.max(0, Math.min(5, Math.round(rating)));
-  
+
 //   return (
 //     <p className="text-amber-400" aria-label={`Rating ${rating} out of 5`}>
 //       {'★'.repeat(full)}
@@ -35,19 +32,40 @@ const ALL_MOVIES = MOVIE_DETAILS
 // }
 
 export default function Home() {
-  const { user } = useAuth();
-  const [movies, setMovies] = useState(ALL_MOVIES)
-  const [openFaq, setOpenFaq] = useState(0)
+  const { user, API } = useAuth();
+  const [movies, setMovies] = useState([]);
+  const [openFaq, setOpenFaq] = useState(0);
+  const [moviesLoading, setMoviesLoading] = useState(true);
+
+  // Fetch movies from MongoDB on mount
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const res = await fetch(`${API}/api/movies?limit=100`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setMovies(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch movies:", err);
+      } finally {
+        setMoviesLoading(false);
+      }
+    };
+    fetchMovies();
+  }, [API]);
 
   const { stats: analyticsStats, loading: analyticsLoading } = useAnalytics();
 
   const latestMovies = useMemo(() => {
-    return [...movies].sort((a, b) => b.year - a.year).slice(0, 12)
-  }, [movies])
+    return [...movies].sort((a, b) => b.year - a.year).slice(0, 12);
+  }, [movies]);
 
   const toggleFavorite = (id) => {
-    setMovies((prev) => prev.map((m) => (m.id === id ? { ...m, favorited: !m.favorited } : m)))
-  }
+    setMovies((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, favorited: !m.favorited } : m)),
+    );
+  };
 
   const [selectedReview, setSelectedReview] = useState(null);
 
@@ -57,7 +75,7 @@ export default function Home() {
 
   const paginatedReviews = reviews.slice(
     (currentPage - 1) * REVIEWS_PER_PAGE,
-    currentPage * REVIEWS_PER_PAGE
+    currentPage * REVIEWS_PER_PAGE,
   );
 
   return (
@@ -385,4 +403,3 @@ export default function Home() {
     </>
   );
 }
-

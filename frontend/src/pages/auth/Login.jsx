@@ -83,12 +83,14 @@ export default function Login() {
               </button>
             </div>
           </label>
-          <Link
+          {error && (
+            <Link
             to="/forgot-password"
             className="block text-right text-sm font-bold text-turquoise-600 dark:text-turquoise-400"
           >
             Forgot password?
           </Link>
+          )}
           <button type="submit" disabled={loading} className="btn-primary w-full py-3">
             {loading ? 'Signing in…' : 'Sign In'}
           </button>

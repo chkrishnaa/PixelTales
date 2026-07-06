@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Search, X, Film, ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { MOVIE_DETAILS, getMovieTitle } from '../utils/movie'
+import { getMovieTitle } from "../utils/movie";
 import { getCartoonName } from '../utils/data'
+import { useAuth } from "../context/AuthContext";
 import MovieHoverPreview from './MovieHoverPreview'
 
 // ── Fuzzy helpers ─────────────────────────────────────────────────────────────
@@ -60,14 +61,32 @@ const MAX_RESULTS = 7
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function NavSearchBar({ className = '' }) {
-  const [query,    setQuery]    = useState('')
-  const [open,     setOpen]     = useState(false)
-  const [cursor,   setCursor]   = useState(-1)
-  const [hovered,  setHovered]  = useState(null)   // { movie, rect }
-  const hideTimer  = useRef(null)
-  const navigate   = useNavigate()
-  const inputRef   = useRef(null)
-  const wrapRef    = useRef(null)
+  const { API } = useAuth();
+  const [allMovies, setAllMovies] = useState([]);
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const [cursor, setCursor] = useState(-1);
+  const [hovered, setHovered] = useState(null); // { movie, rect }
+  const hideTimer = useRef(null);
+  const navigate = useNavigate();
+  const inputRef = useRef(null);
+  const wrapRef = useRef(null);
+
+  // Fetch movies from API on mount
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const res = await fetch(`${API}/api/movies?limit=200`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setAllMovies(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch movies for search:", err);
+      }
+    };
+    fetchMovies();
+  }, [API]);
 
   const showPreview = useCallback((movie, e) => {
     clearTimeout(hideTimer.current)

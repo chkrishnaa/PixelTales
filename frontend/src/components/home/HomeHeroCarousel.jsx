@@ -17,8 +17,27 @@ const BANNERS = {
   // "tom-jerry": tomJerryBanner,
 };
 
+const BUBBLES = [
+  { top: "8%", left: "5%", size: 45, opacity: 0.22 },
+  { top: "15%", left: "18%", size: 140, opacity: 0.28 },
+  { top: "22%", left: "35%", size: 90, opacity: 0.24 },
+  { top: "10%", left: "75%", size: 160, opacity: 0.20 },
+  { top: "38%", left: "12%", size: 70, opacity: 0.30 },
+  { top: "58%", left: "8%", size: 130, opacity: 0.24 },
+  { top: "68%", left: "42%", size: 55, opacity: 0.26 },
+  { top: "82%", left: "20%", size: 100, opacity: 0.22 },
+  { top: "78%", left: "60%", size: 170, opacity: 0.25 },
+  { top: "60%", left: "88%", size: 65, opacity: 0.28 },
+  { top: "28%", left: "90%", size: 80, opacity: 0.23 },
+  { top: "5%", left: "58%", size: 50, opacity: 0.32 },
+  { top: "48%", left: "52%", size: 35, opacity: 0.35 },
+  { top: "70%", left: "78%", size: 40, opacity: 0.30 },
+  { top: "90%", left: "92%", size: 180, opacity: 0.20 },
+];
+
 export default function HomeHeroCarousel() {
   const [index, setIndex] = useState(0);
+  const hasMultipleSlides = HERO_SLIDES.length > 1;
 
   const accentText = {
     cyan: "text-cyan-100",
@@ -50,11 +69,14 @@ export default function HomeHeroCarousel() {
   };
 
   useEffect(() => {
+    if (!hasMultipleSlides) return;
+
     const timer = setInterval(() => {
       setIndex((i) => (i + 1) % HERO_SLIDES.length);
     }, 5000);
+
     return () => clearInterval(timer);
-  }, []);
+  }, [hasMultipleSlides]);
 
   const slide = HERO_SLIDES[index];
 
@@ -71,8 +93,21 @@ export default function HomeHeroCarousel() {
           >
             <div className="absolute inset-0 bg-black/10" />
 
-            <div className="absolute -right-20 top-1/2 size-80 -translate-y-1/2 rounded-full bg-white/10 blur-3xl" />
-            <div className="absolute -left-10 bottom-0 size-60 rounded-full bg-white/10 blur-2xl" />
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              {BUBBLES.map((bubble, i) => (
+                <div
+                  key={i}
+                  className="absolute rounded-full border border-white/20 bg-white"
+                  style={{
+                    top: bubble.top,
+                    left: bubble.left,
+                    width: bubble.size,
+                    height: bubble.size,
+                    opacity: bubble.opacity,
+                  }}
+                />
+              ))}
+            </div>
           </div>
         ))}
 
@@ -119,18 +154,20 @@ export default function HomeHeroCarousel() {
                 </Link>
               </div>
 
-              <div className="mt-8 flex items-center gap-2">
-                {HERO_SLIDES.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setIndex(i)}
-                    className={`h-2 rounded-full transition-all ${
-                      i === index ? "w-8 bg-white" : "w-2 bg-white/50"
-                    }`}
-                  />
-                ))}
-              </div>
+              {hasMultipleSlides && (
+                <div className="mt-8 flex items-center gap-2">
+                  {HERO_SLIDES.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setIndex(i)}
+                      className={`h-2 rounded-full transition-all ${
+                        i === index ? "w-8 bg-white" : "w-2 bg-white/50"
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* RIGHT BANNER */}
@@ -156,24 +193,28 @@ export default function HomeHeroCarousel() {
         </div>
 
         {/* PREVIOUS */}
-        <button
-          type="button"
-          className="absolute left-4 top-1/2 z-20 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur hover:bg-black/50"
-          onClick={() =>
-            setIndex((i) => (i - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)
-          }
-        >
-          <ChevronLeft size={22} />
-        </button>
+        {hasMultipleSlides && (
+          <button
+            type="button"
+            className="absolute left-4 top-1/2 z-20 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur hover:bg-black/50"
+            onClick={() =>
+              setIndex((i) => (i - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)
+            }
+          >
+            <ChevronLeft size={22} />
+          </button>
+        )}
 
         {/* NEXT */}
-        <button
-          type="button"
-          className="absolute right-4 top-1/2 z-20 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur hover:bg-black/50"
-          onClick={() => setIndex((i) => (i + 1) % HERO_SLIDES.length)}
-        >
-          <ChevronRight size={22} />
-        </button>
+        {hasMultipleSlides && (
+          <button
+            type="button"
+            className="absolute right-4 top-1/2 z-20 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur hover:bg-black/50"
+            onClick={() => setIndex((i) => (i + 1) % HERO_SLIDES.length)}
+          >
+            <ChevronRight size={22} />
+          </button>
+        )}
       </section>
 
       <style>

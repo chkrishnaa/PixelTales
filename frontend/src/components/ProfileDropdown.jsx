@@ -26,43 +26,7 @@ const MENU_ITEMS = [
 ]
 
 /* Generate a consistent gradient from the user's name */
-function nameToGradient(name = '') {
-  let hash = 0
-  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash)
-  const h1 = Math.abs(hash) % 360
-  const h2 = (h1 + 40) % 360
-  return `linear-gradient(135deg, hsl(${h1},70%,50%), hsl(${h2},70%,35%))`
-}
-
-/* Avatar: real photo if available, otherwise coloured initials */
-function Avatar({ user, size = 9 }) {
-  const [err, setErr] = useState(false)
-  const initials = (user?.name ?? '?')
-    .split(' ')
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? '')
-    .join('')
-  const gradient = nameToGradient(user?.name)
-
-  if (user?.avatar && !err) {
-    return (
-      <img
-        src={user.avatar}
-        alt={user.name}
-        onError={() => setErr(true)}
-        className={`size-${size} rounded-full object-cover`}
-      />
-    )
-  }
-  return (
-    <span
-      className={`flex size-${size} items-center justify-center rounded-full text-xs font-black text-white`}
-      style={{ background: gradient }}
-    >
-      {initials}
-    </span>
-  )
-}
+import Avatar from "./Avatar";
 
 export default function ProfileDropdown() {
   const [open, setOpen] = useState(false)

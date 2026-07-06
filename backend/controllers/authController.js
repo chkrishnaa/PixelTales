@@ -5,7 +5,7 @@ import { validationResult } from 'express-validator';
 import User       from '../models/User.js';
 import OTP        from '../models/OTP.js';
 import cloudinary from '../config/cloudinary.js';
-import { sendOTPEmail } from '../config/email.js';
+import { sendOTPEmail, sendTemplateEmail } from "../config/email.js";
 
 /* ── Helper ──────────────────────────────────────────────── */
 const signToken = (userId) =>
@@ -25,18 +25,160 @@ export const register = async (req, res, next) => {
 
     const { name, email, password } = req.body;
 
-    if (await User.findOne({ email: email.toLowerCase() })) {
-      return res.status(409).json({ success: false, message: 'Email already in use.' });
+    const normalizedEmail = email.toLowerCase();
+    const existingUser = await User.findOne({ email: normalizedEmail });
+    if (existingUser) {
+      if (!existingUser.isVerified) {
+        return res.status(409).json({
+          success: false,
+          message:
+            "An account already exists for this email. Verify your email or request a new OTP.",
+          email: normalizedEmail,
+        });
+      }
+
+      return res
+        .status(409)
+        .json({ success: false, message: "Email already in use." });
     }
 
-    const user  = await User.create({ name, email, password });
-    const token = signToken(user._id);
+    const user = await User.create({
+      name,
+      email: normalizedEmail,
+      password,
+      isVerified: false,
+    });
+
+    await OTP.deleteMany({ email: normalizedEmail, purpose: "email_verify" });
+    const rawOTP = generateOTP();
+    const hashedOTP = await bcrypt.hash(rawOTP, 10);
+
+    await OTP.create({
+      email: normalizedEmail,
+      otp: hashedOTP,
+      purpose: "email_verify",
+    });
+
+    await sendOTPEmail(
+      normalizedEmail,
+      rawOTP,
+      "Email Verification OTP",
+      "Use the verification code below to activate your PixelTales account. This OTP is valid for 10 minutes.",
+    );
 
     res.status(201).json({
       success: true,
-      message: 'Account created successfully!',
+      message:
+        "Verification OTP sent to your email. Please verify to complete signup.",
+      email: normalizedEmail,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const verifySignupOTP = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body;
+    if (!email || !otp)
+      return res
+        .status(400)
+        .json({ success: false, message: "Email and OTP are required." });
+
+    const record = await OTP.findOne({
+      email: email.toLowerCase(),
+      purpose: "email_verify",
+      isUsed: false,
+    });
+
+    if (!record)
+      return res
+        .status(400)
+        .json({ success: false, message: "OTP not found or already used." });
+
+    if (record.expiresAt < new Date())
+      return res.status(400).json({
+        success: false,
+        message: "OTP has expired. Please request a new one.",
+      });
+
+    const valid = await record.verifyOTP(otp);
+    if (!valid)
+      return res
+        .status(400)
+        .json({ success: false, message: "Incorrect OTP." });
+
+    record.isUsed = true;
+    await record.save();
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found." });
+
+    user.isVerified = true;
+    await user.save();
+
+    const token = signToken(user._id);
+
+    res.json({
+      success: true,
+      message: "Email verified successfully! You are now signed in.",
       token,
-      user: { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar },
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const resendSignupOTP = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email)
+      return res
+        .status(400)
+        .json({ success: false, message: "Email is required." });
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "No account found for this email." });
+
+    if (user.isVerified)
+      return res.status(400).json({
+        success: false,
+        message: "This account is already verified. Please log in.",
+      });
+
+    await OTP.deleteMany({ email: user.email, purpose: "email_verify" });
+    const rawOTP = generateOTP();
+    const hashedOTP = await bcrypt.hash(rawOTP, 10);
+
+    await OTP.create({
+      email: user.email,
+      otp: hashedOTP,
+      purpose: "email_verify",
+    });
+
+    await sendOTPEmail(
+      user.email,
+      rawOTP,
+      "Email Verification OTP",
+      "Use the verification code below to activate your PixelTales account. This OTP is valid for 10 minutes.",
+    );
+
+    res.json({
+      success: true,
+      message: "A new verification OTP has been sent to your email.",
     });
   } catch (err) {
     next(err);
@@ -55,6 +197,13 @@ export const login = async (req, res, next) => {
     const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
     if (!user || !user.password) {
       return res.status(401).json({ success: false, message: 'Invalid email or password.' });
+    }
+
+    if (!user.isVerified) {
+      return res.status(403).json({
+        success: false,
+        message: "Please verify your email before logging in.",
+      });
     }
 
     const match = await user.comparePassword(password);
@@ -114,7 +263,13 @@ export const forgotPassword = async (req, res, next) => {
       purpose: 'password_reset',
     });
 
-    await sendOTPEmail(email, rawOTP);
+    await sendOTPEmail(
+      email,
+      rawOTP,
+      "Password Reset OTP",
+      "Use the one-time password below to reset your PixelTales account password. This OTP is valid for 10 minutes.",
+      "password-reset",
+    );
 
     res.json({ success: true, message: 'OTP sent to your email. Valid for 10 minutes.' });
   } catch (err) {
@@ -209,32 +364,69 @@ export const resetPassword = async (req, res, next) => {
     const { resetToken, password, confirmPassword } = req.body;
 
     if (!resetToken || !password)
-      return res.status(400).json({ success: false, message: 'Reset token and new password are required.' });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Reset token and new password are required.",
+        });
 
     if (password !== confirmPassword)
-      return res.status(400).json({ success: false, message: 'Passwords do not match.' });
+      return res
+        .status(400)
+        .json({ success: false, message: "Passwords do not match." });
 
     if (password.length < 8)
-      return res.status(400).json({ success: false, message: 'Password must be at least 8 characters.' });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Password must be at least 8 characters.",
+        });
 
     let payload;
     try {
       payload = jwt.verify(resetToken, process.env.JWT_SECRET);
     } catch {
-      return res.status(400).json({ success: false, message: 'Reset token is invalid or expired.' });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Reset token is invalid or expired.",
+        });
     }
 
-    if (payload.purpose !== 'password_reset')
-      return res.status(400).json({ success: false, message: 'Invalid reset token.' });
+    if (payload.purpose !== "password_reset")
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid reset token." });
 
     const user = await User.findOne({ email: payload.email });
     if (!user)
-      return res.status(404).json({ success: false, message: 'User not found.' });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found." });
 
     user.password = password;
     await user.save();
 
-    res.json({ success: true, message: 'Password reset successfully! You can now log in.' });
+    // Notify user their password was updated
+    try {
+      await sendTemplateEmail(
+        user.email,
+        "Your password has been updated",
+        "Your account password was successfully updated. If this wasn't you, please contact support immediately.",
+        "password-updated",
+      );
+    } catch (e) {
+      // don't block the response if email fails
+      console.error("Failed to send password-updated email", e.message);
+    }
+
+    res.json({
+      success: true,
+      message: "Password reset successfully! You can now log in.",
+    });
   } catch (err) {
     next(err);
   }

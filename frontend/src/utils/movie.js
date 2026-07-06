@@ -1973,9 +1973,47 @@ export const MOVIE_DETAILS = [
   }
 ];
 
+/** Ensure all movies have isPrime and isRecommended fields */
+MOVIE_DETAILS.forEach((movie, index) => {
+  if (movie.isPrime === undefined) movie.isPrime = false;
+  if (movie.isRecommended === undefined) movie.isRecommended = false;
+  // Set some movies as recommended/prime for demo purposes
+  if (index % 5 === 0) movie.isRecommended = true;
+  if (index % 7 === 0) movie.isPrime = true;
+});
+
 /** Full detail rows (detail page lookup) */
 export function getMovieById(id) {
   return MOVIE_DETAILS.find((m) => m.id === id) ?? null;
+}
+
+export function addMovieToCatalog(movie) {
+  const normalized = {
+    ...movie,
+    id: movie.id || `movie-${Date.now()}`,
+    title: Array.isArray(movie.title)
+      ? movie.title
+      : [movie.title || "Untitled Movie"],
+    cartoonId: movie.cartoonId || "doraemon",
+    gradient:
+      movie.gradient ||
+      "linear-gradient(135deg, #0284c7 0%, #06b6d4 50%, #67e8f9 100%)",
+    genres: Array.isArray(movie.genres) ? movie.genres : [],
+    characters: Array.isArray(movie.characters) ? movie.characters : [],
+    gallery: Array.isArray(movie.gallery) ? movie.gallery : [],
+    comments: Array.isArray(movie.comments) ? movie.comments : [],
+    modern: movie.modern ?? true,
+  };
+
+  const exists = MOVIE_DETAILS.some((item) => item.id === normalized.id);
+  if (!exists) {
+    MOVIE_DETAILS.push(normalized);
+    ALL_MOVIES.push(normalized);
+    CONTINUE_WATCHING.push(normalized);
+    WATCH_HISTORY.push(normalized);
+  }
+
+  return normalized;
 }
 
 /**

@@ -9,6 +9,7 @@ import CommonPagination from '../components/Utility/CommonPagination'
 import EmptyState from '../components/EmptyState'
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../context/AuthContext'
+import AdminMovieModal from "../components/Utility/AdminMovieModal";
 
 /* sentiment → emoji mapping (aligned with Feedback form) */
 const SENTIMENT_EMOJI = Object.fromEntries(
@@ -27,9 +28,10 @@ function formatDate(iso) {
 const FEEDBACKS_PER_PAGE = 12;
 
 export default function Dashboard() {
-  const { API } = useAuth();
+  const { API, user, editMode } = useAuth();
 
   const [feedbacks,        setFeedbacks]        = useState([]);
+  const [showAddMovieModal, setShowAddMovieModal] = useState(false);
   const [feedbackLoading,  setFeedbackLoading]  = useState(true);
   const [currentPage,      setCurrentPage]      = useState(1);
   const [selectedFeedback, setSelectedFeedback] = useState(null);
@@ -52,8 +54,35 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-1 flex-col">
+      <AdminMovieModal
+        open={showAddMovieModal}
+        onClose={() => setShowAddMovieModal(false)}
+        onSaved={() => setShowAddMovieModal(false)}
+      />
+
       <Hero />
       <ContinueWatching />
+
+      {user?.role === "admin" && editMode && (
+        <div className="page-container pt-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-turquoise-200 bg-white/80 px-4 py-3 shadow-sm backdrop-blur dark:border-turquoise-900/40 dark:bg-gray-900/70">
+            <div>
+              <p className="text-sm font-semibold text-turquoise-600">
+                Admin workspace
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Quickly add fresh movies and keep the catalog up to date.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowAddMovieModal(true)}
+              className="rounded-full bg-turquoise-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-turquoise-500"
+            >
+              + Add Movie
+            </button>
+          </div>
+        </div>
+      )}
       <AllMoviesSection />
 
       <div className="page-container py-8">
@@ -65,7 +94,9 @@ export default function Dashboard() {
               <strong className="font-display mt-1 block text-2xl text-turquoise-700 dark:text-turquoise-400">
                 {value}
               </strong>
-              <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">{label}</span>
+              <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+                {label}
+              </span>
             </div>
           ))}
         </div>
@@ -74,7 +105,10 @@ export default function Dashboard() {
         {feedbackLoading ? (
           <div className="grid gap-4 md:grid-cols-3">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800" />
+              <div
+                key={i}
+                className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800"
+              />
             ))}
           </div>
         ) : feedbacks.length > 0 ? (
@@ -91,7 +125,7 @@ export default function Dashboard() {
               What Fans Are Saying
             </SectionTitle>
             <p className="-mt-3 mb-5 text-sm text-gray-600 dark:text-gray-400">
-              Real feedback from PixelTales fans{' '}
+              Real feedback from PixelTales fans{" "}
               <span className="rounded-full bg-turquoise-500 px-2 py-0.5 text-xs font-bold text-white">
                 {feedbacks.length}
               </span>
@@ -99,8 +133,11 @@ export default function Dashboard() {
 
             <div className="grid gap-4 md:grid-cols-3">
               {paginatedFeedbacks.map((item) => {
-                const typeMeta = TYPE_META[item.feedbackType] ?? { icon: '💬', label: item.feedbackType };
-                const emoji    = SENTIMENT_EMOJI[item.sentiment] ?? '💬';
+                const typeMeta = TYPE_META[item.feedbackType] ?? {
+                  icon: "💬",
+                  label: item.feedbackType,
+                };
+                const emoji = SENTIMENT_EMOJI[item.sentiment] ?? "💬";
                 return (
                   <article
                     key={item._id}
@@ -110,9 +147,11 @@ export default function Dashboard() {
                     <div className="flex justify-between">
                       <div className="flex items-center gap-2">
                         <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600 font-bold text-white text-sm uppercase">
-                          {item.name?.[0] ?? '?'}
+                          {item.name?.[0] ?? "?"}
                         </div>
-                        <span className="text-sm font-extrabold">{item.name}</span>
+                        <span className="text-sm font-extrabold">
+                          {item.name}
+                        </span>
                       </div>
                       <span className="mt-2 text-xl">{emoji}</span>
                     </div>
@@ -154,7 +193,6 @@ export default function Dashboard() {
             </Link>
           </div>
         )}
-
       </div>
 
       {/* Feedback detail modal */}
@@ -170,21 +208,28 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600 font-bold text-white text-xl uppercase">
-                  {selectedFeedback.name?.[0] ?? '?'}
+                  {selectedFeedback.name?.[0] ?? "?"}
                 </div>
                 <div>
                   <h3 className="font-display text-xl font-bold text-gray-900 dark:text-white">
                     {selectedFeedback.name}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Community Member</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Community Member
+                  </p>
                 </div>
               </div>
-              <span className="text-3xl">{SENTIMENT_EMOJI[selectedFeedback.sentiment] ?? '💬'}</span>
+              <span className="text-3xl">
+                {SENTIMENT_EMOJI[selectedFeedback.sentiment] ?? "💬"}
+              </span>
             </div>
 
             <div className="mt-4">
               {(() => {
-                const m = TYPE_META[selectedFeedback.feedbackType] ?? { icon: '💬', label: selectedFeedback.feedbackType };
+                const m = TYPE_META[selectedFeedback.feedbackType] ?? {
+                  icon: "💬",
+                  label: selectedFeedback.feedbackType,
+                };
                 return (
                   <span className="inline-flex rounded-full bg-turquoise-100 px-3 py-1 text-sm font-bold text-turquoise-700 dark:bg-turquoise-900/40 dark:text-turquoise-300">
                     {m.icon} {m.label}

@@ -1,5 +1,6 @@
 import { validationResult } from 'express-validator';
-import MovieStat    from '../models/MovieStat.js';
+import Movie from "../models/Movie.js";
+import MovieStat from "../models/MovieStat.js";
 import MovieComment from '../models/MovieComment.js';
 
 /* ── Helper — get-or-create stat doc for a movie ─────────── */
@@ -76,6 +77,44 @@ export const getMovieStats = async (req, res, next) => {
         liked,
       },
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ── GET /api/movies/:movieId ──────────────────────────────
+   Public — returns movie metadata from the database.
+*/
+export const getMovieDetails = async (req, res, next) => {
+  try {
+    const movie = await Movie.findOne({ movieId: req.params.movieId }).lean();
+    if (!movie) {
+      return res.status(404).json({ success: false, message: 'Movie not found.' });
+    }
+    movie.id = movie.movieId;
+    res.json({ success: true, data: movie });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ── GET /api/movies ───────────────────────────────────────
+   Public — list movies, optionally filtered by cartoonId and excluding one id.
+*/
+export const getMovies = async (req, res, next) => {
+  try {
+    const { cartoonId, excludeId, limit = 15 } = req.query;
+    const query = {};
+    if (cartoonId) query.cartoonId = cartoonId;
+    if (excludeId) query.movieId = { $ne: excludeId };
+
+    const movies = await Movie.find(query)
+      .sort({ createdAt: -1 })
+      .limit(Math.min(Number(limit) || 15, 50))
+      .lean();
+
+    const result = movies.map((movie) => ({ ...movie, id: movie.movieId }));
+    res.json({ success: true, data: result });
   } catch (err) {
     next(err);
   }

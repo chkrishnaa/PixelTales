@@ -21,7 +21,7 @@ export default function EmptyState({ title, description, action, icon: Icon }) {
       )}
 
       {/* Brand mark */}
-      <Logo size="md" className="opacity-60" />
+      <Logo size="md" className="" />
 
       {/* Text */}
       <div className="max-w-xs space-y-1.5">
