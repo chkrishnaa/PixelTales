@@ -77,7 +77,13 @@ export default function MovieInfo({
     {
       icon: CalendarDays,
       label: "Release Date",
-      value: movie.releaseDate || movie.year || "Unknown",
+      value: movie.releaseDate
+        ? new Date(movie.releaseDate).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })
+        : movie.year || "Unknown",
       color: "text-emerald-600 dark:text-emerald-400",
       bg: "bg-emerald-50 dark:bg-emerald-950/40",
     },

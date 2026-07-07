@@ -15,6 +15,7 @@ import AuthCallback from "./pages/auth/AuthCallback";
 import MovieDetails from "./pages/MovieDetails";
 import Page404 from "./pages/Page404";
 import Review from "./pages/Review";
+import ProtectedRoute from "./components/Utility/ProtectedRoute";
 
 export default function App() {
   return (
@@ -35,7 +36,14 @@ export default function App() {
         <Route path="party/room" element={<PartyRoom />} />
 
         <Route element={<MainLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="community" element={<Community />} />
           <Route path="feedback" element={<Feedback />} />
           <Route path="review" element={<Review />} />
@@ -43,7 +51,14 @@ export default function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="party" element={<Party />} />
 
-          <Route path="movie/:id" element={<MovieDetails />} />
+          <Route
+            path="/movie/:movieId"
+            element={
+              <ProtectedRoute>
+                <MovieDetails />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         <Route path="*" element={<Page404 />} />

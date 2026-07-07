@@ -4,6 +4,7 @@ import { getCartoonName } from '../utils/data'
 import { getMovieTitle } from '../utils/movie'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import LoginModal from './LoginModal'
 
 export default function MovieGridCard({
   movie,
@@ -16,7 +17,8 @@ export default function MovieGridCard({
   const [imgError, setImgError] = useState(false)
   const hasThumbnail = Boolean(movie.thumbnail && movie.thumbnail.trim().length > 0) && !imgError
 
-  const { user, token, API } = useAuth()
+  const { user, token, API } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [liked,         setLiked]         = useState(false)
   const [likesCount,    setLikesCount]    = useState(movie.likes ?? 0)
   const [commentsCount, setCommentsCount] = useState(movie.commentsCount ?? 0)
@@ -77,16 +79,23 @@ export default function MovieGridCard({
   }
 
   return (
+    <>
     <Link
-      to={`/movie/${movie.id}`}
-      className={`group block ${compact ? "w-[200px] shrink-0" : "w-full"}
-        flex flex-col
-        ${
-          v
-            ? "bg-[#fdf3d8] dark:bg-[#1e1508] border-2 border-dashed border-amber-700/60 dark:border-amber-800/50 rounded-2xl shadow-[3px_3px_0_rgba(139,90,43,0.25)] hover:shadow-[5px_5px_0_rgba(139,90,43,0.35)]"
-            : "bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-[0_4px_20px_rgba(15,118,110,0.12)] hover:shadow-[0_12px_32px_rgba(15,118,110,0.22)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:dark:shadow-[0_12px_36px_rgba(0,0,0,0.55)]"
+      to={user ? `/movie/${movie.id}` : "#"}
+      onClick={(e) => {
+        if (!user) {
+          e.preventDefault();
+          setShowLoginModal(true);
         }
-        overflow-hidden hover:-translate-y-1 transition-all duration-300`}
+      }}
+      className={`group block ${compact ? "w-[200px] shrink-0" : "w-full"}
+    flex flex-col
+    ${
+      v
+        ? "bg-[#fdf3d8] dark:bg-[#1e1508] border-2 border-dashed border-amber-700/60 dark:border-amber-800/50 rounded-2xl shadow-[3px_3px_0_rgba(139,90,43,0.25)] hover:shadow-[5px_5px_0_rgba(139,90,43,0.35)]"
+        : "bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-[0_4px_20px_rgba(15,118,110,0.12)] hover:shadow-[0_12px_32px_rgba(15,118,110,0.22)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:dark:shadow-[0_12px_36px_rgba(0,0,0,0.55)]"
+    }
+    overflow-hidden hover:-translate-y-1 transition-all duration-300`}
     >
       {/* ── Poster / gradient area ─── */}
       <div
@@ -195,7 +204,7 @@ export default function MovieGridCard({
         {/* UNAVAILABLE badge */}
         {!hasVideo && (
           <div
-            className={`absolute left-0 right-0 z-20 flex justify-center ${v ? "bottom-4" : "bottom-2"}`}
+            className={`absolute left-0 right-0 z-20 flex justify-center items-center ${v ? "bottom-4" : "bottom-2"}`}
           >
             <span
               className={`px-2.5 py-[3px] text-[8px] font-black tracking-[0.18em] uppercase shadow-md rounded-sm ${
@@ -418,5 +427,13 @@ export default function MovieGridCard({
         )}
       </div>
     </Link>
+    {showLoginModal && (
+  <LoginModal
+    onClose={() => setShowLoginModal(false)}
+    title="Login to Watch Movies"
+    description="Please login to watch movies and access movie details."
+    icon="🎬"
+  />
+)}</>
   );
 }

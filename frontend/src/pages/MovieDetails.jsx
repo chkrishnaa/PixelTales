@@ -29,7 +29,9 @@ const TABS = [
 ];
 
 export default function MovieDetails() {
-  const { id } = useParams();
+  const { movieId } = useParams();
+
+  console.log("Movie ID:", movieId);
   const { trackVisit } = useWatch();
 
   const [activeTab, setActiveTab] = useState("overview");
@@ -59,11 +61,13 @@ export default function MovieDetails() {
   const isClassic = movie?.modern === false;
 
   useEffect(() => {
-    if (!id) return;
+    if (!movieId) return;
     setLoading(true);
     setError(null);
 
-    fetch(`${API}/api/movies/${id}`)
+    console.log("Fetching:", `${API}/api/movies/${movieId}`);
+
+    fetch(`${API}/api/movies/${movieId}`)
       .then((r) => {
         if (!r.ok) throw new Error("Movie not found");
         return r.json();
@@ -74,13 +78,13 @@ export default function MovieDetails() {
       })
       .catch((err) => setError(err.message || "Unable to load movie"))
       .finally(() => setLoading(false));
-  }, [id, API]);
+  }, [movieId, API]);
 
   useEffect(() => {
-    if (!id) return;
+    if (!movieId) return;
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-    fetch(`${API}/api/movies/${id}/stats`, { headers })
+    fetch(`${API}/api/movies/${movieId}/stats`, { headers })
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
         if (json?.success) {
@@ -88,7 +92,7 @@ export default function MovieDetails() {
         }
       })
       .catch(() => {});
-  }, [id, API, token]);
+  }, [movieId, API, token]);
 
   useEffect(() => {
     if (!movie?.cartoonId) return;
@@ -109,11 +113,11 @@ export default function MovieDetails() {
 
   useEffect(() => {
     // Track this visit in history
-    if (id) trackVisit(id);
+    if (movieId) trackVisit(movieId);
     // Trigger page entry animation
     const timer = setTimeout(() => setIsPageLoaded(true), 50);
     return () => clearTimeout(timer);
-  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [movieId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!editMode && activeEditor) {

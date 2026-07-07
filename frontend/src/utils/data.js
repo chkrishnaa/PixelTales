@@ -33,11 +33,11 @@ export const cartoonGradients = {
     "linear-gradient(135deg, #FF8A80 0%, #FF5252 30%, #E53935 65%, #B71C1C 100%)",
 
   // Oggy and the Cockroaches
-  oggy:
+  oggyAndTheCockroaches:
     "linear-gradient(135deg, #6DD5FA 0%, #29B6F6 35%, #0288D1 70%, #01579B 100%)",
 
   // Pakdam Pakdai
-  "pakdam-pakdai":
+  "pakdamPakdai":
     "linear-gradient(135deg, #66BB6A 0%, #43A047 35%, #2E7D32 70%, #1B5E20 100%)",
 
   // Perman
@@ -1460,7 +1460,7 @@ export const HERO_SLIDES = [
     id: "h2",
     title: "Pokemon Movie 1",
     cartoonId: "pokemon",
-    tagline: "Catch every Pokemon movie — anytime, anywhere",
+    tagline: "Catch every Pokémon movie — anytime, anywhere",
     gradient: cartoonGradients.pokemon,
     accent: "yellow",
   },
@@ -1474,6 +1474,30 @@ export const HERO_SLIDES = [
   },
   {
     id: "h4",
+    title: "Oggy and the Cockroaches",
+    cartoonId: "oggy-and-the-cockroaches",
+    tagline: "Enjoy Oggy's funniest battles with the crazy cockroaches",
+    gradient: cartoonGradients.oggyAndTheCockroaches,
+    accent: "blue",
+  },
+  {
+    id: "h5",
+    title: "Pakdam Pakdai",
+    cartoonId: "pakdam-pakdai",
+    tagline: "Join Doggy Don and friends for nonstop laughter and action",
+    gradient: cartoonGradients.pakdamPakdai,
+    accent: "green",
+  },
+  {
+    id: "h6",
+    title: "Perman",
+    cartoonId: "perman",
+    tagline: "Fly into nostalgic adventures with Mitsuo and the Perman team",
+    gradient: cartoonGradients.perman,
+    accent: "purple",
+  },
+  {
+    id: "h7",
     title: "Doraemon Movie 2",
     cartoonId: "doraemon",
     tagline: "Nobita and friends — epic journeys await",
@@ -1481,7 +1505,7 @@ export const HERO_SLIDES = [
     accent: "cyan",
   },
   {
-    id: "h5",
+    id: "h8",
     title: "Pokemon Movie 2",
     cartoonId: "pokemon",
     tagline: "Trending this week — join millions watching",

@@ -3,26 +3,33 @@ import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { HERO_SLIDES, getCartoonName } from "../../utils/data";
 
-import pokemonBanner from "../../assets/banner-images/pokemon.png";
-import doraemonBanner from "../../assets/banner-images/doraemon.png";
-import shinchanBanner from "../../assets/banner-images/shinchan.png";
-// import narutoBanner from "../../assets/banner-images/naruto.png";
-// import tomJerryBanner from "../../assets/banner-images/tom-jerry.png";
+// import pokemonBanner from "../../assets/banner-images/pokemon.png";
+// import doraemonBanner from "../../assets/banner-images/doraemon.png";
+// import shinchanBanner from "../../assets/banner-images/shinchan.png";
+// import permanBanner from "../../assets/banner-images/perman.png";
+// import oggyAndTheCockroachesBanner from "../../assets/banner-images/oggyAndTheCockroaches.png";
+// import pakdamPakdaiBanner from "../../assets/banner-images/pakdamPakdai.png";
+// // import narutoBanner from "../../assets/banner-images/naruto.png";
+// // import tomJerryBanner from "../../assets/banner-images/tom-jerry.png";
 
 const BANNERS = {
-  doraemon: doraemonBanner,
-  pokemon: pokemonBanner,
-  shinchan: shinchanBanner,
-  // naruto: narutoBanner,
-  // "tom-jerry": tomJerryBanner,
+  doraemon: "doraemon.png",
+  pokemon: "pokemon.png",
+  shinchan: "shinchan.png",
+  perman: "perman.png",
+  "oggy-and-the-cockroaches": "oggyAndTheCockroaches.png",
+  "pakdam-pakdai": "pakdamPakdai.png",
 };
+
+const GITHUB_IMAGE_BASE =
+  "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/BannerImages";
 
 const BUBBLES = [
   { top: "8%", left: "5%", size: 45, opacity: 0.22 },
   { top: "15%", left: "18%", size: 140, opacity: 0.28 },
   { top: "22%", left: "35%", size: 90, opacity: 0.24 },
-  { top: "10%", left: "75%", size: 160, opacity: 0.20 },
-  { top: "38%", left: "12%", size: 70, opacity: 0.30 },
+  { top: "10%", left: "75%", size: 160, opacity: 0.2 },
+  { top: "38%", left: "12%", size: 70, opacity: 0.3 },
   { top: "58%", left: "8%", size: 130, opacity: 0.24 },
   { top: "68%", left: "42%", size: 55, opacity: 0.26 },
   { top: "82%", left: "20%", size: 100, opacity: 0.22 },
@@ -31,8 +38,8 @@ const BUBBLES = [
   { top: "28%", left: "90%", size: 80, opacity: 0.23 },
   { top: "5%", left: "58%", size: 50, opacity: 0.32 },
   { top: "48%", left: "52%", size: 35, opacity: 0.35 },
-  { top: "70%", left: "78%", size: 40, opacity: 0.30 },
-  { top: "90%", left: "92%", size: 180, opacity: 0.20 },
+  { top: "70%", left: "78%", size: 40, opacity: 0.3 },
+  { top: "90%", left: "92%", size: 180, opacity: 0.2 },
 ];
 
 export default function HomeHeroCarousel() {
@@ -43,6 +50,9 @@ export default function HomeHeroCarousel() {
     cyan: "text-cyan-100",
     yellow: "text-amber-100",
     pink: "text-rose-100",
+    blue: "text-blue-100",
+    green: "text-emerald-100",
+    purple: "text-violet-100",
   };
 
   const accentButton = {
@@ -65,6 +75,27 @@ export default function HomeHeroCarousel() {
     text-rose-700
     hover:bg-white
     shadow-lg shadow-rose-900/20
+  `,
+
+    blue: `
+    bg-blue-50
+    text-blue-700
+    hover:bg-white
+    shadow-lg shadow-blue-900/20
+  `,
+
+    green: `
+    bg-emerald-50
+    text-emerald-700
+    hover:bg-white
+    shadow-lg shadow-emerald-900/20
+  `,
+
+    purple: `
+    bg-violet-50
+    text-violet-700
+    hover:bg-white
+    shadow-lg shadow-violet-900/20
   `,
   };
 
@@ -175,7 +206,7 @@ export default function HomeHeroCarousel() {
               {BANNERS[slide.cartoonId] && (
                 <img
                   key={slide.id}
-                  src={BANNERS[slide.cartoonId]}
+                  src={`${GITHUB_IMAGE_BASE}/${BANNERS[slide.cartoonId]}`}
                   alt={slide.title}
                   loading="eager"
                   className="
