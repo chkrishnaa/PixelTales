@@ -79,33 +79,58 @@ const MAX_DEPTH = 2;
 
 function LikersModal({ likers, onClose }) {
   return createPortal(
-    <div className="fixed inset-0 z-200 flex items-end justify-center bg-black/50 p-4 backdrop-blur-sm sm:items-center" onClick={onClose}>
-      <div className="w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-gray-900" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 z-200 flex items-end justify-center bg-black/50 p-4 backdrop-blur-sm sm:items-center"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-gray-900"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4 dark:border-gray-800">
           <div className="flex items-center gap-2">
             <Heart size={16} className="fill-rose-500 text-rose-500" />
-            <h3 className="font-display text-lg font-bold text-gray-900 dark:text-white">Liked by</h3>
-            <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-600 dark:bg-rose-900/30 dark:text-rose-400">{likers.length}</span>
+            <h3 className="font-sans text-lg font-bold text-gray-900 dark:text-white">
+              Liked by
+            </h3>
+            <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-600 dark:bg-rose-900/30 dark:text-rose-400">
+              {likers.length}
+            </span>
           </div>
-          <button onClick={onClose} className="flex size-8 items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button
+            onClick={onClose}
+            className="flex size-8 items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
             <X size={16} />
           </button>
         </div>
         <div className="max-h-72 space-y-1 overflow-y-auto p-3">
           {likers.length === 0 ? (
             <div className="py-6 text-center">
-              <Users size={28} className="mx-auto mb-2 text-gray-300 dark:text-gray-600" />
+              <Users
+                size={28}
+                className="mx-auto mb-2 text-gray-300 dark:text-gray-600"
+              />
               <p className="text-sm text-gray-400">No likes yet</p>
             </div>
           ) : (
             likers.map((liker, i) => (
-              <div key={i} className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-gray-50 dark:hover:bg-gray-800">
-                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm ${liker.isMe ? "bg-turquoise-500" : getAvatarColor(liker.name)}`}>
+              <div
+                key={i}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-gray-50 dark:hover:bg-gray-800"
+              >
+                <div
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm ${liker.isMe ? "bg-turquoise-500" : getAvatarColor(liker.name)}`}
+                >
                   {getInitials(liker.name)}
                 </div>
-                <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">{liker.name}</p>
+                <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
+                  {liker.name}
+                </p>
                 {liker.isMe && (
-                  <span className="ml-auto shrink-0 rounded-full bg-turquoise-100 px-2 py-0.5 text-[10px] font-bold text-turquoise-700 dark:bg-turquoise-900/40 dark:text-turquoise-300">You</span>
+                  <span className="ml-auto shrink-0 rounded-full bg-turquoise-100 px-2 py-0.5 text-[10px] font-bold text-turquoise-700 dark:bg-turquoise-900/40 dark:text-turquoise-300">
+                    You
+                  </span>
                 )}
               </div>
             ))
@@ -113,7 +138,7 @@ function LikersModal({ likers, onClose }) {
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }
 
@@ -652,7 +677,7 @@ export default function MovieComments({ movie }) {
               }
             />
             <h2
-              className={`font-display text-2xl font-bold ${v ? "text-amber-900 dark:text-amber-100" : "text-gray-900 dark:text-white"}`}
+              className={`font-sans text-2xl font-bold ${v ? "text-amber-900 dark:text-amber-100" : "text-gray-900 dark:text-white"}`}
               style={v ? vFont : undefined}
             >
               {v ? "📜 Comments" : "Comments"}
@@ -734,14 +759,22 @@ export default function MovieComments({ movie }) {
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleAddComment()}
-                  onClick={() => { if (!user) setShowLoginModal(true); }}
+                  onClick={() => {
+                    if (!user) setShowLoginModal(true);
+                  }}
                   disabled={!user}
                   placeholder={user ? "Write a comment…" : "Log in to comment"}
                   className={`flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400 disabled:cursor-pointer ${v ? "text-amber-900 dark:text-amber-200" : "text-gray-700 dark:text-gray-300"}`}
                   style={v ? vFont : undefined}
                 />
                 <button
-                  onClick={() => { if (!user) { setShowLoginModal(true); return; } handleAddComment(); }}
+                  onClick={() => {
+                    if (!user) {
+                      setShowLoginModal(true);
+                      return;
+                    }
+                    handleAddComment();
+                  }}
                   disabled={(!newComment.trim() && !!user) || posting}
                   className={`transition disabled:cursor-not-allowed disabled:opacity-30 ${v ? "text-amber-700 hover:text-amber-800 dark:text-amber-500" : "text-turquoise-600 hover:text-turquoise-700 dark:text-turquoise-400"}`}
                 >

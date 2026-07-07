@@ -7,7 +7,7 @@ export default function AuthLayout() {
       <div className="w-full max-w-md">
         <Link
           to="/"
-          className="font-display mb-6 block text-center text-3xl text-turquoise-700 dark:text-turquoise-400"
+          className="font-sans mb-6 block text-center text-3xl text-turquoise-700 dark:text-turquoise-400"
         >
           <Logo size="xl" />
         </Link>

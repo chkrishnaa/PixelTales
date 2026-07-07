@@ -108,7 +108,7 @@ function CollectionDetail({ col, token, API, onBack, onDeleted }) {
         )}
       </div>
 
-      <h2 className="mb-1 font-display text-xl font-bold text-turquoise-700 dark:text-turquoise-400">
+      <h2 className="mb-1 font-sans text-xl font-bold text-turquoise-700 dark:text-turquoise-400">
         {col.name}
         {col.isDummy && (
           <span className="ml-2 rounded-full bg-turquoise-100 px-2 py-0.5 text-xs font-semibold text-turquoise-600 dark:bg-turquoise-950/40 dark:text-turquoise-400">
@@ -117,7 +117,7 @@ function CollectionDetail({ col, token, API, onBack, onDeleted }) {
         )}
       </h2>
       <p className="mb-5 text-sm text-gray-500">
-        {totalMovies} {totalMovies === 1 ? 'movie' : 'movies'}
+        {totalMovies} {totalMovies === 1 ? "movie" : "movies"}
       </p>
 
       {movies.length === 0 ? (
@@ -139,7 +139,7 @@ function CollectionDetail({ col, token, API, onBack, onDeleted }) {
         </>
       )}
     </div>
-  )
+  );
 }
 
 /* ─────────────────────────────────────────────────────────── */
@@ -654,7 +654,7 @@ export default function Profile() {
           </label>
         </div>
         <div>
-          <h1 className="font-display text-2xl text-turquoise-700 dark:text-turquoise-400 md:text-3xl">
+          <h1 className="font-sans text-2xl text-turquoise-700 dark:text-turquoise-400 md:text-3xl">
             {user?.name ?? "Guest"}
           </h1>
           <p className="text-gray-600 dark:text-gray-400">

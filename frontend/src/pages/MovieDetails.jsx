@@ -219,7 +219,7 @@ export default function MovieDetails() {
                 className={`mr-4 shrink-0 text-sm font-bold ${
                   isClassic
                     ? "text-amber-800 dark:text-amber-400"
-                    : "font-display text-turquoise-700 dark:text-turquoise-400"
+                    : "font-sans text-turquoise-700 dark:text-turquoise-400"
                 }`}
                 style={
                   isClassic

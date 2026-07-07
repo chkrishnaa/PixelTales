@@ -175,7 +175,7 @@ export default function MovieGallery({
               }
             />
             <h2
-              className={`font-display text-2xl font-bold ${v ? V.headerTitle : "text-gray-900 dark:text-white"}`}
+              className={`font-sans text-2xl font-bold ${v ? V.headerTitle : "text-gray-900 dark:text-white"}`}
               style={v ? V.font : undefined}
             >
               {v ? "📽️ Film Archive" : "Gallery"}

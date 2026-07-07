@@ -140,12 +140,14 @@ export default function SaveToCollectionModal({ movieId, onClose }) {
       onClick={handleBackdrop}
     >
       <div className="w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-gray-900">
-
         {/* ── Header ─────────────────────────────────────── */}
         <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4 dark:border-gray-800">
           <div className="flex items-center gap-2">
-            <Bookmark size={16} className="text-turquoise-600 dark:text-turquoise-400" />
-            <h3 className="font-display text-lg font-bold text-gray-900 dark:text-white">
+            <Bookmark
+              size={16}
+              className="text-turquoise-600 dark:text-turquoise-400"
+            />
+            <h3 className="font-sans text-lg font-bold text-gray-900 dark:text-white">
               Save to Collection
             </h3>
           </div>
@@ -165,11 +167,16 @@ export default function SaveToCollectionModal({ movieId, onClose }) {
             </div>
           ) : collections.length === 0 && !showCreate ? (
             <div className="py-6 text-center">
-              <Bookmark size={28} className="mx-auto mb-2 text-gray-300 dark:text-gray-600" />
+              <Bookmark
+                size={28}
+                className="mx-auto mb-2 text-gray-300 dark:text-gray-600"
+              />
               <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                 No collections yet
               </p>
-              <p className="mt-1 text-xs text-gray-400">Create one to save this movie</p>
+              <p className="mt-1 text-xs text-gray-400">
+                Create one to save this movie
+              </p>
             </div>
           ) : (
             <div className="space-y-0.5">
@@ -195,26 +202,35 @@ export default function SaveToCollectionModal({ movieId, onClose }) {
                 autoFocus
                 type="text"
                 value={newName}
-                onChange={(e) => { setNewName(e.target.value); setNameError(''); }}
-                onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
+                onChange={(e) => {
+                  setNewName(e.target.value);
+                  setNameError("");
+                }}
+                onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 placeholder="Collection name…"
                 maxLength={80}
                 className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800 outline-none transition focus:border-turquoise-400 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-turquoise-600"
               />
-              {nameError && (
-                <p className="text-xs text-red-500">{nameError}</p>
-              )}
+              {nameError && <p className="text-xs text-red-500">{nameError}</p>}
               <div className="flex gap-2">
                 <button
                   onClick={handleCreate}
                   disabled={creating || !newName.trim()}
                   className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-turquoise-600 py-2 text-sm font-bold text-white transition hover:bg-turquoise-500 disabled:opacity-40"
                 >
-                  {creating ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+                  {creating ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <Check size={14} />
+                  )}
                   Create
                 </button>
                 <button
-                  onClick={() => { setShowCreate(false); setNewName(''); setNameError(''); }}
+                  onClick={() => {
+                    setShowCreate(false);
+                    setNewName("");
+                    setNameError("");
+                  }}
                   className="rounded-xl border-2 border-gray-200 px-3 py-2 text-sm font-bold text-gray-500 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
                 >
                   Cancel
@@ -233,6 +249,6 @@ export default function SaveToCollectionModal({ movieId, onClose }) {
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }

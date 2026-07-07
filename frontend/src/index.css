@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&display=swap');
 @import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  --breakpoint-xs: 400px;
   --color-turquoise-50: #f0fdfa;
   --color-turquoise-100: #ccfbf1;
   --color-turquoise-200: #98f7e5;
@@ -16,7 +18,7 @@
   --color-turquoise-950: #042f2e;
   --color-accent-warm: #f97316;
   --font-display: 'Fredoka One', cursive;
-  --font-sans: Nunito, sans-serif;
+  --font-sans: "DM Sans", sans-serif;
 }
 
 @layer base {

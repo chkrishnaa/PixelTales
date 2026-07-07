@@ -20,7 +20,7 @@ export default function Reviews() {
         <div>
           <div className="flex items-center gap-2">
             <Star size={28} className="fill-turquoise-500 text-turquoise-500" />
-            <h1 className="font-display text-4xl text-turquoise-700 dark:text-turquoise-400">
+            <h1 className="font-sans text-4xl text-turquoise-700 dark:text-turquoise-400">
               Community Reviews
             </h1>
           </div>
@@ -38,14 +38,17 @@ export default function Reviews() {
       {loading ? (
         <div className="grid gap-4 lg:grid-cols-2">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800" />
+            <div
+              key={i}
+              className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800"
+            />
           ))}
         </div>
       ) : reviews.length === 0 ? (
         <EmptyState
           title="No Reviews Yet"
           description="Be the first to share your PixelTales experience with the community!"
-          cta={{ label: 'Write a Review', to: '/write-review' }}
+          cta={{ label: "Write a Review", to: "/write-review" }}
         />
       ) : (
         <>

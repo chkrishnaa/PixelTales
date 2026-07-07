@@ -16,7 +16,10 @@ export default function EmptyState({ title, description, action, icon: Icon }) {
       {/* Icon */}
       {Icon && (
         <div className="flex size-14 items-center justify-center rounded-2xl bg-turquoise-50 dark:bg-turquoise-950/30">
-          <Icon size={28} className="text-turquoise-400 dark:text-turquoise-500" />
+          <Icon
+            size={28}
+            className="text-turquoise-400 dark:text-turquoise-500"
+          />
         </div>
       )}
 
@@ -25,7 +28,7 @@ export default function EmptyState({ title, description, action, icon: Icon }) {
 
       {/* Text */}
       <div className="max-w-xs space-y-1.5">
-        <p className="font-display text-lg font-bold text-gray-700 dark:text-gray-200">
+        <p className="font-sans text-lg font-bold text-gray-700 dark:text-gray-200">
           {title}
         </p>
         {description && (
@@ -36,18 +39,14 @@ export default function EmptyState({ title, description, action, icon: Icon }) {
       </div>
 
       {/* Optional CTA */}
-      {action && (
-        typeof action === 'object' && action.to ? (
-          <Link
-            to={action.to}
-            className="btn-primary mt-1 text-sm"
-          >
+      {action &&
+        (typeof action === "object" && action.to ? (
+          <Link to={action.to} className="btn-primary mt-1 text-sm">
             {action.label}
           </Link>
         ) : (
           action
-        )
-      )}
+        ))}
     </div>
-  )
+  );
 }

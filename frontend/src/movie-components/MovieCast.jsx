@@ -133,7 +133,7 @@ export default function MovieCast({
               }
             />
             <h2
-              className={`font-display text-2xl font-bold ${v ? V.headerTitle : "text-gray-900 dark:text-white"}`}
+              className={`font-sans text-2xl font-bold ${v ? V.headerTitle : "text-gray-900 dark:text-white"}`}
               style={v ? V.font : undefined}
             >
               Characters
@@ -314,7 +314,7 @@ export default function MovieCast({
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <h3
-                        className={`font-display text-xl font-bold leading-tight ${v ? V.panelName : getTheme(selectedChar.role).text}`}
+                        className={`font-sans text-xl font-bold leading-tight ${v ? V.panelName : getTheme(selectedChar.role).text}`}
                         style={v ? V.font : undefined}
                       >
                         {selectedChar.name}

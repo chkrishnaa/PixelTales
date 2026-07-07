@@ -239,7 +239,7 @@ export default function MovieInfo({
                 </button>
               )}
               <h1
-                className={`font-display text-3xl font-bold leading-tight md:text-4xl ${C.titleText}`}
+                className={`font-sans text-3xl font-bold leading-tight md:text-4xl ${C.titleText}`}
                 style={v ? C.font : undefined}
               >
                 {getMovieTitle(movie)}

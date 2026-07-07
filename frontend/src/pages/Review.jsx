@@ -97,21 +97,21 @@ export default function Review() {
       )}
       <header className="mb-8 text-center">
         <Star className="mx-auto size-10 fill-turquoise-500 text-turquoise-500" />
-        <h1 className="font-display mt-2 text-3xl text-turquoise-700 dark:text-turquoise-400">
-          {isEditing ? 'Edit Your Review' : 'Write a Review'}
+        <h1 className="font-sans mt-2 text-3xl text-turquoise-700 dark:text-turquoise-400">
+          {isEditing ? "Edit Your Review" : "Write a Review"}
         </h1>
         <p className="mt-2 text-gray-600 dark:text-gray-400">
           {isEditing
-            ? 'Your previous review is loaded below — update it anytime.'
-            : 'Share your thoughts with the PixelTales community.'}
+            ? "Your previous review is loaded below — update it anytime."
+            : "Share your thoughts with the PixelTales community."}
         </p>
       </header>
 
       {submitted ? (
         <div className="card-surface p-8 text-center">
           <CheckCircle className="mx-auto size-14 text-emerald-500" />
-          <p className="font-display mt-4 text-2xl text-turquoise-700 dark:text-turquoise-400">
-            {isEditing ? 'Review Updated ⭐' : 'Review Submitted ⭐'}
+          <p className="font-sans mt-4 text-2xl text-turquoise-700 dark:text-turquoise-400">
+            {isEditing ? "Review Updated ⭐" : "Review Submitted ⭐"}
           </p>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             Thank you for sharing your review, {name}!
@@ -130,7 +130,10 @@ export default function Review() {
           </div>
         </div>
       ) : (
-        <form className="card-surface space-y-5 p-6 md:p-8" onSubmit={handleSubmit}>
+        <form
+          className="card-surface space-y-5 p-6 md:p-8"
+          onSubmit={handleSubmit}
+        >
           {loading && (
             <p className="rounded-xl bg-turquoise-50 px-4 py-2.5 text-center text-sm font-medium text-turquoise-700 dark:bg-turquoise-950/30 dark:text-turquoise-300">
               Loading your previous review…
@@ -140,7 +143,8 @@ export default function Review() {
           {isEditing && !loading && (
             <div className="flex items-center gap-2 rounded-xl border border-turquoise-200 bg-turquoise-50 px-4 py-2.5 text-sm text-turquoise-800 dark:border-turquoise-800 dark:bg-turquoise-950/30 dark:text-turquoise-300">
               <Pencil size={15} className="shrink-0" />
-              You already submitted a review — edit the fields below and save changes.
+              You already submitted a review — edit the fields below and save
+              changes.
             </div>
           )}
 
@@ -163,8 +167,8 @@ export default function Review() {
                     size={52}
                     className={
                       value <= (hover || rating)
-                        ? 'fill-turquoise-600 text-turquoise-600 dark:fill-turquoise-400 dark:text-turquoise-400'
-                        : 'text-gray-300 dark:text-gray-600'
+                        ? "fill-turquoise-600 text-turquoise-600 dark:fill-turquoise-400 dark:text-turquoise-400"
+                        : "text-gray-300 dark:text-gray-600"
                     }
                   />
                 </button>
@@ -172,7 +176,7 @@ export default function Review() {
             </div>
             {rating > 0 && (
               <p className="mt-2 text-sm font-semibold text-turquoise-600 dark:text-turquoise-400">
-                {['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent!'][rating]}
+                {["", "Poor", "Fair", "Good", "Great", "Excellent!"][rating]}
               </p>
             )}
           </fieldset>
@@ -238,8 +242,12 @@ export default function Review() {
           >
             <Send size={18} />
             {busy
-              ? (isEditing ? 'Updating…' : 'Submitting…')
-              : (isEditing ? 'Update Review' : 'Submit Review')}
+              ? isEditing
+                ? "Updating…"
+                : "Submitting…"
+              : isEditing
+                ? "Update Review"
+                : "Submit Review"}
           </button>
         </form>
       )}

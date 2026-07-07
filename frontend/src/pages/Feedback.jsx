@@ -158,7 +158,7 @@ export default function Feedback() {
       )}
       <header className="mb-8 text-center">
         <MessageCircle className="mx-auto size-10 text-turquoise-500" />
-        <h1 className="font-display mt-2 text-3xl text-turquoise-700 dark:text-turquoise-400">
+        <h1 className="font-sans mt-2 text-3xl text-turquoise-700 dark:text-turquoise-400">
           Share Feedback
         </h1>
         <p className="mt-2 text-gray-600 dark:text-gray-400">
@@ -175,11 +175,15 @@ export default function Feedback() {
           >
             <div>
               <h2 className="font-bold text-gray-900 dark:text-white">
-                {hasPastFeedback ? 'Submit Another Feedback' : 'Send Your Feedback'}
+                {hasPastFeedback
+                  ? "Submit Another Feedback"
+                  : "Send Your Feedback"}
               </h2>
               {hasPastFeedback && (
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  You&apos;ve sent {myFeedbacks.length} feedback{myFeedbacks.length !== 1 ? 's' : ''} before — add another anytime.
+                  You&apos;ve sent {myFeedbacks.length} feedback
+                  {myFeedbacks.length !== 1 ? "s" : ""} before — add another
+                  anytime.
                 </p>
               )}
             </div>
@@ -209,7 +213,9 @@ export default function Feedback() {
                 />
               </label>
               <label className="block">
-                <span className="mb-1 block text-sm font-bold">Email Address</span>
+                <span className="mb-1 block text-sm font-bold">
+                  Email Address
+                </span>
                 <input
                   type="email"
                   className="input-field"
@@ -230,8 +236,8 @@ export default function Feedback() {
                     type="button"
                     className={`rounded-full border px-3 py-2 text-xs font-bold transition ${
                       feedbackType === id
-                        ? 'border-turquoise-400 bg-turquoise-100 text-turquoise-800 dark:bg-turquoise-900/50'
-                        : 'border-gray-200 dark:border-gray-700'
+                        ? "border-turquoise-400 bg-turquoise-100 text-turquoise-800 dark:bg-turquoise-900/50"
+                        : "border-gray-200 dark:border-gray-700"
                     }`}
                     onClick={() => setFeedbackType(id)}
                   >
@@ -253,8 +259,8 @@ export default function Feedback() {
                     aria-label={label}
                     className={`flex size-12 items-center justify-center rounded-xl border-2 text-2xl transition ${
                       sentiment === id
-                        ? 'border-turquoise-500 bg-turquoise-50 dark:bg-turquoise-950/50'
-                        : 'border-gray-200 dark:border-gray-700'
+                        ? "border-turquoise-500 bg-turquoise-50 dark:bg-turquoise-950/50"
+                        : "border-gray-200 dark:border-gray-700"
                     }`}
                     onClick={() => setSentiment(id)}
                   >
@@ -270,7 +276,11 @@ export default function Feedback() {
                 className="input-field min-h-[140px] resize-none"
                 value={message}
                 onChange={(e) => setMessage(e.target.value.slice(0, MAX))}
-                placeholder={hasPastFeedback ? 'Tell us something else…' : 'Tell us what you think...'}
+                placeholder={
+                  hasPastFeedback
+                    ? "Tell us something else…"
+                    : "Tell us what you think..."
+                }
                 required
               />
               <span className="absolute bottom-3 right-3 text-xs text-gray-400">
@@ -278,11 +288,17 @@ export default function Feedback() {
               </span>
             </label>
 
-            <button type="submit" disabled={loading} className="btn-primary w-full py-3 disabled:opacity-50">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary w-full py-3 disabled:opacity-50"
+            >
               <Send size={18} />
               {loading
-                ? 'Sending…'
-                : (hasPastFeedback ? 'Submit Another Feedback' : 'Send Feedback')}
+                ? "Sending…"
+                : hasPastFeedback
+                  ? "Submit Another Feedback"
+                  : "Send Feedback"}
             </button>
           </form>
 
@@ -315,7 +331,10 @@ export default function Feedback() {
             <div className="mt-4 space-y-3 max-h-[70vh] overflow-y-auto pr-1">
               {myLoading ? (
                 Array.from({ length: 2 }).map((_, i) => (
-                  <div key={i} className="h-28 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800" />
+                  <div
+                    key={i}
+                    className="h-28 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800"
+                  />
                 ))
               ) : myFeedbacks.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-gray-200 p-6 text-center dark:border-gray-700">
@@ -342,5 +361,5 @@ export default function Feedback() {
         </aside>
       </div>
     </div>
-  )
+  );
 }

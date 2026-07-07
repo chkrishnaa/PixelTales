@@ -91,7 +91,7 @@ export default function Dashboard() {
           {COMMUNITY_STATS.map(({ icon, value, label }) => (
             <div key={label} className="text-center">
               <span className="text-3xl">{icon}</span>
-              <strong className="font-display mt-1 block text-2xl text-turquoise-700 dark:text-turquoise-400">
+              <strong className="font-sans mt-1 block text-2xl text-turquoise-700 dark:text-turquoise-400">
                 {value}
               </strong>
               <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">
@@ -211,7 +211,7 @@ export default function Dashboard() {
                   {selectedFeedback.name?.[0] ?? "?"}
                 </div>
                 <div>
-                  <h3 className="font-display text-xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="font-sans text-xl font-bold text-gray-900 dark:text-white">
                     {selectedFeedback.name}
                   </h3>
                   <p className="text-sm text-gray-500 dark:text-gray-400">

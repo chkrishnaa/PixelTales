@@ -38,7 +38,7 @@ export default function Login() {
 
   return (
     <div className="card-surface p-8">
-      <h1 className="font-display text-center text-2xl text-turquoise-700 dark:text-turquoise-400">
+      <h1 className="font-sans text-center text-2xl text-turquoise-700 dark:text-turquoise-400">
         Welcome back!
       </h1>
       <p className="mt-1 text-center text-sm text-gray-600 dark:text-gray-400">
@@ -67,7 +67,7 @@ export default function Login() {
             <span className="mb-1 block text-sm font-bold">Password</span>
             <div className="relative">
               <input
-                type={showPwd ? 'text' : 'password'}
+                type={showPwd ? "text" : "password"}
                 className="input-field pr-10"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -75,7 +75,7 @@ export default function Login() {
               />
               <button
                 type="button"
-                onClick={() => setShowPwd(v => !v)}
+                onClick={() => setShowPwd((v) => !v)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 tabIndex={-1}
               >
@@ -85,14 +85,18 @@ export default function Login() {
           </label>
           {error && (
             <Link
-            to="/forgot-password"
-            className="block text-right text-sm font-bold text-turquoise-600 dark:text-turquoise-400"
-          >
-            Forgot password?
-          </Link>
+              to="/forgot-password"
+              className="block text-right text-sm font-bold text-turquoise-600 dark:text-turquoise-400"
+            >
+              Forgot password?
+            </Link>
           )}
-          <button type="submit" disabled={loading} className="btn-primary w-full py-3">
-            {loading ? 'Signing in…' : 'Sign In'}
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full py-3"
+          >
+            {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
 
@@ -105,8 +109,11 @@ export default function Login() {
         <GoogleSignInButton onClick={handleGoogle} />
 
         <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-          Don&apos;t have an account?{' '}
-          <Link to="/signup" className="font-bold text-turquoise-600 dark:text-turquoise-400">
+          Don&apos;t have an account?{" "}
+          <Link
+            to="/signup"
+            className="font-bold text-turquoise-600 dark:text-turquoise-400"
+          >
             Sign up
           </Link>
         </p>

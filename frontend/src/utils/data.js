@@ -3,8 +3,9 @@ export const CARTOONS = [
   { id: 'doraemon', name: 'Doraemon' },
   { id: 'pokemon', name: 'Pokemon' },
   { id: 'shinchan', name: 'Shinchan' },
-  { id: 'tom-jerry', name: 'Tom & Jerry' },
-  { id: 'naruto', name: 'Naruto' },
+  { id: 'perman', name: 'Perman' },
+  { id: 'oggy-and-the-cockroaches', name: 'Oggy and the Cockroaches' },
+  { id: 'pakdam-pakdai', name: 'Pakdam Pakdai' },
 ]
 
 export const CURRENT_USER = {
@@ -1446,6 +1447,71 @@ export const COMMUNITY_MESSAGES = [
   { id: 'c19', userId: 'u4',  userName: 'NinjaWatcher',  text: 'Believe it! 🍥 This community is amazing', timestamp: _ts(4) },
   { id: 'c20', userId: 'u8',  userName: 'PixelFan',      text: 'Just joined PixelTales today, this platform is amazing 🔥', timestamp: _ts(1) },
 ];
+
+export const BUBBLES = [
+  { top: "3%", left: "4%", size: 35, opacity: 0.24 },
+  { top: "6%", left: "18%", size: 55, opacity: 0.32 },
+  { top: "8%", left: "35%", size: 45, opacity: 0.28 },
+  { top: "10%", left: "58%", size: 70, opacity: 0.32 },
+  { top: "5%", left: "78%", size: 120, opacity: 0.25 },
+  { top: "8%", left: "92%", size: 40, opacity: 0.35 },
+  { top: "16%", left: "8%", size: 90, opacity: 0.28 },
+  { top: "18%", left: "24%", size: 60, opacity: 0.26 },
+  { top: "20%", left: "42%", size: 140, opacity: 0.35 },
+  { top: "22%", left: "62%", size: 50, opacity: 0.31 },
+  { top: "24%", left: "82%", size: 80, opacity: 0.30 },
+  { top: "28%", left: "95%", size: 45, opacity: 0.22 },
+  { top: "32%", left: "5%", size: 65, opacity: 0.26 },
+  { top: "35%", left: "18%", size: 110, opacity: 0.25 },
+  { top: "38%", left: "32%", size: 40, opacity: 0.27 },
+  { top: "40%", left: "50%", size: 85, opacity: 0.31 },
+  { top: "42%", left: "68%", size: 55, opacity: 0.30 },
+  { top: "45%", left: "88%", size: 130, opacity: 0.24 },
+  { top: "50%", left: "10%", size: 45, opacity: 0.34 },
+  { top: "52%", left: "26%", size: 70, opacity: 0.26 },
+  { top: "48%", left: "40%", size: 35, opacity: 0.30 },
+  { top: "55%", left: "56%", size: 95, opacity: 0.29 },
+  { top: "58%", left: "74%", size: 50, opacity: 0.27 },
+  { top: "60%", left: "90%", size: 75, opacity: 0.14 },
+  { top: "63%", left: "6%", size: 120, opacity: 0.23 },
+  { top: "66%", left: "20%", size: 55, opacity: 0.35 },
+  { top: "68%", left: "38%", size: 80, opacity: 0.22 },
+  { top: "70%", left: "54%", size: 45, opacity: 0.27 },
+  { top: "72%", left: "70%", size: 140, opacity: 0.28 },
+  { top: "74%", left: "86%", size: 60, opacity: 0.33 },
+  { top: "78%", left: "12%", size: 100, opacity: 0.35 },
+  { top: "80%", left: "28%", size: 50, opacity: 0.30 },
+  { top: "82%", left: "44%", size: 65, opacity: 0.29 },
+  { top: "84%", left: "60%", size: 170, opacity: 0.25 },
+  { top: "86%", left: "78%", size: 40, opacity: 0.26 },
+  { top: "88%", left: "94%", size: 90, opacity: 0.17 },
+  { top: "91%", left: "6%", size: 55, opacity: 0.28 },
+  { top: "92%", left: "22%", size: 130, opacity: 0.33 },
+  { top: "90%", left: "36%", size: 45, opacity: 0.31 },
+  { top: "13%", left: "2%", size: 75, opacity: 0.28 },
+  { top: "5%", left: "8%", size: 50, opacity: 0.22 },
+  { top: "24%", left: "4%", size: 110, opacity: 0.35 },
+  { top: "2%", left: "18%", size: 38, opacity: 0.20 },
+  { top: "7%", left: "25%", size: 95, opacity: 0.29 },
+  { top: "13%", left: "35%", size: 58, opacity: 0.26 },
+  { top: "17%", left: "36%", size: 42, opacity: 0.35 },
+  { top: "4%", left: "46%", size: 36, opacity: 0.26 },
+  { top: "36%", left: "52%", size: 82, opacity: 0.21 },
+  { top: "28%", left: "68%", size: 48, opacity: 0.27 },
+  { top: "38%", left: "98%", size: 160, opacity: 0.24 },
+];
+
+export const GITHUB_IMAGE_BASE =
+  "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/BannerImages";
+
+export const BANNERS = {
+  doraemon: "doraemon.png",
+  pokemon: "pokemon.png",
+  shinchan: "shinchan.png",
+  perman: "perman.png",
+  "oggy-and-the-cockroaches": "oggyAndTheCockroaches.png",
+  "pakdam-pakdai": "pakdamPakdai.png",
+};
 
 export const HERO_SLIDES = [
   {

@@ -296,7 +296,7 @@ export default function AllMoviesSection() {
                 size={15}
                 className="text-turquoise-600 dark:text-turquoise-400"
               />
-              <span className="font-display text-sm font-bold text-gray-800 dark:text-white">
+              <span className="font-sans text-sm font-bold text-gray-800 dark:text-white">
                 Advanced Filter &amp; Sort
               </span>
             </div>

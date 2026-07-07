@@ -401,11 +401,12 @@ export default function Party() {
     <div className="page-container max-w-4xl py-10">
       <header className="mb-8 text-center">
         <span className="text-4xl">🎉</span>
-        <h1 className="font-display mt-2 text-3xl text-turquoise-700 dark:text-turquoise-400">
+        <h1 className="font-sans mt-2 text-3xl text-turquoise-700 dark:text-turquoise-400">
           Watch Party
         </h1>
         <p className="mx-auto mt-2 max-w-lg text-gray-600 dark:text-gray-400">
-          Watch cartoons together with friends! Everyone streams locally — perfectly in sync.
+          Watch cartoons together with friends! Everyone streams locally —
+          perfectly in sync.
         </p>
       </header>
 
@@ -453,7 +454,7 @@ export default function Party() {
             onClick={handleCreate}
           >
             <Rocket size={18} />
-            {created ? 'New Room' : 'Create Room'}
+            {created ? "New Room" : "Create Room"}
           </button>
 
           {/* Invite section */}
@@ -462,8 +463,8 @@ export default function Party() {
               {/* Tabs */}
               <div className="flex border-b border-turquoise-100 dark:border-turquoise-800/60">
                 {[
-                  { id: 'code', label: 'Invite via Code', icon: Hash },
-                  { id: 'qr', label: 'Invite via QR', icon: QrCode },
+                  { id: "code", label: "Invite via Code", icon: Hash },
+                  { id: "qr", label: "Invite via QR", icon: QrCode },
                 ].map(({ id, label, icon: Icon }) => (
                   <button
                     key={id}
@@ -471,8 +472,8 @@ export default function Party() {
                     onClick={() => setInviteTab(id)}
                     className={`flex flex-1 items-center justify-center gap-1.5 py-2.5 text-xs font-bold transition-colors ${
                       inviteTab === id
-                        ? 'bg-turquoise-50 text-turquoise-700 dark:bg-turquoise-950/50 dark:text-turquoise-300'
-                        : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800/60'
+                        ? "bg-turquoise-50 text-turquoise-700 dark:bg-turquoise-950/50 dark:text-turquoise-300"
+                        : "text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800/60"
                     }`}
                   >
                     <Icon size={13} /> {label}
@@ -481,9 +482,11 @@ export default function Party() {
               </div>
 
               <div className="p-4">
-                {inviteTab === 'code' ? (
+                {inviteTab === "code" ? (
                   <div className="flex flex-col items-center gap-2 text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Room Code</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Room Code
+                    </p>
                     <div className="flex items-center gap-2">
                       <span className="rounded-xl bg-turquoise-50 px-5 py-2 font-mono text-2xl font-extrabold tracking-[0.2em] text-turquoise-700 dark:bg-turquoise-950/50 dark:text-turquoise-300">
                         {generatedCode}
@@ -494,11 +497,18 @@ export default function Party() {
                         className="rounded-xl border border-gray-200 p-2.5 text-gray-500 transition hover:bg-turquoise-50 hover:text-turquoise-600 dark:border-gray-700 dark:hover:bg-turquoise-950/40"
                         title="Copy code"
                       >
-                        {codeCopied ? <CheckCheck size={16} className="text-emerald-500" /> : <Copy size={16} />}
+                        {codeCopied ? (
+                          <CheckCheck size={16} className="text-emerald-500" />
+                        ) : (
+                          <Copy size={16} />
+                        )}
                       </button>
                     </div>
                     <p className="text-xs text-gray-400 dark:text-gray-500">
-                      Movie: <strong className="text-gray-600 dark:text-gray-300">{getMovieTitle(selectedMovie_obj)}</strong>
+                      Movie:{" "}
+                      <strong className="text-gray-600 dark:text-gray-300">
+                        {getMovieTitle(selectedMovie_obj)}
+                      </strong>
                     </p>
                   </div>
                 ) : (
@@ -527,14 +537,14 @@ export default function Party() {
 
           {/* Start Party CTA — shown only once room is created */}
           {created && (
-          <button
-            type="button"
-            onClick={handleStartParty}
-            className="mt-4 w-full rounded-2xl bg-gradient-to-r from-turquoise-600 to-turquoise-500 py-3.5 text-sm font-extrabold text-white shadow-lg transition hover:from-turquoise-500 hover:to-turquoise-400 active:scale-95 flex items-center justify-center gap-2"
-          >
-            <Play size={17} className="fill-white" />
-            🎬 Start Party
-          </button>
+            <button
+              type="button"
+              onClick={handleStartParty}
+              className="mt-4 w-full rounded-2xl bg-gradient-to-r from-turquoise-600 to-turquoise-500 py-3.5 text-sm font-extrabold text-white shadow-lg transition hover:from-turquoise-500 hover:to-turquoise-400 active:scale-95 flex items-center justify-center gap-2"
+            >
+              <Play size={17} className="fill-white" />
+              🎬 Start Party
+            </button>
           )}
         </div>
 
@@ -551,17 +561,20 @@ export default function Party() {
           {/* Join tabs */}
           <div className="mt-4 flex rounded-2xl border border-gray-200 p-0.5 dark:border-gray-700">
             {[
-              { id: 'code', label: 'Via Code', icon: Hash },
-              { id: 'qr', label: 'Scan QR', icon: ScanLine },
+              { id: "code", label: "Via Code", icon: Hash },
+              { id: "qr", label: "Scan QR", icon: ScanLine },
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 type="button"
-                onClick={() => { setJoinTab(id); setScannerActive(false) }}
+                onClick={() => {
+                  setJoinTab(id);
+                  setScannerActive(false);
+                }}
                 className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-bold transition-all ${
                   joinTab === id
-                    ? 'bg-turquoise-700 text-white shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                    ? "bg-turquoise-700 text-white shadow-sm"
+                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400"
                 }`}
               >
                 <Icon size={13} /> {label}
@@ -569,14 +582,16 @@ export default function Party() {
             ))}
           </div>
 
-          {joinTab === 'code' ? (
+          {joinTab === "code" ? (
             <>
               <label className="mt-4 block">
                 <span className="text-sm font-bold">Room Code</span>
                 <input
                   className="input-field mt-1 uppercase tracking-widest font-mono"
                   value={roomCode}
-                  onChange={(e) => setRoomCode(e.target.value.toUpperCase().slice(0, 8))}
+                  onChange={(e) =>
+                    setRoomCode(e.target.value.toUpperCase().slice(0, 8))
+                  }
                   placeholder="E.G. PT123456"
                   maxLength={8}
                 />
@@ -595,11 +610,17 @@ export default function Party() {
             <div className="mt-4">
               {!scannerActive ? (
                 <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-turquoise-300 py-8 dark:border-turquoise-700">
-                  <Camera size={36} className="text-turquoise-400 dark:text-turquoise-600" />
+                  <Camera
+                    size={36}
+                    className="text-turquoise-400 dark:text-turquoise-600"
+                  />
                   <div className="text-center">
-                    <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Scan a Party QR Code</p>
+                    <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Scan a Party QR Code
+                    </p>
                     <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                      Use your camera to scan a PixelTales QR.<br />
+                      Use your camera to scan a PixelTales QR.
+                      <br />
                       Or use any external scanner — it opens directly.
                     </p>
                   </div>
@@ -624,23 +645,37 @@ export default function Party() {
 
       {/* How it works */}
       <section className="rounded-2xl bg-turquoise-100 p-6 dark:bg-turquoise-950/40">
-        <h2 className="font-display mb-5 text-xl text-turquoise-800 dark:text-turquoise-300">
+        <h2 className="font-sans mb-5 text-xl text-turquoise-800 dark:text-turquoise-300">
           How it works 🤔
         </h2>
         <div className="grid gap-6 text-center sm:grid-cols-3">
           {[
-            { icon: Clapperboard, title: 'Choose Movie', desc: 'Host picks from all available movies.' },
-            { icon: Users, title: 'Invite Friends', desc: 'Share the room code or QR code.' },
-            { icon: Play, title: 'Watch Together', desc: 'Everyone streams locally. Host syncs play, pause & seek.' },
+            {
+              icon: Clapperboard,
+              title: "Choose Movie",
+              desc: "Host picks from all available movies.",
+            },
+            {
+              icon: Users,
+              title: "Invite Friends",
+              desc: "Share the room code or QR code.",
+            },
+            {
+              icon: Play,
+              title: "Watch Together",
+              desc: "Everyone streams locally. Host syncs play, pause & seek.",
+            },
           ].map(({ icon: Icon, title, desc }) => (
             <div key={title}>
               <Icon className="mx-auto size-7 text-turquoise-600" />
               <h3 className="mt-2 font-bold">{title}</h3>
-              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{desc}</p>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                {desc}
+              </p>
             </div>
           ))}
         </div>
       </section>
     </div>
-  )
+  );
 }

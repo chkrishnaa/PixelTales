@@ -386,7 +386,7 @@ export default function Home() {
                 {value == null ? (
                   <div className="mt-1 h-8 w-16 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700" />
                 ) : (
-                  <p className="mt-1 font-display text-2xl text-turquoise-700 dark:text-turquoise-400">
+                  <p className="mt-1 font-sans text-2xl text-turquoise-700 dark:text-turquoise-400">
                     {value}
                   </p>
                 )}

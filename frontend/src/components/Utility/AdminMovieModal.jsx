@@ -217,8 +217,12 @@ export default function AdminMovieModal({ open, onClose, onSaved }) {
       <div className="w-full max-w-5xl overflow-hidden rounded-[28px] border border-white/20 bg-white shadow-2xl dark:bg-gray-950">
         <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-gray-800">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.3em] text-turquoise-500">Admin tools</p>
-            <h3 className="font-display text-xl font-bold text-gray-900 dark:text-white">Add a new movie</h3>
+            <p className="text-xs font-black uppercase tracking-[0.3em] text-turquoise-500">
+              Admin tools
+            </p>
+            <h3 className="font-sans text-xl font-bold text-gray-900 dark:text-white">
+              Add a new movie
+            </h3>
           </div>
           <button
             type="button"
@@ -238,7 +242,10 @@ export default function AdminMovieModal({ open, onClose, onSaved }) {
               <button
                 key={id}
                 type="button"
-                onClick={() => { setMode(id); setError(""); }}
+                onClick={() => {
+                  setMode(id);
+                  setError("");
+                }}
                 className={`flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition ${
                   mode === id
                     ? "bg-turquoise-600 text-white"
@@ -251,11 +258,17 @@ export default function AdminMovieModal({ open, onClose, onSaved }) {
             ))}
           </div>
           <div className="text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-semibold text-turquoise-600">Step {step}</span> · {stepLabel}
+            <span className="font-semibold text-turquoise-600">
+              Step {step}
+            </span>{" "}
+            · {stepLabel}
           </div>
         </div>
 
-        <form onSubmit={handleSave} className="max-h-[70vh] overflow-y-auto p-5">
+        <form
+          onSubmit={handleSave}
+          className="max-h-[70vh] overflow-y-auto p-5"
+        >
           {error && (
             <div className="mb-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-600 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-400">
               {error}
@@ -268,35 +281,92 @@ export default function AdminMovieModal({ open, onClose, onSaved }) {
                 <div className="grid gap-4 md:grid-cols-2">
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Movie ID
-                    <input value={form.id} onChange={(e) => setForm({ ...form, id: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder="doraemon-sample" />
+                    <input
+                      value={form.id}
+                      onChange={(e) => setForm({ ...form, id: e.target.value })}
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder="doraemon-sample"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Title
-                    <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder="Movie title" />
+                    <input
+                      required
+                      value={form.title}
+                      onChange={(e) =>
+                        setForm({ ...form, title: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder="Movie title"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Alt titles
-                    <input value={form.altTitles} onChange={(e) => setForm({ ...form, altTitles: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder="Comma separated" />
+                    <input
+                      value={form.altTitles}
+                      onChange={(e) =>
+                        setForm({ ...form, altTitles: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder="Comma separated"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Cartoon ID
-                    <input value={form.cartoonId} onChange={(e) => setForm({ ...form, cartoonId: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder="doraemon" />
+                    <input
+                      value={form.cartoonId}
+                      onChange={(e) =>
+                        setForm({ ...form, cartoonId: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder="doraemon"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Year
-                    <input type="number" value={form.year} onChange={(e) => setForm({ ...form, year: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <input
+                      type="number"
+                      value={form.year}
+                      onChange={(e) =>
+                        setForm({ ...form, year: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Rating
-                    <input type="number" step="0.1" min="0" max="5" value={form.rating} onChange={(e) => setForm({ ...form, rating: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <input
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      max="5"
+                      value={form.rating}
+                      onChange={(e) =>
+                        setForm({ ...form, rating: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Duration (min)
-                    <input type="number" value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <input
+                      type="number"
+                      value={form.duration}
+                      onChange={(e) =>
+                        setForm({ ...form, duration: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Language
-                    <input value={form.language} onChange={(e) => setForm({ ...form, language: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <input
+                      value={form.language}
+                      onChange={(e) =>
+                        setForm({ ...form, language: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    />
                   </label>
                 </div>
               )}
@@ -305,39 +375,98 @@ export default function AdminMovieModal({ open, onClose, onSaved }) {
                 <div className="grid gap-4 md:grid-cols-2">
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Quality
-                    <input value={form.quality} onChange={(e) => setForm({ ...form, quality: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <input
+                      value={form.quality}
+                      onChange={(e) =>
+                        setForm({ ...form, quality: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Release date
-                    <input value={form.releaseDate} onChange={(e) => setForm({ ...form, releaseDate: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder="YYYY-MM-DD" />
+                    <input
+                      value={form.releaseDate}
+                      onChange={(e) =>
+                        setForm({ ...form, releaseDate: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder="YYYY-MM-DD"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Director
-                    <input value={form.director} onChange={(e) => setForm({ ...form, director: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <input
+                      value={form.director}
+                      onChange={(e) =>
+                        setForm({ ...form, director: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Studio
-                    <input value={form.studio} onChange={(e) => setForm({ ...form, studio: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <input
+                      value={form.studio}
+                      onChange={(e) =>
+                        setForm({ ...form, studio: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Country
-                    <input value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <input
+                      value={form.country}
+                      onChange={(e) =>
+                        setForm({ ...form, country: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Genres
-                    <input value={form.genres} onChange={(e) => setForm({ ...form, genres: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder="Adventure, Family" />
+                    <input
+                      value={form.genres}
+                      onChange={(e) =>
+                        setForm({ ...form, genres: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder="Adventure, Family"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 md:col-span-2">
                     Description
-                    <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={4} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                    <textarea
+                      value={form.description}
+                      onChange={(e) =>
+                        setForm({ ...form, description: e.target.value })
+                      }
+                      rows={4}
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Video URL
-                    <input value={form.videoUrl} onChange={(e) => setForm({ ...form, videoUrl: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder="https://..." />
+                    <input
+                      value={form.videoUrl}
+                      onChange={(e) =>
+                        setForm({ ...form, videoUrl: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder="https://..."
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Thumbnail URL
-                    <input value={form.thumbnail} onChange={(e) => setForm({ ...form, thumbnail: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder="https://..." />
+                    <input
+                      value={form.thumbnail}
+                      onChange={(e) =>
+                        setForm({ ...form, thumbnail: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder="https://..."
+                    />
                   </label>
                 </div>
               )}
@@ -346,15 +475,38 @@ export default function AdminMovieModal({ open, onClose, onSaved }) {
                 <div className="space-y-4">
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Gallery URLs
-                    <textarea value={form.gallery} onChange={(e) => setForm({ ...form, gallery: e.target.value })} rows={4} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder="One URL per line" />
+                    <textarea
+                      value={form.gallery}
+                      onChange={(e) =>
+                        setForm({ ...form, gallery: e.target.value })
+                      }
+                      rows={4}
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder="One URL per line"
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Characters JSON
-                    <textarea value={form.characters} onChange={(e) => setForm({ ...form, characters: e.target.value })} rows={5} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder='[{"name":"Hero","role":"Main Character"}]' />
+                    <textarea
+                      value={form.characters}
+                      onChange={(e) =>
+                        setForm({ ...form, characters: e.target.value })
+                      }
+                      rows={5}
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder='[{"name":"Hero","role":"Main Character"}]'
+                    />
                   </label>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Gradient
-                    <input value={form.gradient} onChange={(e) => setForm({ ...form, gradient: e.target.value })} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" placeholder="linear-gradient(...)" />
+                    <input
+                      value={form.gradient}
+                      onChange={(e) =>
+                        setForm({ ...form, gradient: e.target.value })
+                      }
+                      className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                      placeholder="linear-gradient(...)"
+                    />
                   </label>
                 </div>
               )}
@@ -363,14 +515,21 @@ export default function AdminMovieModal({ open, onClose, onSaved }) {
             <div className="space-y-4">
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Paste full movie JSON
-                <textarea value={jsonText} onChange={(e) => setJsonText(e.target.value)} rows={18} className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 font-mono text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+                <textarea
+                  value={jsonText}
+                  onChange={(e) => setJsonText(e.target.value)}
+                  rows={18}
+                  className="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 py-2 font-mono text-sm outline-none transition focus:border-turquoise-500 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                />
               </label>
               <div className="rounded-2xl border border-turquoise-200 bg-turquoise-50 px-4 py-3 text-sm text-turquoise-700 dark:border-turquoise-900 dark:bg-turquoise-950/30 dark:text-turquoise-300">
                 <div className="mb-2 flex items-center gap-2 font-semibold">
                   <Sparkles size={15} />
-                  Paste a complete movie object with title, genres, gallery, and characters.
+                  Paste a complete movie object with title, genres, gallery, and
+                  characters.
                 </div>
-                You can use simple JSON-shaped data, including arrays and strings.
+                You can use simple JSON-shaped data, including arrays and
+                strings.
               </div>
             </div>
           )}
@@ -378,7 +537,11 @@ export default function AdminMovieModal({ open, onClose, onSaved }) {
           <div className="mt-6 flex items-center justify-between gap-3 border-t border-gray-200 pt-4 dark:border-gray-800">
             <div className="flex items-center gap-2">
               {mode === "form" && step > 1 && (
-                <button type="button" onClick={() => setStep((value) => value - 1)} className="flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-600 transition hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
+                <button
+                  type="button"
+                  onClick={() => setStep((value) => value - 1)}
+                  className="flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-600 transition hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                >
                   <ChevronLeft size={15} />
                   Back
                 </button>
@@ -386,13 +549,25 @@ export default function AdminMovieModal({ open, onClose, onSaved }) {
             </div>
             <div className="flex items-center gap-2">
               {mode === "form" && step < 3 ? (
-                <button type="button" onClick={() => setStep((value) => value + 1)} className="flex items-center gap-2 rounded-full bg-turquoise-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-turquoise-500">
+                <button
+                  type="button"
+                  onClick={() => setStep((value) => value + 1)}
+                  className="flex items-center gap-2 rounded-full bg-turquoise-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-turquoise-500"
+                >
                   Continue
                   <ChevronRight size={15} />
                 </button>
               ) : (
-                <button type="submit" disabled={saving} className="flex items-center gap-2 rounded-full bg-turquoise-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-turquoise-500 disabled:cursor-not-allowed disabled:opacity-70">
-                  {saving ? "Saving..." : mode === "form" ? "Save movie" : "Import JSON"}
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="flex items-center gap-2 rounded-full bg-turquoise-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-turquoise-500 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {saving
+                    ? "Saving..."
+                    : mode === "form"
+                      ? "Save movie"
+                      : "Import JSON"}
                 </button>
               )}
             </div>

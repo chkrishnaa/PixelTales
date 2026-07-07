@@ -1,30 +1,44 @@
 import { Link } from 'react-router-dom'
+import { useEffect, useState, useMemo } from "react";
 import { Play, PartyPopper } from 'lucide-react'
-import pokemonBanner from "../assets/banner-images/pokemon.png";
-import doraemonBanner from "../assets/banner-images/doraemon.png";
-import shinchanBanner from "../assets/banner-images/shinchan.png";
-// import narutoBanner from "../../assets/banner-images/naruto.png";
-// import tomJerryBanner from "../../assets/banner-images/tom-jerry.png";
-
-const BUBBLES = [
-  { top: "8%", left: "5%", size: 45, opacity: 0.22 },
-  { top: "15%", left: "18%", size: 140, opacity: 0.28 },
-  { top: "22%", left: "35%", size: 90, opacity: 0.24 },
-  { top: "10%", left: "75%", size: 160, opacity: 0.2 },
-  { top: "38%", left: "12%", size: 70, opacity: 0.3 },
-  { top: "58%", left: "8%", size: 130, opacity: 0.24 },
-  { top: "68%", left: "42%", size: 55, opacity: 0.26 },
-  { top: "82%", left: "20%", size: 100, opacity: 0.22 },
-  { top: "78%", left: "60%", size: 170, opacity: 0.25 },
-  { top: "60%", left: "88%", size: 65, opacity: 0.28 },
-  { top: "28%", left: "90%", size: 80, opacity: 0.23 },
-  { top: "5%", left: "58%", size: 50, opacity: 0.32 },
-  { top: "48%", left: "52%", size: 35, opacity: 0.35 },
-  { top: "70%", left: "78%", size: 40, opacity: 0.3 },
-  { top: "90%", left: "92%", size: 180, opacity: 0.2 },
-];
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  BUBBLES,
+  BANNERS,
+  GITHUB_IMAGE_BASE,
+  HERO_SLIDES,
+} from "../utils/data";
 
 export default function Hero() {
+  const [index, setIndex] = useState(0);
+
+  const bubbleAnimations = useMemo(
+    () =>
+      BUBBLES.map(() => {
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 36 + Math.random() * 84;
+
+        return {
+          x: Math.cos(angle) * distance,
+          y: Math.sin(angle) * distance,
+          duration: 30 + Math.random() * 30,
+          delay: Math.random() * 3,
+          scale: 1 + Math.random() * 0.08,
+        };
+      }),
+    [],
+  );
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const slide = HERO_SLIDES[index];
+
   return (
     <section
       className="relative overflow-hidden text-white"
@@ -35,9 +49,9 @@ export default function Hero() {
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {BUBBLES.map((bubble, i) => (
-          <div
+          <motion.div
             key={i}
-            className="absolute rounded-full border border-white/20 bg-white"
+            className="absolute rounded-full bg-white/90 border border-white/30 backdrop-blur-sm shadow-[0_0_20px_rgba(255,255,255,0.15)]"
             style={{
               top: bubble.top,
               left: bubble.left,
@@ -45,13 +59,68 @@ export default function Hero() {
               height: bubble.size,
               opacity: bubble.opacity,
             }}
+            animate={{
+              x: [
+                0,
+                bubbleAnimations[i].x,
+                -bubbleAnimations[i].x / 2,
+                bubbleAnimations[i].x / 3,
+                0,
+              ],
+              y: [
+                0,
+                bubbleAnimations[i].y,
+                -bubbleAnimations[i].y / 3,
+                bubbleAnimations[i].y / 2,
+                0,
+              ],
+              scale: [1, bubbleAnimations[i].scale, 0.97, 1.03, 1],
+            }}
+            transition={{
+              duration: bubbleAnimations[i].duration,
+              delay: bubbleAnimations[i].delay,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
           />
         ))}
       </div>
 
       <div className="page-container relative flex min-h-[420px] items-center py-12 md:min-h-[480px] md:py-16">
         <div className="grid w-full grid-cols-1 items-center gap-8 md:grid-cols-2">
-          <div>
+          <div className="block md:hidden">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={slide.id}
+                src={`${GITHUB_IMAGE_BASE}/${BANNERS[slide.cartoonId]}`}
+                alt={slide.title}
+                loading="eager"
+                initial={{
+                  x: -250,
+                  opacity: 0,
+                }}
+                animate={{
+                  x: 0,
+                  opacity: 1,
+                }}
+                exit={{
+                  x: 250,
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: 0.7,
+                  ease: "easeInOut",
+                }}
+                className="
+      h-[220px] xs:h-[250px] sm:h-[280px] md:h-[300px]
+      w-full
+      object-contain
+      drop-shadow-[0_15px_40px_rgba(0,0,0,0.45)]
+    "
+              />
+            </AnimatePresence>
+          </div>
+          <div className="flex flex-col items-center text-center md:items-start md:text-left">
             <h1 className="font-display text-3xl leading-tight md:text-4xl lg:text-5xl">
               Watch Your Favorite Cartoons!
             </h1>
@@ -76,12 +145,37 @@ export default function Hero() {
           </div>
 
           <div className="hidden md:flex md:justify-end">
-            <img
-              src={pokemonBanner}
-              alt="Pokemon banner"
-              className="h-[320px] w-full max-w-[460px] object-contain"
-              loading="eager"
-            />
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={slide.id}
+                src={`${GITHUB_IMAGE_BASE}/${BANNERS[slide.cartoonId]}`}
+                alt={slide.title}
+                loading="eager"
+                initial={{
+                  x: 250,
+                  opacity: 0,
+                }}
+                animate={{
+                  x: 0,
+                  opacity: 1,
+                }}
+                exit={{
+                  x: 250,
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: 0.7,
+                  ease: "easeInOut",
+                }}
+                className="
+      h-[330px] lg:h-[390px] xl:h-[430px]
+      w-full
+      max-w-[430px] lg:max-w-[520px] xl:max-w-[600px]
+      object-contain
+      drop-shadow-[0_15px_40px_rgba(0,0,0,0.45)]
+    "
+              />
+            </AnimatePresence>
           </div>
         </div>
       </div>

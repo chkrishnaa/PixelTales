@@ -113,26 +113,39 @@ export default function ForgotPassword() {
 
   return (
     <div className="card-surface p-8">
-      <h1 className="font-display text-center text-2xl text-turquoise-700 dark:text-turquoise-400">
-        {step === 'email' ? 'Forgot Password?' : step === 'otp' ? 'Enter OTP' : 'Set New Password'}
+      <h1 className="font-sans text-center text-2xl text-turquoise-700 dark:text-turquoise-400">
+        {step === "email"
+          ? "Forgot Password?"
+          : step === "otp"
+            ? "Enter OTP"
+            : "Set New Password"}
       </h1>
       <p className="mt-1 text-center text-sm text-gray-500 dark:text-gray-400">
-        {step === 'email' && "Enter your email and we'll send a 6-digit OTP"}
-        {step === 'otp'   && `OTP sent to ${email}`}
-        {step === 'reset' && 'Choose a strong new password'}
+        {step === "email" && "Enter your email and we'll send a 6-digit OTP"}
+        {step === "otp" && `OTP sent to ${email}`}
+        {step === "reset" && "Choose a strong new password"}
       </p>
 
       {/* Step dots */}
       <div className="mt-5 flex items-center justify-center gap-2">
         {STEPS.map((s, i) => (
-          <div key={s} className={`h-2 rounded-full transition-all ${
-            i <= stepIdx ? 'w-8 bg-turquoise-600' : 'w-2 bg-gray-200 dark:bg-gray-700'
-          }`} />
+          <div
+            key={s}
+            className={`h-2 rounded-full transition-all ${
+              i <= stepIdx
+                ? "w-8 bg-turquoise-600"
+                : "w-2 bg-gray-200 dark:bg-gray-700"
+            }`}
+          />
         ))}
       </div>
 
       {/* Error / Success */}
-      {error   && <p className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">{error}</p>}
+      {error && (
+        <p className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
+          {error}
+        </p>
+      )}
       {success && (
         <div className="mt-4 flex flex-col items-center gap-2 rounded-xl bg-emerald-50 px-4 py-4 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
           <CheckCircle size={28} />
@@ -142,7 +155,7 @@ export default function ForgotPassword() {
       )}
 
       {/* ── STEP 1: Email ───────────────────────────────── */}
-      {step === 'email' && !success && (
+      {step === "email" && !success && (
         <form className="mt-6 space-y-4" onSubmit={handleSendOTP}>
           <label className="block">
             <span className="mb-1 block text-sm font-bold">Email</span>
@@ -155,14 +168,18 @@ export default function ForgotPassword() {
               placeholder="your@email.com"
             />
           </label>
-          <button type="submit" disabled={loading} className="btn-primary w-full py-3">
-            {loading ? 'Sending…' : 'Send OTP'}
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full py-3"
+          >
+            {loading ? "Sending…" : "Send OTP"}
           </button>
         </form>
       )}
 
       {/* ── STEP 2: OTP ─────────────────────────────────── */}
-      {step === 'otp' && !success && (
+      {step === "otp" && !success && (
         <form className="mt-6 space-y-6" onSubmit={handleVerifyOTP}>
           <div className="flex justify-center gap-2" onPaste={handleOtpPaste}>
             {otp.map((digit, i) => (
@@ -183,15 +200,19 @@ export default function ForgotPassword() {
 
           <button
             type="submit"
-            disabled={loading || otp.join('').length < 6}
+            disabled={loading || otp.join("").length < 6}
             className="btn-primary w-full py-3"
           >
-            {loading ? 'Verifying…' : 'Verify OTP'}
+            {loading ? "Verifying…" : "Verify OTP"}
           </button>
 
           <button
             type="button"
-            onClick={() => { setError(''); setOtp(['','','','','','']); handleSendOTP({ preventDefault: () => {} }); }}
+            onClick={() => {
+              setError("");
+              setOtp(["", "", "", "", "", ""]);
+              handleSendOTP({ preventDefault: () => {} });
+            }}
             className="w-full text-center text-sm font-semibold text-turquoise-600 dark:text-turquoise-400"
           >
             Resend OTP
@@ -200,13 +221,13 @@ export default function ForgotPassword() {
       )}
 
       {/* ── STEP 3: New Password ─────────────────────────── */}
-      {step === 'reset' && !success && (
+      {step === "reset" && !success && (
         <form className="mt-6 space-y-4" onSubmit={handleResetPassword}>
           <label className="block">
             <span className="mb-1 block text-sm font-bold">New Password</span>
             <div className="relative">
               <input
-                type={showPwd ? 'text' : 'password'}
+                type={showPwd ? "text" : "password"}
                 className="input-field pr-10"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -216,7 +237,7 @@ export default function ForgotPassword() {
               />
               <button
                 type="button"
-                onClick={() => setShowPwd(v => !v)}
+                onClick={() => setShowPwd((v) => !v)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 tabIndex={-1}
               >
@@ -225,10 +246,12 @@ export default function ForgotPassword() {
             </div>
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-bold">Confirm Password</span>
+            <span className="mb-1 block text-sm font-bold">
+              Confirm Password
+            </span>
             <div className="relative">
               <input
-                type={showConfirm ? 'text' : 'password'}
+                type={showConfirm ? "text" : "password"}
                 className="input-field pr-10"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
@@ -238,7 +261,7 @@ export default function ForgotPassword() {
               />
               <button
                 type="button"
-                onClick={() => setShowConfirm(v => !v)}
+                onClick={() => setShowConfirm((v) => !v)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 tabIndex={-1}
               >
@@ -246,8 +269,12 @@ export default function ForgotPassword() {
               </button>
             </div>
           </label>
-          <button type="submit" disabled={loading} className="btn-primary w-full py-3">
-            {loading ? 'Saving…' : 'Set New Password'}
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full py-3"
+          >
+            {loading ? "Saving…" : "Set New Password"}
           </button>
         </form>
       )}

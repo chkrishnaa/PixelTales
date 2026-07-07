@@ -48,10 +48,12 @@ export default function Community() {
         {COMMUNITY_STATS.map(({ icon, value, label }) => (
           <div key={label} className="text-center">
             <span className="text-3xl">{icon}</span>
-            <strong className="font-display mt-1 block text-2xl text-turquoise-700 dark:text-turquoise-400">
+            <strong className="font-sans mt-1 block text-2xl text-turquoise-700 dark:text-turquoise-400">
               {value}
             </strong>
-            <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">{label}</span>
+            <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+              {label}
+            </span>
           </div>
         ))}
       </div>
@@ -61,21 +63,26 @@ export default function Community() {
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
-            onClick={() => { setActiveTab(id); setCurrentPage(1); }}
+            onClick={() => {
+              setActiveTab(id);
+              setCurrentPage(1);
+            }}
             className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-bold transition-all ${
               activeTab === id
-                ? 'bg-white text-turquoise-700 shadow-sm dark:bg-gray-900 dark:text-turquoise-400'
-                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                ? "bg-white text-turquoise-700 shadow-sm dark:bg-gray-900 dark:text-turquoise-400"
+                : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             }`}
           >
             <Icon size={15} />
             {label}
-            {id === 'reviews' && reviews.length > 0 && (
-              <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${
-                activeTab === id
-                  ? 'bg-turquoise-100 text-turquoise-700 dark:bg-turquoise-950/60 dark:text-turquoise-400'
-                  : 'bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400'
-              }`}>
+            {id === "reviews" && reviews.length > 0 && (
+              <span
+                className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold leading-none ${
+                  activeTab === id
+                    ? "bg-turquoise-100 text-turquoise-700 dark:bg-turquoise-950/60 dark:text-turquoise-400"
+                    : "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
+                }`}
+              >
                 {reviews.length}
               </span>
             )}
@@ -84,7 +91,7 @@ export default function Community() {
       </div>
 
       {/* ── Reviews Tab ─────────────────────────────────────── */}
-      {activeTab === 'reviews' && (
+      {activeTab === "reviews" && (
         <>
           <SectionTitle
             icon={Star}
@@ -115,20 +122,27 @@ export default function Community() {
           {loading ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800" />
+                <div
+                  key={i}
+                  className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800"
+                />
               ))}
             </div>
           ) : reviews.length === 0 ? (
             <EmptyState
               title="No Reviews Yet"
               description="Be the first to share your thoughts about PixelTales! Write a review and it will appear here."
-              cta={{ label: 'Write the First Review', to: '/write-review' }}
+              cta={{ label: "Write the First Review", to: "/write-review" }}
             />
           ) : (
             <>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {paginatedReviews.map((review) => (
-                  <ReviewCard key={review._id} review={review} onOpen={setSelectedReview} />
+                  <ReviewCard
+                    key={review._id}
+                    review={review}
+                    onOpen={setSelectedReview}
+                  />
                 ))}
               </div>
 
@@ -147,7 +161,7 @@ export default function Community() {
       )}
 
       {/* ── Community Chats Tab ─────────────────────────────── */}
-      {activeTab === 'chats' && <CommunityChats />}
+      {activeTab === "chats" && <CommunityChats />}
 
       {/* ── Review detail modal ─────────────────────────────── */}
       {selectedReview && (
@@ -161,21 +175,27 @@ export default function Community() {
           >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className="flex size-12 items-center justify-center rounded-full bg-linear-to-br
-                                from-turquoise-300 to-turquoise-600 font-bold text-white text-lg uppercase">
-                  {(selectedReview.name ?? selectedReview.user)?.[0] ?? '?'}
+                <div
+                  className="flex size-12 items-center justify-center rounded-full bg-linear-to-br
+                                from-turquoise-300 to-turquoise-600 font-bold text-white text-lg uppercase"
+                >
+                  {(selectedReview.name ?? selectedReview.user)?.[0] ?? "?"}
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 dark:text-white">
                     {selectedReview.name ?? selectedReview.user}
                   </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{selectedReview.email}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {selectedReview.email}
+                  </p>
                 </div>
               </div>
 
               <div className="mt-2 flex items-center gap-1">
                 {Array.from({ length: selectedReview.rating }).map((_, i) => (
-                  <Star key={i} size={16}
+                  <Star
+                    key={i}
+                    size={16}
                     className="fill-turquoise-600 text-turquoise-600 dark:fill-turquoise-400 dark:text-turquoise-400"
                   />
                 ))}
@@ -188,16 +208,24 @@ export default function Community() {
 
             <div className="mt-5 flex items-center justify-between gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
               <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-                {selectedReview.date ?? (selectedReview.createdAt
-                  ? new Date(selectedReview.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                  : '')}
+                {selectedReview.date ??
+                  (selectedReview.createdAt
+                    ? new Date(selectedReview.createdAt).toLocaleDateString(
+                        "en-US",
+                        { month: "short", day: "numeric", year: "numeric" },
+                      )
+                    : "")}
               </p>
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-500">
-                  <ThumbsUp size={16} /> {selectedReview.likedBy?.length ?? selectedReview.likes ?? 0}
+                  <ThumbsUp size={16} />{" "}
+                  {selectedReview.likedBy?.length ?? selectedReview.likes ?? 0}
                 </span>
                 <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-500">
-                  <ThumbsDown size={16} /> {selectedReview.dislikedBy?.length ?? selectedReview.dislikes ?? 0}
+                  <ThumbsDown size={16} />{" "}
+                  {selectedReview.dislikedBy?.length ??
+                    selectedReview.dislikes ??
+                    0}
                 </span>
               </div>
             </div>
