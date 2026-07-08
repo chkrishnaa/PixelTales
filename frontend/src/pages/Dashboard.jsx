@@ -65,7 +65,7 @@ export default function Dashboard() {
 
       {user?.role === "admin" && editMode && (
         <div className="page-container pt-6">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-turquoise-200 bg-white/80 px-4 py-3 shadow-sm backdrop-blur dark:border-turquoise-900/40 dark:bg-gray-900/70">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-3xl border border-turquoise-200 bg-white/80 px-4 py-3 shadow-sm backdrop-blur dark:border-turquoise-900/40 dark:bg-gray-900/70">
             <div>
               <p className="text-sm font-semibold text-turquoise-600">
                 Admin workspace
@@ -87,13 +87,13 @@ export default function Dashboard() {
 
       <div className="page-container py-8">
         {/* Stats banner (always visible) */}
-        <div className="mb-8 grid gap-4 rounded-2xl bg-turquoise-100 p-6 sm:grid-cols-3 dark:bg-turquoise-950/40">
+        <div className="mb-8 grid gap-4 rounded-lg bg-turquoise-100 p-6 sm:grid-cols-3 dark:bg-turquoise-950/40">
           {COMMUNITY_STATS.map(({ icon, value, label }) => (
             <div key={label} className="text-center">
               <span className="text-3xl">{icon}</span>
-              <strong className="font-sans mt-1 block text-2xl text-turquoise-700 dark:text-turquoise-400">
+              <span className="font-display mt-1 block text-2xl text-turquoise-700 dark:text-turquoise-400">
                 {value}
-              </strong>
+              </span>
               <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">
                 {label}
               </span>
@@ -107,7 +107,7 @@ export default function Dashboard() {
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
-                className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800"
+                className="card-surface h-48 animate-pulse rounded-lg bg-gray-100 dark:bg-gray-800"
               />
             ))}
           </div>
@@ -182,7 +182,7 @@ export default function Dashboard() {
             )}
           </>
         ) : (
-          <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-turquoise-300 bg-turquoise-50 p-8 text-center dark:border-turquoise-800 dark:bg-turquoise-950/20">
+          <div className="flex flex-col items-center gap-4 rounded-lg border border-dashed border-turquoise-300 bg-turquoise-50 p-8 text-center dark:border-turquoise-800 dark:bg-turquoise-950/20">
             <span className="text-4xl">💬</span>
             <p className="font-bold text-turquoise-700 dark:text-turquoise-400">
               No community feedback yet — be among the first!
@@ -206,7 +206,7 @@ export default function Dashboard() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600 font-bold text-white text-xl uppercase">
                   {selectedFeedback.name?.[0] ?? "?"}
                 </div>

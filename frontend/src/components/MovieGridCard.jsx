@@ -14,7 +14,8 @@ export default function MovieGridCard({
   compact = false,
 }) {
   const cartoonName = getCartoonName(movie.cartoonId);
-  const isClassic = movie.modern === false;
+  // MongoDB may store modern as the string "false" — treat both string and boolean false as classic
+  const isClassic = movie.modern === false || movie.modern === 'false';
   const [imgError, setImgError] = useState(false);
   const hasThumbnail =
     Boolean(movie.thumbnail && movie.thumbnail.trim().length > 0) && !imgError;
@@ -128,12 +129,12 @@ export default function MovieGridCard({
             setShowLoginModal(true);
           }
         }}
-        className={`group block ${compact ? "w-[200px] shrink-0" : "w-full"}
+        className={`group block rounded-xl ${compact ? "w-[200px] shrink-0" : "w-full"}
     flex flex-col
     ${
       v
-        ? "bg-[#fdf3d8] dark:bg-[#1e1508] border-2 border-dashed border-amber-700/60 dark:border-amber-800/50 rounded-2xl shadow-[3px_3px_0_rgba(139,90,43,0.25)] hover:shadow-[5px_5px_0_rgba(139,90,43,0.35)]"
-        : "bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-[0_4px_20px_rgba(15,118,110,0.12)] hover:shadow-[0_12px_32px_rgba(15,118,110,0.22)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:dark:shadow-[0_12px_36px_rgba(0,0,0,0.55)]"
+        ? "bg-[#fdf3d8] dark:bg-[#1e1508] border-2 border-dashed border-amber-700/60 dark:border-amber-800/50 shadow-[3px_3px_0_rgba(139,90,43,0.25)] hover:shadow-[5px_5px_0_rgba(139,90,43,0.35)]"
+        : "bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 shadow-[0_4px_20px_rgba(15,118,110,0.12)] hover:shadow-[0_12px_32px_rgba(15,118,110,0.22)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:dark:shadow-[0_12px_36px_rgba(0,0,0,0.55)]"
     }
     overflow-hidden hover:-translate-y-1 transition-all duration-300`}
       >
@@ -186,7 +187,7 @@ export default function MovieGridCard({
               {!v && (
                 <div className="absolute bottom-0 left-0 right-0 px-3 py-2 backdrop-blur-sm bg-black/30">
                   <p className="line-clamp-1 text-[11px] font-bold leading-tight text-white drop-shadow">
-                    {getMovieTitle(movie[1])}
+                    {getMovieTitle(movie)}
                   </p>
                 </div>
               )}
@@ -351,7 +352,7 @@ export default function MovieGridCard({
           className={`flex-1 px-3 pt-2.5 pb-1.5 ${v ? "bg-[#fdf3d8] dark:bg-[#1e1508]" : ""}`}
         >
           <h3 className="line-clamp-2 min-h-[40px] text-sm font-bold leading-snug text-gray-900 dark:text-white">
-            {getMovieTitle(movie)} {getMovieTitle(movie)}
+            {getMovieTitle(movie)}
           </h3>
 
           {/* <div className="mt-1.5 flex items-center gap-1.5">
@@ -385,13 +386,30 @@ export default function MovieGridCard({
           </div> */}
 
           <div className="mt-2 flex items-center justify-between">
-            <span className="inline-flex items-center gap-1 rounded-md bg-turquoise-100 px-2 py-1 text-[11px] font-semibold text-turquoise-700 dark:bg-turquoise-950 dark:text-turquoise-400 border border-turquoise-500 dark:border-turquoise-400">
-              <Star size={11} className="fill-turquoise-500 text-turquoise-500" />
+            {/* Star rating */}
+            <span
+              className={`inline-flex items-center gap-1 px-2 py-1 text-[11px] font-bold ${
+                v
+                  ? "rounded bg-amber-800/20 dark:bg-amber-700/20 text-amber-800 dark:text-amber-400 border border-amber-700/30"
+                  : "rounded-md bg-turquoise-100 text-turquoise-700 dark:bg-turquoise-950/40 dark:text-turquoise-400 border border-turquoise-500 dark:border-turquoise-400"
+              }`}
+              style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}
+            >
+              <Star
+                size={11}
+                className={v ? "fill-amber-600 text-amber-600" : "fill-turquoise-500 text-turquoise-500"}
+              />
               {movie.rating}
             </span>
 
+            {/* Cartoon badge */}
             <span
-              className={`rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${cartoonBadgeClass}`}
+              className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${
+                v
+                  ? `rounded bg-[#c8902a]/20 text-amber-900 dark:bg-amber-800/30 dark:text-amber-300 border border-amber-700/40`
+                  : `rounded-md ${cartoonBadgeClass}`
+              }`}
+              style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}
             >
               {cartoonName}
             </span>
@@ -405,14 +423,23 @@ export default function MovieGridCard({
             {visibleGenres.map((genre) => (
               <span
                 key={genre}
-                className="rounded-md bg-gray-100 px-2.5 py-1 text-[11px] font-medium text-gray-600 dark:bg-gray-700 border border-gray-400 dark:border-gray- dark:text-gray-300"
+                className={`px-2.5 py-1 text-[11px] font-medium ${
+                  v
+                    ? "rounded bg-amber-800/15 dark:bg-amber-700/20 text-amber-900 dark:text-amber-300 border border-amber-700/30"
+                    : "rounded-md bg-gray-100 text-gray-600 dark:bg-gray-700 border border-gray-400 dark:border-gray-600 dark:text-gray-300"
+                }`}
+                style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}
               >
                 {genre}
               </span>
             ))}
 
             {remainingGenres > 0 && (
-              <span className="text-[11px] font-medium text-gray-500 dark:text-gray-400">
+              <span
+                className={`text-[11px] font-medium ${
+                  v ? "text-amber-700/70 dark:text-amber-500" : "text-gray-500 dark:text-gray-400"
+                }`}
+              >
                 +{remainingGenres} more
               </span>
             )}
@@ -446,26 +473,42 @@ export default function MovieGridCard({
               : "border-gray-100 dark:border-gray-700/50"
           }`}
         >
-          {/* Like count — display only, not clickable */}
+          {/* Like count */}
           <span
-            className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-semibold transition-all
-  ${
-    liked
-      ? "bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400"
-      : "bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
-  }`}
+            className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-semibold transition-all ${
+              v
+                ? liked
+                  ? "bg-red-800/20 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-700/30"
+                  : "bg-amber-800/15 text-amber-800 dark:bg-amber-800/20 dark:text-amber-400 border border-amber-700/30"
+                : liked
+                  ? "bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400"
+                  : "bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+            }`}
           >
             <Heart size={11} className={liked ? "fill-current" : ""} />
             {likesCount}
           </span>
 
-          <span className="inline-flex items-center gap-1 rounded-md bg-gray-200 px-2.5 py-1 text-[11px] font-semibold text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+          <span
+            className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-semibold ${
+              v
+                ? "bg-amber-800/15 text-amber-800 dark:bg-amber-800/20 dark:text-amber-400 border border-amber-700/30"
+                : "bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+            }`}
+          >
             <MessageCircle size={11} />
             {commentsCount}
           </span>
 
           {movie.duration && (
-            <span className="ml-auto inline-flex items-center gap-1 rounded-md bg-gray-200 px-2.5 py-1 text-[11px] font-semibold text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+            <span
+              className={`ml-auto inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-semibold ${
+                v
+                  ? "bg-amber-800/15 text-amber-800 dark:bg-amber-800/20 dark:text-amber-400 border border-amber-700/30"
+                  : "bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+              }`}
+              style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}
+            >
               <Clock size={11} />
               {formatDuration(movie.duration)}
             </span>

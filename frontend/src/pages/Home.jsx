@@ -98,7 +98,7 @@ export default function Home() {
                 cartoon, hit play, and continue watching from where you left
                 off.
               </p>
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="mt-6 grid gap-2 sm:grid-cols-2">
                 {FEATURES.slice(0, 4).map((f) => (
                   <div key={f.title} className="card-surface p-4">
                     <div className="text-3xl" aria-hidden>
@@ -115,7 +115,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-turquoise-100 p-6 dark:bg-turquoise-950/40">
+            <div className="rounded-lg bg-turquoise-100 p-6 dark:bg-turquoise-950/40">
               <h3 className="font-display text-xl text-turquoise-800 dark:text-turquoise-300">
                 Characters Spotlight
               </h3>
@@ -148,7 +148,7 @@ export default function Home() {
 
         {/* LATEST MOVIE (3x2) */}
         <section className="page-container pb-10 md:pb-14">
-          <div className="mb-6 flex items-center justify-between gap-3">
+          <div className="mb-6 flex items-center justify-between gap-2">
             <h2 className="font-display flex items-center gap-2 text-xl text-turquoise-700 dark:text-turquoise-400 md:text-2xl">
               <Clapperboard className="size-6 text-turquoise-500" aria-hidden />
               Latest Movies
@@ -161,7 +161,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
             {latestMovies.map((movie) => (
               <MovieGridCard
                 key={movie.id}
@@ -238,7 +238,7 @@ export default function Home() {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600 font-bold text-white text-lg uppercase">
                         {(selectedReview.name ?? selectedReview.user)?.[0] ??
                           "?"}
@@ -334,7 +334,7 @@ export default function Home() {
 
         {/* ANALYTICS */}
         <section className="page-container pb-14">
-          <div className="mb-6 flex items-center gap-3">
+          <div className="mb-6 flex items-center gap-2">
             <Sparkles className="size-6 text-turquoise-500" aria-hidden />
             <h2 className="font-display text-xl text-turquoise-700 dark:text-turquoise-400 md:text-2xl">
               Analytics

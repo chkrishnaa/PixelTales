@@ -41,7 +41,7 @@ export default function MovieInfo({
   setActiveEditor,
   onUpdate,
 }) {
-  const v = movie.modern === false;
+  const v = movie.modern === false || movie.modern === 'false';
   const fullDescription = buildExtendedDescription(movie);
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState({
@@ -212,45 +212,51 @@ export default function MovieInfo({
   };
 
   return (
-    <section className="page-container py-6">
+    <section className="page-container py-4 xs:py-5 sm:py-6 lg:py-8">
       <div
-        className={`overflow-hidden ${v ? "rounded-md" : "rounded-3xl"} ${C.card}`}
+        className={`overflow-hidden ${v ? "rounded-md" : "rounded-2xl lg:rounded-3xl"} ${C.card}`}
       >
         {/* ── Header ── */}
-        <div className={`p-6 ${C.header}`}>
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex-1">
+        <div className={`p-4 xs:p-5 sm:p-6 lg:p-8 ${C.header}`}>
+          <div className="flex flex-col gap-4 xs:gap-5 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex-1 min-w-0">
               {/* Classic film stamp */}
               {v && (
                 <div className="mb-2">
-                  <span className="-rotate-2 inline-block bg-red-700/90 border border-red-900 px-2 py-0.75 text-[9px] font-black tracking-[0.18em] text-white uppercase rounded-sm shadow">
+                  <span className="-rotate-2 inline-block rounded-sm border border-red-900 bg-red-700/90 px-2 py-0.5 text-[8px] xs:text-[9px] font-black uppercase tracking-[0.18em] text-white shadow">
                     ✦ Classic Film
                   </span>
                 </div>
               )}
+
+              {/* Edit Button */}
               {editMode && !isEditing && !activeEditor && (
                 <button
                   type="button"
                   onClick={openEditor}
-                  className="mb-3 inline-flex items-center gap-2 rounded-full border border-turquoise-200 px-3 py-1.5 text-sm font-semibold text-turquoise-700 transition hover:bg-turquoise-50 dark:border-turquoise-800 dark:text-turquoise-300 dark:hover:bg-turquoise-950/30"
+                  className="mb-3 inline-flex items-center gap-1.5 xs:gap-2 rounded-lg sm:rounded-full border border-turquoise-200 px-3 py-2 text-xs xs:text-sm font-semibold text-turquoise-700 transition hover:bg-turquoise-50 dark:border-turquoise-800 dark:text-turquoise-300 dark:hover:bg-turquoise-950/30"
                 >
-                  <PencilLine size={14} />
-                  Edit overview
+                  <PencilLine size={15} />
+                  Edit Overview
                 </button>
               )}
+
+              {/* Movie Title */}
               <h1
-                className={`font-sans text-3xl font-bold leading-tight md:text-4xl ${C.titleText}`}
+                className={`font-sans text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight break-words ${C.titleText}`}
                 style={v ? C.font : undefined}
               >
                 {getMovieTitle(movie)}
               </h1>
 
+              {/* Alternate Titles */}
               {Array.isArray(movie.title) && movie.title.length > 1 && (
-                <div className="mt-2 flex flex-wrap gap-1.5">
+                <div className="mt-3 flex flex-wrap gap-2">
                   {movie.title.slice(1).map((alt) => (
                     <span
                       key={alt}
-                      className={`px-3 py-0.5 text-xs font-medium ${v ? "rounded-sm" : "rounded-full"} ${C.altBadge}`}
+                      className={`px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-medium ${v ? "rounded-sm" : "rounded-full"} ${C.altBadge}`}
+                      style={v ? C.font : undefined}
                     >
                       also: {alt}
                     </span>
@@ -258,6 +264,7 @@ export default function MovieInfo({
                 </div>
               )}
 
+              {/* Movie Badges */}
               <div className="mt-4 flex flex-wrap gap-2">
                 {[
                   {
@@ -296,7 +303,7 @@ export default function MovieInfo({
                 ].map(({ label, cls, icon }) => (
                   <span
                     key={label}
-                    className={`inline-flex items-center gap-1 px-3 py-1 text-sm font-bold ${v ? "rounded-sm" : "rounded-full"} ${cls}`}
+                    className={`inline-flex items-center gap-1 rounded-full px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs sm:text-sm font-bold ${v ? "rounded-sm" : "rounded-full"} ${cls}`}
                     style={v ? C.font : undefined}
                   >
                     {icon}
@@ -309,39 +316,42 @@ export default function MovieInfo({
         </div>
 
         {isEditing && (
-          <div className="border-b border-gray-200 bg-gray-50/80 p-6 dark:border-gray-800 dark:bg-gray-900/50">
-            <div className="grid gap-3 md:grid-cols-2">
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <div className="border-b border-gray-200 bg-gray-50/80 p-4 xs:p-5 sm:p-6 lg:p-8 dark:border-gray-800 dark:bg-gray-900/50">
+            <div className="grid gap-3 xs:gap-4 md:grid-cols-2">
+              <label className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Title
                 <input
                   value={form.title}
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, title: e.target.value }))
                   }
-                  className="mt-1 w-full rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                  className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 />
               </label>
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+
+              <label className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Director
                 <input
                   value={form.director}
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, director: e.target.value }))
                   }
-                  className="mt-1 w-full rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                  className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 />
               </label>
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+
+              <label className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Studio
                 <input
                   value={form.studio}
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, studio: e.target.value }))
                   }
-                  className="mt-1 w-full rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                  className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 />
               </label>
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+
+              <label className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Year
                 <input
                   type="number"
@@ -349,10 +359,11 @@ export default function MovieInfo({
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, year: e.target.value }))
                   }
-                  className="mt-1 w-full rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                  className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 />
               </label>
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+
+              <label className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Duration
                 <input
                   type="number"
@@ -360,31 +371,34 @@ export default function MovieInfo({
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, duration: e.target.value }))
                   }
-                  className="mt-1 w-full rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                  className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 />
               </label>
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+
+              <label className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Language
                 <input
                   value={form.language}
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, language: e.target.value }))
                   }
-                  className="mt-1 w-full rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                  className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 />
               </label>
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+
+              <label className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Quality
                 <input
                   value={form.quality}
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, quality: e.target.value }))
                   }
-                  className="mt-1 w-full rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                  className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 />
               </label>
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                Release date
+
+              <label className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Release Date
                 <input
                   value={form.releaseDate}
                   onChange={(e) =>
@@ -393,13 +407,14 @@ export default function MovieInfo({
                       releaseDate: e.target.value,
                     }))
                   }
-                  className="mt-1 w-full rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                  className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 />
               </label>
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 md:col-span-2">
+
+              <label className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300 md:col-span-2">
                 Description
                 <textarea
-                  rows={4}
+                  rows={5}
                   value={form.description}
                   onChange={(e) =>
                     setForm((prev) => ({
@@ -407,28 +422,30 @@ export default function MovieInfo({
                       description: e.target.value,
                     }))
                   }
-                  className="mt-1 w-full rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                  className="mt-1.5 min-h-[140px] xs:min-h-[160px] w-full resize-y rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm leading-6 outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                 />
               </label>
             </div>
-            <div className="mt-4 flex flex-wrap gap-2">
+
+            <div className="mt-5 flex flex-col gap-2 xs:flex-row xs:flex-wrap">
               <button
                 type="button"
                 onClick={saveChanges}
-                className="inline-flex items-center gap-2 rounded-full bg-turquoise-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-turquoise-500"
+                className="inline-flex w-full xs:w-auto items-center justify-center gap-2 rounded-lg sm:rounded-full bg-turquoise-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-turquoise-500"
               >
-                <Save size={14} />
-                Save changes
+                <Save size={15} />
+                Save Changes
               </button>
+
               <button
                 type="button"
                 onClick={() => {
                   setIsEditing(false);
                   setActiveEditor(null);
                 }}
-                className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-600 transition hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="inline-flex w-full xs:w-auto items-center justify-center gap-2 rounded-lg sm:rounded-full border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
               >
-                <X size={14} />
+                <X size={15} />
                 Cancel
               </button>
             </div>
@@ -436,38 +453,49 @@ export default function MovieInfo({
         )}
 
         {/* ── Rating Bar ── */}
-        <div className={`px-6 py-4 ${C.ratingBar}`}>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5">
+        <div className={`px-4 xs:px-5 sm:px-6 py-3 xs:py-4 ${C.ratingBar}`}>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <div className="flex items-center gap-2 shrink-0">
               <Trophy size={16} className={C.trophyIcon} />
               <span
-                className={`text-sm font-bold ${C.ratingLabel}`}
+                className={`text-xs xs:text-sm font-bold ${C.ratingLabel}`}
                 style={v ? C.font : undefined}
               >
                 Community Rating
               </span>
             </div>
-            <div className="flex flex-1 items-center gap-3">
+
+            <div className="flex flex-col xs:flex-row xs:items-center flex-1 gap-2 xs:gap-3">
               <div
-                className={`h-2.5 flex-1 overflow-hidden ${v ? "rounded-sm" : "rounded-full"} ${C.ratingBarBg}`}
+                className={`h-2 xs:h-2.5 flex-1 overflow-hidden ${
+                  v ? "rounded-sm" : "rounded-full"
+                } ${C.ratingBarBg}`}
               >
                 <div
-                  className={`h-full transition-all duration-1000 ease-out ${v ? "rounded-sm" : "rounded-full"} ${C.ratingBarFill}`}
+                  className={`h-full transition-all duration-1000 ease-out ${
+                    v ? "rounded-sm" : "rounded-full"
+                  } ${C.ratingBarFill}`}
                   style={{ width: `${ratingPercent}%` }}
                 />
               </div>
-              <div className="flex shrink-0 items-center gap-1">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <Star
-                    key={s}
-                    size={14}
-                    className={
-                      s <= Math.round(movie.rating) ? C.starFilled : C.starEmpty
-                    }
-                  />
-                ))}
+
+              <div className="flex items-center justify-between xs:justify-start gap-2 shrink-0">
+                <div className="flex items-center gap-0.5 xs:gap-1">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star
+                      key={s}
+                      size={12}
+                      className={
+                        s <= Math.round(movie.rating)
+                          ? C.starFilled
+                          : C.starEmpty
+                      }
+                    />
+                  ))}
+                </div>
+
                 <span
-                  className={`ml-1 text-sm font-bold ${C.ratingNum}`}
+                  className={`text-xs xs:text-sm font-bold ${C.ratingNum}`}
                   style={v ? C.font : undefined}
                 >
                   {movie.rating}/5
@@ -477,17 +505,18 @@ export default function MovieInfo({
           </div>
         </div>
 
-        <div className={`p-6 ${C.body}`}>
+        <div className={`p-4 xs:p-5 sm:p-6 lg:p-7 ${C.body}`}>
           {/* ── Story ── */}
-          <div className="mb-6">
+          <div className="mb-5 xs:mb-6 lg:mb-7">
             <h2
-              className={`mb-3 text-lg font-bold ${C.sectionHead}`}
+              className={`mb-2 xs:mb-3 text-base xs:text-lg sm:text-xl font-bold ${C.sectionHead}`}
               style={v ? C.font : undefined}
             >
               {v ? "📜 Story" : "📖 Story"}
             </h2>
+
             <p
-              className={`leading-7 text-justify ${C.descText}`}
+              className={`text-sm xs:text-[15px] sm:text-base leading-6 xs:leading-7 text-justify ${C.descText}`}
               style={v ? C.font : undefined}
             >
               {fullDescription}
@@ -495,18 +524,21 @@ export default function MovieInfo({
           </div>
 
           {/* ── Genres ── */}
-          <div className="mb-6">
+          <div className="mb-5 xs:mb-6 lg:mb-7">
             <h2
-              className={`mb-3 text-lg font-bold ${C.sectionHead}`}
+              className={`mb-2 xs:mb-3 text-base xs:text-lg sm:text-xl font-bold ${C.sectionHead}`}
               style={v ? C.font : undefined}
             >
               🎭 Genres
             </h2>
-            <div className="flex flex-wrap gap-2">
+
+            <div className="flex flex-wrap gap-1.5 xs:gap-2">
               {movie.genres?.map((genre) => (
                 <span
                   key={genre}
-                  className={`cursor-default border px-4 py-1.5 text-sm font-semibold transition-all duration-200 hover:scale-105 hover:shadow-sm ${v ? "rounded-sm" : "rounded-full"} ${C.genrePill}`}
+                  className={`cursor-default border px-3 xs:px-4 py-1 xs:py-1.5 text-xs xs:text-sm font-semibold transition-all duration-200 hover:scale-105 hover:shadow-sm ${
+                    v ? "rounded-sm" : "rounded-full"
+                  } ${C.genrePill}`}
                   style={v ? C.font : undefined}
                 >
                   {genre}
@@ -518,27 +550,45 @@ export default function MovieInfo({
           {/* ── Metadata Cards ── */}
           <div>
             <h2
-              className={`mb-3 text-lg font-bold ${C.sectionHead}`}
+              className={`mb-2 xs:mb-3 text-base xs:text-lg sm:text-xl font-bold ${C.sectionHead}`}
               style={v ? C.font : undefined}
             >
               🎬 Details
             </h2>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+
+            <div className="grid grid-cols-1 gap-2 xs:gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {metaCards.map(({ icon: Icon, label, value, color, bg }) => (
                 <div
                   key={label}
-                  className={`group flex items-center gap-3 p-4 transition-all duration-200 hover:scale-[1.02] hover:shadow-md ${v ? "rounded-sm" : "rounded-2xl"} ${v ? C.metaCardBg : bg}`}
+                  className={`group flex items-center gap-2 xs:gap-3 p-3 xs:p-4 transition-all duration-200 hover:scale-[1.02] hover:shadow-md ${
+                    v ? "rounded-sm" : "rounded-lg"
+                  } ${v ? C.metaCardBg : bg}`}
                 >
                   <div
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center transition-transform duration-200 group-hover:scale-110 ${v ? "rounded-sm" : "rounded-xl"} ${v ? C.metaIconBg : `bg-white dark:bg-gray-900 shadow-sm ${color}`}`}
+                    className={`flex h-9 w-9 xs:h-10 xs:w-10 shrink-0 items-center justify-center transition-transform duration-200 group-hover:scale-110 ${
+                      v ? "rounded-sm" : "rounded-lg"
+                    } ${
+                      v
+                        ? C.metaIconBg
+                        : `bg-white dark:bg-gray-900 shadow-sm ${color}`
+                    }`}
                   >
-                    <Icon size={18} />
+                    <Icon size={16} className="xs:size-[18px]" />
                   </div>
-                  <div className="min-w-0" style={v ? C.font : undefined}>
-                    <p className={`text-xs font-medium ${C.metaLabel}`}>
+
+                  <div
+                    className="min-w-0 flex-1"
+                    style={v ? C.font : undefined}
+                  >
+                    <p
+                      className={`text-[11px] xs:text-xs font-medium ${C.metaLabel}`}
+                    >
                       {label}
                     </p>
-                    <p className={`truncate font-semibold ${C.metaValue}`}>
+
+                    <p
+                      className={`truncate text-sm xs:text-base font-semibold ${C.metaValue}`}
+                    >
                       {value}
                     </p>
                   </div>
@@ -550,7 +600,7 @@ export default function MovieInfo({
 
         {/* ── Footer Quick Stats ── */}
         <div
-          className={`flex flex-wrap items-center gap-4 px-6 py-3 ${C.footer}`}
+          className={`flex flex-wrap items-center justify-center sm:justify-between gap-2 xs:gap-3 sm:gap-4 px-4 xs:px-5 sm:px-6 py-3 ${C.footer}`}
         >
           {[
             {
@@ -568,7 +618,7 @@ export default function MovieInfo({
           ].map(({ icon, bold, label }) => (
             <div
               key={label}
-              className={`flex items-center gap-1.5 text-sm ${C.footerText}`}
+              className={`flex items-center gap-1 xs:gap-1.5 text-xs xs:text-sm ${C.footerText}`}
               style={v ? C.font : undefined}
             >
               {icon}
@@ -577,18 +627,21 @@ export default function MovieInfo({
               </span>
             </div>
           ))}
+
           <div
-            className={`flex items-center gap-1.5 text-sm ${C.footerText}`}
+            className={`flex items-center gap-1 xs:gap-1.5 text-xs xs:text-sm ${C.footerText}`}
             style={v ? C.font : undefined}
           >
             <Globe size={14} />
             <span>{movie.language}</span>
           </div>
+
           <div
-            className={`flex items-center gap-1.5 text-sm ${C.footerText}`}
+            className={`flex items-center gap-1 xs:gap-1.5 text-xs xs:text-sm ${C.footerText}`}
             style={v ? C.font : undefined}
           >
-            🎥 <span>{movie.quality}</span>
+            <span className="text-sm">🎥</span>
+            <span>{movie.quality}</span>
           </div>
         </div>
       </div>

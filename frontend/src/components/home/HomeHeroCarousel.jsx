@@ -192,13 +192,13 @@ sm:text-sm font-bold uppercase tracking-[0.18em] ${accentText[slide.accent]}`}
                 {slide.tagline}
               </p>
 
-              <div className="mt-5 xm:mt-6 flex flex-wrap gap-2 xs:gap-3">
+              <div className="mt-5 xm:mt-6 flex flex-wrap gap-2 xs:gap-2">
                 <Link
                   to="/dashboard"
                   className={`
     inline-flex items-center justify-center
     gap-2
-    rounded-sm sm:rounded-lg rounded-xl
+    rounded-sm sm:rounded-lg rounded-lg
     px-5 py-2.5
     text-sm font-bold
     transition-all duration-300

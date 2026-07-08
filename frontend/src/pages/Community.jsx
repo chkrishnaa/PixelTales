@@ -44,13 +44,13 @@ export default function Community() {
       )}
 
       {/* ── Community Stats banner (always visible) ────────── */}
-      <div className="mb-6 grid gap-4 rounded-2xl bg-turquoise-100 p-6 sm:grid-cols-3 dark:bg-turquoise-950/40">
+      <div className="mb-6 grid gap-4 rounded-lg bg-turquoise-100 p-6 sm:grid-cols-3 dark:bg-turquoise-950/40">
         {COMMUNITY_STATS.map(({ icon, value, label }) => (
           <div key={label} className="text-center">
             <span className="text-3xl">{icon}</span>
-            <strong className="font-sans mt-1 block text-2xl text-turquoise-700 dark:text-turquoise-400">
+            <span className="font-display mt-1 block text-2xl text-turquoise-700 dark:text-turquoise-400">
               {value}
-            </strong>
+            </span>
             <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">
               {label}
             </span>
@@ -59,7 +59,7 @@ export default function Community() {
       </div>
 
       {/* ── Tab bar ─────────────────────────────────────────── */}
-      <div className="mb-6 flex gap-1 rounded-2xl bg-gray-100 p-1 dark:bg-gray-800/60">
+      <div className="mb-6 flex gap-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800/60">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
@@ -67,7 +67,7 @@ export default function Community() {
               setActiveTab(id);
               setCurrentPage(1);
             }}
-            className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-bold transition-all ${
+            className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-bold transition-all ${
               activeTab === id
                 ? "bg-white text-turquoise-700 shadow-sm dark:bg-gray-900 dark:text-turquoise-400"
                 : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -124,7 +124,7 @@ export default function Community() {
               {Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}
-                  className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800"
+                  className="card-surface h-48 animate-pulse rounded-lg bg-gray-100 dark:bg-gray-800"
                 />
               ))}
             </div>
@@ -174,7 +174,7 @@ export default function Community() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <div
                   className="flex size-12 items-center justify-center rounded-full bg-linear-to-br
                                 from-turquoise-300 to-turquoise-600 font-bold text-white text-lg uppercase"

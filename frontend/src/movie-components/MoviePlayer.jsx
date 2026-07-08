@@ -27,7 +27,7 @@ export default function MoviePlayer({
   const { user, token, API } = useAuth();
   const { updateProgress } = useWatch();
 
-  const v = movie.modern === false;
+  const v = movie.modern === false || movie.modern === "false";
 
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(movie.likes ?? 0);
@@ -163,12 +163,12 @@ export default function MoviePlayer({
   const vFont = { fontFamily: '"Courier New", Courier, monospace' };
 
   return (
-    <section className="page-container pt-6">
+    <section className="page-container pt-3 xs:pt-4 sm:pt-5 lg:pt-6">
       <div
         className={`group overflow-hidden shadow-xl transition-all duration-300 ${
           v
             ? "rounded-md border-2 border-dashed border-amber-700/50 dark:border-amber-800/40 bg-[#fdf3d8] dark:bg-[#1e1508] hover:border-amber-700/70 hover:shadow-[0_8px_32px_rgba(139,90,43,0.25)]"
-            : "rounded-3xl border border-turquoise-200/60 bg-white hover:border-turquoise-400/50 hover:shadow-turquoise-100/50 dark:border-turquoise-900/40 dark:bg-gray-900 dark:hover:border-turquoise-700/60 dark:hover:shadow-turquoise-950/40"
+            : "rounded-xl sm:rounded-2xl md:rounded-3xl border border-turquoise-200/60 bg-white hover:border-turquoise-400/50 hover:shadow-turquoise-100/50 dark:border-turquoise-900/40 dark:bg-gray-900 dark:hover:border-turquoise-700/60 dark:hover:shadow-turquoise-950/40"
         }`}
       >
         {/* ── Video or vintage placeholder ── */}
@@ -180,13 +180,13 @@ export default function MoviePlayer({
                 title={getMovieTitle(movie)}
                 allow="autoplay; encrypted-media; fullscreen"
                 allowFullScreen
-                className="aspect-video max-h-[75vh] w-full bg-black"
+                className="aspect-video w-full max-h-[45vh] xs:max-h-[55vh] md:max-h-[65vh] lg:max-h-[75vh] bg-black"
               />
             ) : (
               <video
                 controls
                 poster={movie.thumbnail}
-                className="aspect-video max-h-[75vh] w-full bg-black"
+                className="aspect-video w-full max-h-[45vh] xs:max-h-[55vh] md:max-h-[65vh] lg:max-h-[75vh] bg-black"
                 onTimeUpdate={(e) => {
                   activeSecsRef.current = e.currentTarget.currentTime;
                   updateProgress(
@@ -201,7 +201,7 @@ export default function MoviePlayer({
             )}
             {movie.quality && (
               <span
-                className={`absolute top-3 right-3 px-2.5 py-1 text-xs font-bold tracking-wide text-white backdrop-blur-sm ${v ? "rounded-sm" : "rounded-lg"} ${v ? "bg-amber-700/90" : "bg-turquoise-700/90"}`}
+                className={`absolute top-2 xs:top-3 right-2 xs:right-3 px-2 xs:px-2.5 py-1 text-[10px] xs:text-xs font-bold tracking-wide text-white backdrop-blur-sm ${v ? "rounded-sm" : "rounded-lg"} ${v ? "bg-amber-700/90" : "bg-turquoise-700/90"}`}
               >
                 {movie.quality}
               </span>
@@ -210,7 +210,7 @@ export default function MoviePlayer({
         ) : v ? (
           /* ── Classic "Film Unavailable" placeholder ── */
           <div
-            className="relative aspect-video max-h-[40vh] w-full flex flex-col items-center justify-center overflow-hidden"
+            className="relative aspect-video max-h-[30vh] xs:max-h-[34vh] sm:max-h-[40vh] w-full flex flex-col items-center justify-center overflow-hidden"
             style={{
               background:
                 "linear-gradient(135deg, #1a1008 0%, #2d1f0a 50%, #1a1008 100%)",
@@ -249,15 +249,15 @@ export default function MoviePlayer({
               <div className="absolute left-[78%] top-[15%] bottom-[10%] w-px bg-white/15" />
             </div>
             {/* Content */}
-            <Film size={48} className="text-amber-600/70 mb-4 drop-shadow-lg" />
+            <Film className="h-9 w-9 xs:h-10 xs:w-10 sm:h-12 sm:w-12 xs:size-10 sm:size-12 text-amber-600/70 mb-3 xs:mb-4 drop-shadow-lg" />{" "}
             <p
-              className="text-amber-400/90 text-lg font-black tracking-widest uppercase drop-shadow"
+              className="text-amber-400/90 text-base xs:text-lg font-black tracking-widest uppercase drop-shadow"
               style={vFont}
             >
               📽️ Film Reel Unavailable
             </p>
             <p
-              className="mt-1 text-amber-600/60 text-xs tracking-wider"
+              className="mt-1 text-amber-600/60 text-[11px] xs:text-xs tracking-wider"
               style={vFont}
             >
               This classic title has not been digitised yet
@@ -276,7 +276,7 @@ export default function MoviePlayer({
 
         {/* ── Action Bar ── */}
         <div
-          className={`flex flex-wrap items-center gap-2 border-t px-5 py-4 ${
+          className={`flex flex-wrap items-center justify-center sm:justify-start gap-2 xs:gap-3 border-t px-3 xs:px-4 sm:px-5 py-3 xs:py-4 ${
             v
               ? "border-amber-700/30 dark:border-amber-800/30 bg-[#fdf3d8] dark:bg-[#1e1508]"
               : "border-turquoise-100 dark:border-turquoise-900/30"
@@ -287,10 +287,10 @@ export default function MoviePlayer({
             onClick={() =>
               navigate(`/party?cartoon=${movie.cartoonId}&movie=${movie.id}`)
             }
-            className={`flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white shadow-md transition-all duration-200 active:scale-95 ${
+            className={`flex items-center justify-center gap-2 px-4 xs:px-5 py-2 xs:py-2.5 text-[13px] xs:text-sm font-bold text-white shadow-md transition-all duration-200 active:scale-95 ${
               v
                 ? "rounded-sm bg-amber-700 hover:bg-amber-600"
-                : "rounded-2xl bg-turquoise-700 hover:bg-turquoise-600"
+                : "rounded-lg bg-turquoise-700 hover:bg-turquoise-600"
             }`}
             style={v ? vFont : undefined}
           >
@@ -303,8 +303,8 @@ export default function MoviePlayer({
             onClick={handleLike}
             disabled={likeLoading}
             title={user ? (liked ? "Unlike" : "Like") : "Log in to like"}
-            className={`group flex items-center gap-2 border-2 bg-transparent px-4 py-2.5 text-sm font-bold transition-all duration-200 active:scale-95 disabled:cursor-default ${
-              v ? "rounded-sm" : "rounded-2xl"
+            className={`group flex items-center gap-2 border-2 bg-transparent px-3 xs:px-4 py-2 xs:py-2.5 text-[13px] xs:text-sm font-bold transition-all duration-200 active:scale-95 disabled:cursor-default ${
+              v ? "rounded-sm" : "rounded-lg"
             } ${
               liked
                 ? v
@@ -331,7 +331,7 @@ export default function MoviePlayer({
             }
             title={user ? "Save to collection" : "Log in to save"}
             className={`flex items-center gap-2 border-2 bg-transparent px-4 py-2.5 text-sm font-bold transition-all duration-200 active:scale-95 ${
-              v ? "rounded-sm" : "rounded-2xl"
+              v ? "rounded-sm" : "rounded-lg"
             } ${
               savedToAny
                 ? v
@@ -351,7 +351,7 @@ export default function MoviePlayer({
             <button
               type="button"
               onClick={openMediaEditor}
-              className={`flex items-center gap-2 rounded-full border border-turquoise-200 bg-transparent px-4 py-2.5 text-sm font-semibold transition-all duration-200 active:scale-95 ${
+              className={`flex items-center gap-2 rounded-lg xs:rounded-xl sm:rounded-full border border-turquoise-200 bg-transparent px-3 xs:px-4 py-2 xs:py-2.5 text-[13px] xs:text-sm font-semibold transition-all duration-200 active:scale-95 ${
                 v
                   ? "text-amber-700 dark:border-amber-500 dark:text-amber-400"
                   : "text-turquoise-700 hover:border-turquoise-400 dark:border-turquoise-500 dark:text-turquoise-400"
@@ -368,7 +368,7 @@ export default function MoviePlayer({
             <button
               onClick={handleShare}
               className={`flex items-center gap-2 border-2 bg-transparent px-4 py-2.5 text-sm font-bold transition-all duration-200 active:scale-95 ${
-                v ? "rounded-sm" : "rounded-2xl"
+                v ? "rounded-sm" : "rounded-lg"
               } ${
                 v
                   ? "border-amber-700/40 text-amber-800/70 hover:border-amber-600 hover:text-amber-800 dark:border-amber-800/50 dark:text-amber-500 dark:hover:border-amber-600"
@@ -385,7 +385,7 @@ export default function MoviePlayer({
             </button>
             {copied && (
               <div
-                className={`absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 text-xs font-medium text-white shadow-lg whitespace-nowrap ${v ? "rounded-sm" : "rounded-lg"} ${v ? "bg-amber-900" : "bg-gray-900 dark:bg-gray-700"}`}
+                className={`absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 xs:px-3 py-1 text-[10px] xs:text-xs font-medium text-white shadow-lg whitespace-nowrap ${v ? "rounded-sm" : "rounded-lg"} ${v ? "bg-amber-900" : "bg-gray-900 dark:bg-gray-700"}`}
               >
                 Link copied! ✓
                 <div

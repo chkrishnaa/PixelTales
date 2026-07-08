@@ -6,8 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Community from "./pages/Community";
 import Feedback from "./pages/Feedback";
-import Party from "./pages/Party";
-import PartyRoom from "./pages/PartyRoom";
+
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import ForgotPassword from "./pages/auth/ForgotPassword";
@@ -32,8 +31,6 @@ export default function App() {
 
         <Route path="/" element={<Home />} />
 
-        {/* Party room — full-screen, no main nav */}
-        <Route path="party/room" element={<PartyRoom />} />
 
         <Route element={<MainLayout />}>
           <Route
@@ -49,7 +46,6 @@ export default function App() {
           <Route path="review" element={<Review />} />
           <Route path="write-review" element={<Review />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="party" element={<Party />} />
 
           <Route
             path="/movie/:movieId"

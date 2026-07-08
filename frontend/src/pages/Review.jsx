@@ -86,7 +86,7 @@ export default function Review() {
   };
 
   return (
-    <div className="page-container max-w-2xl py-10">
+    <div className="page-container max-w-2xl py-6 xs:py-8 sm:py-10 lg:py-12">
       {showLoginModal && (
         <LoginModal
           onClose={() => setShowLoginModal(false)}
@@ -95,12 +95,12 @@ export default function Review() {
           icon="⭐"
         />
       )}
-      <header className="mb-8 text-center">
+      <header className="mb-6 xs:mb-7 sm:mb-8 text-center">
         <Star className="mx-auto size-10 fill-turquoise-500 text-turquoise-500" />
-        <h1 className="font-sans mt-2 text-3xl text-turquoise-700 dark:text-turquoise-400">
+        <h1 className="font-display mt-2 text-2xl xs:text-3xl sm:text-4xl text-turquoise-600 dark:text-turquoise-400">
           {isEditing ? "Edit Your Review" : "Write a Review"}
         </h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">
+        <p className="mt-2 max-w-xl mx-auto text-sm xs:text-base text-gray-600 dark:text-gray-400">
           {isEditing
             ? "Your previous review is loaded below — update it anytime."
             : "Share your thoughts with the PixelTales community."}
@@ -108,15 +108,15 @@ export default function Review() {
       </header>
 
       {submitted ? (
-        <div className="card-surface p-8 text-center">
-          <CheckCircle className="mx-auto size-14 text-emerald-500" />
-          <p className="font-sans mt-4 text-2xl text-turquoise-700 dark:text-turquoise-400">
+        <div className="card-surface p-5 xs:p-6 sm:p-8 text-center">
+          <CheckCircle className="mx-auto size-12 xs:size-14 text-emerald-500" />
+          <p className="font-sans mt-3 xs:mt-4 text-xl xs:text-2xl text-turquoise-700 dark:text-turquoise-400">
             {isEditing ? "Review Updated ⭐" : "Review Submitted ⭐"}
           </p>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
+          <p className="mt-2 max-w-xl mx-auto text-sm xs:text-base text-gray-600 dark:text-gray-400">
             Thank you for sharing your review, {name}!
           </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <div className="mt-5 xs:mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
             <Link to="/community" className="btn-primary">
               See All Reviews
             </Link>
@@ -131,17 +131,17 @@ export default function Review() {
         </div>
       ) : (
         <form
-          className="card-surface space-y-5 p-6 md:p-8"
+          className="card-surface space-y-5 p-4 xs:p-5 sm:p-6 md:p-7 lg:p-8"
           onSubmit={handleSubmit}
         >
           {loading && (
-            <p className="rounded-xl bg-turquoise-50 px-4 py-2.5 text-center text-sm font-medium text-turquoise-700 dark:bg-turquoise-950/30 dark:text-turquoise-300">
+            <p className="rounded-lg bg-turquoise-50 px-3 xs:px-4 py-2.5 text-center text-sm font-medium text-turquoise-700 dark:bg-turquoise-950/30 dark:text-turquoise-300">
               Loading your previous review…
             </p>
           )}
 
           {isEditing && !loading && (
-            <div className="flex items-center gap-2 rounded-xl border border-turquoise-200 bg-turquoise-50 px-4 py-2.5 text-sm text-turquoise-800 dark:border-turquoise-800 dark:bg-turquoise-950/30 dark:text-turquoise-300">
+            <div className="flex items-start xs:items-center gap-2 rounded-lg border border-turquoise-200 bg-turquoise-50 px-3 xs:px-4 py-2.5 text-sm text-turquoise-800 dark:border-turquoise-800 dark:bg-turquoise-950/30 dark:text-turquoise-300">
               <Pencil size={15} className="shrink-0" />
               You already submitted a review — edit the fields below and save
               changes.
@@ -153,7 +153,7 @@ export default function Review() {
             <legend className="mb-3 text-sm font-bold text-center">
               Your Rating <span className="text-red-500">*</span>
             </legend>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap justify-center gap-1 xs:gap-2">
               {[1, 2, 3, 4, 5].map((value) => (
                 <button
                   key={value}
@@ -164,25 +164,25 @@ export default function Review() {
                   className="transition-transform hover:scale-110"
                 >
                   <Star
-                    size={52}
-                    className={
+                    size={36}
+                    className={`size-9 xs:size-11 sm:size-[52px] ${
                       value <= (hover || rating)
                         ? "fill-turquoise-600 text-turquoise-600 dark:fill-turquoise-400 dark:text-turquoise-400"
                         : "text-gray-300 dark:text-gray-600"
-                    }
+                    }`}
                   />
                 </button>
               ))}
             </div>
             {rating > 0 && (
-              <p className="mt-2 text-sm font-semibold text-turquoise-600 dark:text-turquoise-400">
+              <p className="mt-2 text-xs xs:text-sm font-semibold text-turquoise-600 dark:text-turquoise-400">
                 {["", "Poor", "Fair", "Good", "Great", "Excellent!"][rating]}
               </p>
             )}
           </fieldset>
 
           {/* Name & Email */}
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2">
             <label className="block">
               <span className="mb-1 block text-sm font-bold">
                 Your Name <span className="text-red-500">*</span>
@@ -216,20 +216,20 @@ export default function Review() {
               Your Review <span className="text-red-500">*</span>
             </span>
             <textarea
-              className="input-field min-h-[180px] resize-none"
+              className="input-field min-h-[140px] xs:min-h-[160px] sm:min-h-[180px] resize-none"
               placeholder="Tell the community what you liked, disliked, and whether you'd recommend PixelTales..."
               value={review}
               onChange={(e) => setReview(e.target.value.slice(0, MAX))}
               required
             />
-            <span className="absolute bottom-3 right-3 text-xs text-gray-400">
+            <span className="absolute bottom-2 right-3 text-[11px] xs:text-xs text-gray-400">
               {review.length}/{MAX}
             </span>
           </label>
 
           {/* Error */}
           {error && (
-            <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-400">
+            <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 xs:p-4 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-400">
               <AlertCircle size={16} className="mt-0.5 shrink-0" />
               {error}
             </div>
@@ -238,7 +238,7 @@ export default function Review() {
           <button
             type="submit"
             disabled={!rating || busy || loading}
-            className="btn-primary w-full py-3 disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn-primary w-full py-2.5 xs:py-3 text-sm xs:text-base disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Send size={18} />
             {busy

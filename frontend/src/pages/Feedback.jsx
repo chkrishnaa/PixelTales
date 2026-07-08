@@ -27,7 +27,7 @@ function MyFeedbackCard({ item, onDelete, deleting }) {
   const emoji    = SENTIMENT_EMOJI[item.sentiment] ?? '💬'
 
   return (
-    <article className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition hover:border-turquoise-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:hover:border-turquoise-700">
+    <article className="group relative overflow-hidden rounded-lg border border-gray-200 bg-white p-3 xs:p-4 shadow-sm transition hover:border-turquoise-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:hover:border-turquoise-700">
       <div className="absolute -right-4 -top-4 size-16 rounded-full bg-turquoise-100/60 dark:bg-turquoise-900/20" />
       <div className="relative flex items-start justify-between gap-2">
         <div className="flex items-center gap-2">
@@ -43,17 +43,22 @@ function MyFeedbackCard({ item, onDelete, deleting }) {
           className="rounded-lg p-1.5 text-gray-400 transition hover:bg-red-50 hover:text-red-500 disabled:opacity-40 dark:hover:bg-red-950/30"
           title="Delete feedback"
         >
-          {deleting ? <Loader2 size={15} className="animate-spin" /> : <Trash2 size={15} />}
+          {deleting ? (
+            <Loader2 size={15} className="animate-spin" />
+          ) : (
+            <Trash2 size={15} />
+          )}
         </button>
       </div>
-      <p className="relative mt-3 line-clamp-4 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+      <p className="relative mt-3 line-clamp-4 text-[13px] leading-6 text-gray-600 dark:text-gray-300">
+        {" "}
         {item.message}
       </p>
       <p className="relative mt-3 text-[11px] font-semibold text-gray-400">
         {formatDate(item.createdAt)}
       </p>
     </article>
-  )
+  );
 }
 
 export default function Feedback() {
@@ -147,7 +152,7 @@ export default function Feedback() {
   const hasPastFeedback = myFeedbacks.length > 0
 
   return (
-    <div className="page-container max-w-6xl py-10">
+    <div className="page-container max-w-6xl py-6 xs:py-8 sm:py-10 lg:py-12">
       {showLoginModal && (
         <LoginModal
           onClose={() => setShowLoginModal(false)}
@@ -156,21 +161,21 @@ export default function Feedback() {
           icon="💬"
         />
       )}
-      <header className="mb-8 text-center">
-        <MessageCircle className="mx-auto size-10 text-turquoise-500" />
-        <h1 className="font-sans mt-2 text-3xl text-turquoise-700 dark:text-turquoise-400">
+      <header className="mb-6 xs:mb-7 sm:mb-8 text-center">
+        <MessageCircle className="mx-auto size-8 xs:size-9 sm:size-10 text-turquoise-500" />
+        <h1 className="font-display mt-2 text-2xl xs:text-3xl sm:text-4xl text-turquoise-600 dark:text-turquoise-400">
           Share Feedback
         </h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">
+        <p className="mt-2 max-w-xl mx-auto text-sm xs:text-base text-gray-600 dark:text-gray-400">
           Help us improve PixelTales! Your feedback goes straight to our team.
         </p>
       </header>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+      <div className="grid gap-6 xs:gap-7 lg:gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
         {/* ── Form column ── */}
         <div>
           <form
-            className="card-surface space-y-5 p-6 md:p-8"
+            className="card-surface space-y-5 p-4 xs:p-5 sm:p-6 md:p-7 lg:p-8"
             onSubmit={handleSubmit}
           >
             <div>
@@ -189,19 +194,19 @@ export default function Feedback() {
             </div>
 
             {successMsg && (
-              <div className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
+              <div className="flex items-start xs:items-center gap-2 rounded-lg px-3 xs:px-4 py-2.5 text-sm font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
                 <CheckCircle size={16} />
                 {successMsg}
               </div>
             )}
 
             {error && (
-              <p className="rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
+              <p className="rounded-lg bg-red-50 px-3 xs:px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
                 {error}
               </p>
             )}
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 md:grid-cols-2">
               <label className="block">
                 <span className="mb-1 block text-sm font-bold">Your Name</span>
                 <input
@@ -234,7 +239,7 @@ export default function Feedback() {
                   <button
                     key={id}
                     type="button"
-                    className={`rounded-full border px-3 py-2 text-xs font-bold transition ${
+                    className={`rounded-full border px-2.5 xs:px-3 py-2 text-[11px] xs:text-xs font-bold transition ${
                       feedbackType === id
                         ? "border-turquoise-400 bg-turquoise-100 text-turquoise-800 dark:bg-turquoise-900/50"
                         : "border-gray-200 dark:border-gray-700"
@@ -257,7 +262,7 @@ export default function Feedback() {
                     key={id}
                     type="button"
                     aria-label={label}
-                    className={`flex size-12 items-center justify-center rounded-xl border-2 text-2xl transition ${
+                    className={`flex size-10 xs:size-11 sm:size-12 items-center justify-center rounded-lg border-2 text-lg sm:text-2xl transition ${
                       sentiment === id
                         ? "border-turquoise-500 bg-turquoise-50 dark:bg-turquoise-950/50"
                         : "border-gray-200 dark:border-gray-700"
@@ -273,7 +278,7 @@ export default function Feedback() {
             <label className="relative block">
               <span className="mb-1 block text-sm font-bold">Your Message</span>
               <textarea
-                className="input-field min-h-[140px] resize-none"
+                className="input-field min-h-[120px] xs:min-h-[140px] resize-none"
                 value={message}
                 onChange={(e) => setMessage(e.target.value.slice(0, MAX))}
                 placeholder={
@@ -283,7 +288,7 @@ export default function Feedback() {
                 }
                 required
               />
-              <span className="absolute bottom-3 right-3 text-xs text-gray-400">
+              <span className="absolute bottom-2 right-3 text-[11px] xs:text-xs text-gray-400">
                 {message.length}/{MAX}
               </span>
             </label>
@@ -291,7 +296,7 @@ export default function Feedback() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full py-3 disabled:opacity-50"
+              className="btn-primary w-full py-2.5 xs:py-3 text-sm xs:text-base disabled:opacity-50"
             >
               <Send size={18} />
               {loading
@@ -302,10 +307,11 @@ export default function Feedback() {
             </button>
           </form>
 
-          <div className="mt-4">
+          <div className="mt-4 text-center">
+            {" "}
             <Link
               to="/review"
-              className="text-sm font-bold text-turquoise-600 transition hover:text-turquoise-700 dark:text-turquoise-400"
+              className="inline-flex items-center text-sm font-bold text-turquoise-600 transition hover:text-turquoise-700 dark:text-turquoise-400"
             >
               ⭐ Want to review a movie instead? Write a Review
             </Link>
@@ -314,7 +320,7 @@ export default function Feedback() {
 
         {/* ── My feedbacks sidebar ── */}
         <aside className="space-y-4">
-          <div className="card-surface sticky top-24 p-5">
+          <div className="card-surface p-4 xs:p-5 lg:sticky lg:top-24">
             <h2 className="flex items-center gap-2 font-bold text-gray-900 dark:text-white">
               <MessageCircle size={18} className="text-turquoise-500" />
               My Feedbacks
@@ -328,16 +334,16 @@ export default function Feedback() {
               All feedback you&apos;ve submitted from this email
             </p>
 
-            <div className="mt-4 space-y-3 max-h-[70vh] overflow-y-auto pr-1">
+            <div className="mt-4 space-y-3 max-h-[420px] lg:max-h-[70vh] overflow-y-auto pr-1">
               {myLoading ? (
                 Array.from({ length: 2 }).map((_, i) => (
                   <div
                     key={i}
-                    className="h-28 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800"
+                    className="h-28 animate-pulse rounded-lg bg-gray-100 dark:bg-gray-800"
                   />
                 ))
               ) : myFeedbacks.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-gray-200 p-6 text-center dark:border-gray-700">
+                <div className="rounded-lg border border-dashed border-gray-200 p-5 xs:p-6 text-center dark:border-gray-700">
                   <span className="text-3xl">💬</span>
                   <p className="mt-2 text-sm font-semibold text-gray-600 dark:text-gray-400">
                     No feedback yet

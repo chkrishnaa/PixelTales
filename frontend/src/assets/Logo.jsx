@@ -86,7 +86,9 @@ export default function Logo({
 
   /* Default: full logo, swaps between light and dark versions */
   return (
-    <span className={`inline-flex items-center ${className} rounded-xl overflow-hidden`}>
+    <span
+      className={`inline-flex items-center ${className} rounded-lg overflow-hidden`}
+    >
       {/* Light mode */}
       <img
         src={lightLogo}

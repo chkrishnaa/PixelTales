@@ -101,7 +101,7 @@ export default function Signup() {
 
       {(error || info) && (
         <p
-          className={`mt-4 rounded-xl px-4 py-2.5 text-center text-sm font-medium ${error ? "bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400" : "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300"}`}
+          className={`mt-4 rounded-lg px-4 py-2.5 text-center text-sm font-medium ${error ? "bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400" : "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300"}`}
         >
           {error || info}
         </p>
@@ -160,7 +160,7 @@ export default function Signup() {
           </form>
         ) : (
           <form className="space-y-4" onSubmit={handleVerify}>
-            <div className="space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200">
+            <div className="space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200">
               <p className="font-semibold">Verify your email</p>
               <p>
                 We sent a 6-digit code to{" "}
@@ -186,7 +186,7 @@ export default function Signup() {
               />
             </label>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <button
                 type="submit"
                 disabled={loading}
@@ -216,7 +216,7 @@ export default function Signup() {
 
         {step === "register" && (
           <>
-            <div className="flex items-center gap-3 text-xs font-semibold text-gray-400">
+            <div className="flex items-center gap-2 text-xs font-semibold text-gray-400">
               <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
               or
               <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />

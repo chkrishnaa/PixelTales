@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   Globe,
   MessageCircle,
-  PartyPopper,
 } from "lucide-react";
 import ProfileDropdown from "./ProfileDropdown";
 import Logo from "../assets/Logo";
@@ -40,7 +39,10 @@ export default function Navbar() {
       md:px-8
       xl:px-20 backdrop-blur-2xl"
       >
-        <NavLink to="/" className="flex items-center transition-opacity hover:opacity-80 rounded-xl overflow-hidden">
+        <NavLink
+          to="/"
+          className="flex items-center transition-opacity hover:opacity-80 rounded-lg overflow-hidden"
+        >
           <Logo size="md" hideTextOnMobile />
         </NavLink>
 
@@ -52,7 +54,7 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `flex items-center gap-2
   px-4 py-2
-  rounded-xl
+  rounded-lg
   font-semibold
   transition-all
   ${
@@ -77,33 +79,10 @@ export default function Navbar() {
           className="
     flex
     items-center
-    gap-3
+    gap-2
     shrink-0
   "
         >
-          <NavLink
-            to="/party"
-            className={({ isActive }) =>
-              `
-  hidden xl:flex
-  items-center gap-2
-  rounded-xl
-  px-4 py-2
-  font-semibold
-  transition-all
-  ${
-    isActive
-      ? "bg-turquoise-100 text-turquoise-700 dark:bg-turquoise-900/80 dark:text-turquoise-300"
-      : "hover:bg-gray-200 dark:hover:bg-gray-800"
-  }
-  
-`
-            }
-          >
-            <PartyPopper size={18} aria-hidden />
-            <span className="text-sm">Party</span>
-          </NavLink>
-
           <ProfileDropdown />
         </div>
       </div>

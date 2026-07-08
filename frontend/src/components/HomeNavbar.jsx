@@ -32,12 +32,12 @@ export default function HomeNavbar({ isLoggedIn = false }) {
         "
       >
         {/* Logo */}
-        <div className="flex items-center rounded-xl overflow-hidden">
+        <div className="flex items-center rounded-lg overflow-hidden">
           <Logo size="md" hideTextOnMobile />
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {isLoggedIn ? (
             <NavLink to="/dashboard" className="btn-primary">
               Dashboard
@@ -48,7 +48,7 @@ export default function HomeNavbar({ isLoggedIn = false }) {
                 to="/login"
                 className="
     inline-flex items-center justify-center gap-2
-    rounded-xl
+    rounded-lg
     border-2 border-turquoise-600
     px-5 py-2.5
     text-sm font-bold

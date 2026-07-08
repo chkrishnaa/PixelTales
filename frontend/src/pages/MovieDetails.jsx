@@ -58,7 +58,7 @@ export default function MovieDetails() {
   const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const isClassic = movie?.modern === false;
+  const isClassic = movie?.modern === false || movie?.modern === "false";
 
   useEffect(() => {
     if (!movieId) return;
@@ -206,17 +206,17 @@ export default function MovieDetails() {
         }`}
       >
         <div
-          className={`border-b px-4 backdrop-blur-md ${
+          className={`border-b px-3 xs:px-4 sm:px-5 backdrop-blur-md ${
             isClassic
               ? "border-amber-700/40 bg-[#fdf3d8]/90 dark:border-amber-800/40 dark:bg-[#1e1508]/90"
               : "border-gray-200 bg-white/90 dark:border-gray-800 dark:bg-gray-950/90"
           }`}
         >
           <div className="page-container">
-            <div className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide">
+            <div className="flex items-center gap-1 xs:gap-2 overflow-x-auto py-2.5 xs:py-3 scrollbar-hide">
               {/* Movie mini-title */}
               <span
-                className={`mr-4 shrink-0 text-sm font-bold ${
+                className={`mr-3 xs:mr-4 shrink-0 text-xs xs:text-sm font-bold ${
                   isClassic
                     ? "text-amber-800 dark:text-amber-400"
                     : "font-sans text-turquoise-700 dark:text-turquoise-400"
@@ -237,7 +237,7 @@ export default function MovieDetails() {
                 <button
                   key={tabId}
                   onClick={() => scrollToSection(tabId)}
-                  className={`flex shrink-0 items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+                  className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                     activeTab === tabId
                       ? isClassic
                         ? "bg-amber-700 text-amber-100 shadow-md"
@@ -262,18 +262,18 @@ export default function MovieDetails() {
       </div>
 
       {user?.role === "admin" && editMode && (
-        <div className="page-container pt-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-turquoise-200 bg-white/80 px-4 py-3 shadow-sm backdrop-blur dark:border-turquoise-900/40 dark:bg-gray-900/70">
+        <div className="page-container pt-3 xs:pt-4">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl sm:rounded-3xl border px-4 py-3 shadow-sm backdrop-blur border-turquoise-200 bg-white/80 px-4 py-3 shadow-sm backdrop-blur dark:border-turquoise-900/40 dark:bg-gray-900/70">
             <div>
-              <p className="text-sm font-semibold text-turquoise-600">
+              <p className="text-xs xs:text-sm font-semibold text-turquoise-600">
                 Admin edit mode
               </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-xs xs:text-sm text-gray-600 dark:text-gray-400">
                 Turn it on to reveal edit controls on the movie sections.
               </p>
             </div>
             <div
-              className={`flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition ${editMode ? "bg-turquoise-600 text-white" : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"}`}
+              className={`flex items-center gap-2 rounded-full px-3 py-1.5 xs:py-2 text-xs xs:text-sm font-semibold transition ${editMode ? "bg-turquoise-600 text-white" : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"}`}
             >
               <PencilLine size={15} />
               Edit Mode ON

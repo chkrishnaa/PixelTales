@@ -34,12 +34,12 @@ function isSubsequence(needle, haystack) {
 }
 
 const CARTOON_ALIASES = {
-  doraemon:    ['doremon', 'doramon', 'doreamon', 'doraemn', 'dora'],
-  pokemon:     ['pokmon', 'pokémon', 'poke'],
-  shinchan:    ['shin chan', 'shincahn'],
-  naruto:      ['naruto'],
-  'tom-jerry': ['tom jerry', 'tom and jerry'],
-}
+  doraemon: ["doremon", "doramon", "doreamon", "doraemn", "dora"],
+  pokemon: ["pokmon", "pokemon", "poke"],
+  shinchan: ["shin chan", "shincahn"],
+  naruto: ["naruto"],
+  "tom-jerry": ["tom jerry", "tom and jerry"],
+};
 
 function movieMatchesQuery(movie, q) {
   if (!q) return true
@@ -208,8 +208,9 @@ export default function AllMoviesSection() {
       if (m.year < yearFrom || m.year > yearTo) return false;
       if (videoFilter === "available" && !m.videoUrl?.trim()) return false;
       if (videoFilter === "unavailable" && m.videoUrl?.trim()) return false;
-      if (eraFilter === "classic" && m.modern !== false) return false;
-      if (eraFilter === "modern" && m.modern === false) return false;
+      if (eraFilter === 'classic' && m.modern !== false && m.modern !== 'false') return false;
+      if (eraFilter === 'modern' && (m.modern === false || m.modern === 'false')) return false;
+
       return true;
     });
     return [...list].sort((a, b) => {
@@ -248,29 +249,40 @@ export default function AllMoviesSection() {
   const filterButton = (
     <div className="flex items-center gap-2">
       {activeFilterCount > 0 && (
-        <button onClick={resetAll} title="Clear all filters"
-          className="flex size-8 items-center justify-center rounded-xl border-2 border-rose-200 bg-white text-rose-400 transition hover:bg-rose-50 hover:text-rose-600 dark:border-rose-800/50 dark:bg-gray-900 dark:hover:bg-rose-950/30">
+        <button
+          onClick={resetAll}
+          title="Clear all filters"
+          className="flex size-8 items-center justify-center rounded-lg border-2 border-rose-200 bg-white text-rose-400 transition hover:bg-rose-50 hover:text-rose-600 dark:border-rose-800/50 dark:bg-gray-900 dark:hover:bg-rose-950/30"
+        >
           <RotateCcw size={14} />
         </button>
       )}
-      <button onClick={() => setPanelOpen((o) => !o)}
-        className={`relative flex items-center gap-2 rounded-xl border-2 px-4 py-2 text-sm font-bold shadow-sm transition-all duration-200 ${
+      <button
+        onClick={() => setPanelOpen((o) => !o)}
+        className={`relative flex items-center gap-2 rounded-lg border-2 px-4 py-2 text-sm font-bold shadow-sm transition-all duration-200 ${
           panelOpen
-            ? 'border-turquoise-500 bg-turquoise-600 text-white'
+            ? "border-turquoise-500 bg-turquoise-600 text-white"
             : activeFilterCount > 0
-              ? 'border-turquoise-400 bg-turquoise-50 text-turquoise-700 dark:border-turquoise-600 dark:bg-turquoise-950/40 dark:text-turquoise-300'
-              : 'border-gray-200 bg-white text-gray-600 hover:border-turquoise-300 hover:text-turquoise-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400'
-        }`}>
+              ? "border-turquoise-400 bg-turquoise-50 text-turquoise-700 dark:border-turquoise-600 dark:bg-turquoise-950/40 dark:text-turquoise-300"
+              : "border-gray-200 bg-white text-gray-600 hover:border-turquoise-300 hover:text-turquoise-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400"
+        }`}
+      >
         <SlidersHorizontal size={15} />
         <span className="hidden sm:inline">Filter & Sort</span>
         {activeFilterCount > 0 && (
-          <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black ${
-            panelOpen ? 'bg-white/30 text-white' : 'bg-turquoise-600 text-white dark:bg-turquoise-500'
-          }`}>{activeFilterCount}</span>
+          <span
+            className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black ${
+              panelOpen
+                ? "bg-white/30 text-white"
+                : "bg-turquoise-600 text-white dark:bg-turquoise-500"
+            }`}
+          >
+            {activeFilterCount}
+          </span>
         )}
       </button>
     </div>
-  )
+  );
 
   return (
     <section className="page-container pb-10">
@@ -288,7 +300,7 @@ export default function AllMoviesSection() {
 
       {/* ── Filter Panel ── */}
       {panelOpen && (
-        <div className="mb-6 overflow-hidden rounded-2xl border border-turquoise-200/80 bg-white shadow-xl shadow-turquoise-100/40 dark:border-turquoise-900/40 dark:bg-gray-900 dark:shadow-none">
+        <div className="mb-6 overflow-hidden rounded-lg border border-turquoise-200/80 bg-white shadow-xl shadow-turquoise-100/40 dark:border-turquoise-900/40 dark:bg-gray-900 dark:shadow-none">
           {/* Panel header */}
           <div className="flex items-center justify-between border-b border-turquoise-100 bg-linear-to-r from-turquoise-50 to-white px-5 py-3 dark:border-turquoise-900/30 dark:from-turquoise-950/30 dark:to-gray-900">
             <div className="flex items-center gap-2">
@@ -325,7 +337,7 @@ export default function AllMoviesSection() {
                 <Search size={10} className="mr-1 inline" />
                 Search Title
               </label>
-              <div className="flex items-center gap-2 rounded-xl border-2 border-gray-200 bg-gray-50 px-3 py-2.5 transition-all focus-within:border-turquoise-400 focus-within:bg-white focus-within:shadow-sm dark:border-gray-700 dark:bg-gray-800/60 dark:focus-within:border-turquoise-600 dark:focus-within:bg-gray-900">
+              <div className="flex items-center gap-2 rounded-lg border-2 border-gray-200 bg-gray-50 px-3 py-2.5 transition-all focus-within:border-turquoise-400 focus-within:bg-white focus-within:shadow-sm dark:border-gray-700 dark:bg-gray-800/60 dark:focus-within:border-turquoise-600 dark:focus-within:bg-gray-900">
                 <Search size={14} className="shrink-0 text-gray-400" />
                 <input
                   value={query}
@@ -367,7 +379,7 @@ export default function AllMoviesSection() {
                       setSort(key);
                       setCurrentPage(1);
                     }}
-                    className={`flex flex-col items-start rounded-xl border-2 px-3 py-2 text-left transition-all ${
+                    className={`flex flex-col items-start rounded-lg border-2 px-3 py-2 text-left transition-all ${
                       sort === key
                         ? "border-turquoise-500 bg-turquoise-600 text-white shadow-sm"
                         : "border-gray-200 bg-gray-50 text-gray-600 hover:border-turquoise-300 hover:bg-turquoise-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
@@ -410,7 +422,7 @@ export default function AllMoviesSection() {
                     );
                     setCurrentPage(1);
                   }}
-                  className="w-24 rounded-xl border-2 border-gray-200 bg-gray-50 px-2 py-2 text-center text-sm font-bold outline-none transition focus:border-turquoise-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                  className="w-24 rounded-lg border-2 border-gray-200 bg-gray-50 px-2 py-2 text-center text-sm font-bold outline-none transition focus:border-turquoise-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                 />
                 <span className="text-gray-400">—</span>
                 <input
@@ -427,7 +439,7 @@ export default function AllMoviesSection() {
                     );
                     setCurrentPage(1);
                   }}
-                  className="w-24 rounded-xl border-2 border-gray-200 bg-gray-50 px-2 py-2 text-center text-sm font-bold outline-none transition focus:border-turquoise-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                  className="w-24 rounded-lg border-2 border-gray-200 bg-gray-50 px-2 py-2 text-center text-sm font-bold outline-none transition focus:border-turquoise-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                 />
               </div>
               {/* Quick decade presets */}
@@ -502,7 +514,7 @@ export default function AllMoviesSection() {
                       setEraFilter(val);
                       setCurrentPage(1);
                     }}
-                    className={`flex items-center gap-1.5 rounded-xl border-2 px-3 py-2 text-sm font-bold transition-all ${
+                    className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-2 text-sm font-bold transition-all ${
                       eraFilter === val
                         ? val === "classic"
                           ? "border-amber-600 bg-amber-600 text-white shadow-sm"
@@ -534,7 +546,7 @@ export default function AllMoviesSection() {
                       setVideoFilter(val);
                       setCurrentPage(1);
                     }}
-                    className={`flex items-center gap-1.5 rounded-xl border-2 px-3 py-2 text-sm font-bold transition-all ${
+                    className={`flex items-center gap-1.5 rounded-lg border-2 px-3 py-2 text-sm font-bold transition-all ${
                       videoFilter === val
                         ? val === "unavailable"
                           ? "border-rose-600 bg-rose-600 text-white shadow-sm"
@@ -695,7 +707,7 @@ export default function AllMoviesSection() {
           </p>
           <button
             onClick={resetAll}
-            className="mt-5 rounded-xl bg-turquoise-600 px-6 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-turquoise-500"
+            className="mt-5 rounded-lg bg-turquoise-600 px-6 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-turquoise-500"
           >
             Reset Filters
           </button>

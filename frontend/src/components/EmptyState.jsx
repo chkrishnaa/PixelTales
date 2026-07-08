@@ -12,10 +12,10 @@ import Logo from '../assets/Logo'
  */
 export default function EmptyState({ title, description, action, icon: Icon }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-5 rounded-2xl border border-dashed border-gray-200 bg-white/60 px-6 py-14 text-center dark:border-gray-700 dark:bg-gray-900/40">
+    <div className="flex flex-col items-center justify-center gap-5 rounded-lg border border-dashed border-gray-200 bg-white/60 px-6 py-14 text-center dark:border-gray-700 dark:bg-gray-900/40">
       {/* Icon */}
       {Icon && (
-        <div className="flex size-14 items-center justify-center rounded-2xl bg-turquoise-50 dark:bg-turquoise-950/30">
+        <div className="flex size-14 items-center justify-center rounded-lg bg-turquoise-50 dark:bg-turquoise-950/30">
           <Icon
             size={28}
             className="text-turquoise-400 dark:text-turquoise-500"

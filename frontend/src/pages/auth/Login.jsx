@@ -46,7 +46,7 @@ export default function Login() {
       </p>
 
       {error && (
-        <p className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
+        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
           {error}
         </p>
       )}
@@ -100,7 +100,7 @@ export default function Login() {
           </button>
         </form>
 
-        <div className="flex items-center gap-3 text-xs font-semibold text-gray-400">
+        <div className="flex items-center gap-2 text-xs font-semibold text-gray-400">
           <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
           or
           <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />

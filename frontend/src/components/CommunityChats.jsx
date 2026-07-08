@@ -58,7 +58,7 @@ function Avatar({ name, avatar, size = 40 }) {
 
 function DateSep({ label }) {
   return (
-    <div className="flex items-center gap-3 px-4 py-1">
+    <div className="flex items-center gap-2 px-4 py-1">
       <span className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
       <span className="rounded-full bg-gray-100 px-3 py-0.5 text-[10px] font-semibold text-gray-400 dark:bg-gray-800 dark:text-gray-500">
         {label}
@@ -78,50 +78,84 @@ function Bubble({ msg, prevMsg, isOwn, ownUser }) {
   const ownName    = ownUser?.name || msg.userName;
 
   return (
-    <div className={`flex items-end gap-2 px-4 ${isOwn ? 'flex-row-reverse' : 'flex-row'} ${sameAuthor ? 'mt-0.5' : 'mt-3'}`}>
+    <div
+      className={`flex items-end gap-2 px-4 ${isOwn ? "flex-row-reverse" : "flex-row"} ${sameAuthor ? "mt-0.5" : "mt-3"}`}
+    >
       {/* Avatar slot — both sides */}
       <div className="w-8 shrink-0 flex justify-center">
-        {showAvatar && (
-          isOwn
-            ? <Avatar name={ownName} avatar={ownAvatar} size={32} />
-            : <Avatar name={msg.userName} size={32} />
-        )}
+        {showAvatar &&
+          (isOwn ? (
+            <Avatar name={ownName} avatar={ownAvatar} size={32} />
+          ) : (
+            <Avatar name={msg.userName} size={32} />
+          ))}
       </div>
 
-      <div className={`flex max-w-[68%] flex-col gap-0.5 ${isOwn ? 'items-end' : 'items-start'}`}>
+      <div
+        className={`flex max-w-[68%] flex-col gap-0.5 ${isOwn ? "items-end" : "items-start"}`}
+      >
         {showName && (
-          <span className="ml-1 text-xs font-bold" style={{ color: avatarGrad(msg.userName).slice(22, 29) }}>
+          <span
+            className="ml-1 text-xs font-bold"
+            style={{ color: avatarGrad(msg.userName).slice(22, 29) }}
+          >
             {msg.userName}
           </span>
         )}
 
         <div
-          className={`relative rounded-2xl px-3.5 py-2 text-sm leading-relaxed shadow-sm ${
+          className={`relative rounded-lg px-3.5 py-2 text-sm leading-relaxed shadow-sm ${
             isOwn
-              ? 'rounded-br-sm bg-[#dcf8c6] text-gray-900 dark:bg-[#025c4c] dark:text-gray-100'
-              : 'rounded-bl-sm bg-white text-gray-900 dark:bg-[#1f2c34] dark:text-gray-100'
+              ? "rounded-br-sm bg-[#dcf8c6] text-gray-900 dark:bg-[#025c4c] dark:text-gray-100"
+              : "rounded-bl-sm bg-white text-gray-900 dark:bg-[#1f2c34] dark:text-gray-100"
           }`}
-          style={isOwn ? undefined : { boxShadow: '0 1px 2px rgba(0,0,0,.08)' }}
+          style={isOwn ? undefined : { boxShadow: "0 1px 2px rgba(0,0,0,.08)" }}
         >
           {!sameAuthor && (
-            <span className={`absolute top-0 ${isOwn ? 'right-[-5px]' : 'left-[-5px]'} overflow-hidden`}
-              style={{ width: 8, height: 13 }}>
+            <span
+              className={`absolute top-0 ${isOwn ? "right-[-5px]" : "left-[-5px]"} overflow-hidden`}
+              style={{ width: 8, height: 13 }}
+            >
               <svg width="8" height="13" viewBox="0 0 8 13">
-                {isOwn
-                  ? <path d="M1 1 Q8 1 8 8 L8 13 Z" fill="#dcf8c6" className="dark:hidden" />
-                  : <path d="M7 1 Q0 1 0 8 L0 13 Z" fill="white" className="dark:hidden" />}
-                {isOwn
-                  ? <path d="M1 1 Q8 1 8 8 L8 13 Z" fill="#025c4c" className="hidden dark:block" />
-                  : <path d="M7 1 Q0 1 0 8 L0 13 Z" fill="#1f2c34" className="hidden dark:block" />}
+                {isOwn ? (
+                  <path
+                    d="M1 1 Q8 1 8 8 L8 13 Z"
+                    fill="#dcf8c6"
+                    className="dark:hidden"
+                  />
+                ) : (
+                  <path
+                    d="M7 1 Q0 1 0 8 L0 13 Z"
+                    fill="white"
+                    className="dark:hidden"
+                  />
+                )}
+                {isOwn ? (
+                  <path
+                    d="M1 1 Q8 1 8 8 L8 13 Z"
+                    fill="#025c4c"
+                    className="hidden dark:block"
+                  />
+                ) : (
+                  <path
+                    d="M7 1 Q0 1 0 8 L0 13 Z"
+                    fill="#1f2c34"
+                    className="hidden dark:block"
+                  />
+                )}
               </svg>
             </span>
           )}
 
           <span className="break-words">{msg.text}</span>
 
-          <span className={`ml-3 float-right mt-1 text-[10px] ${
-            isOwn ? 'text-[#6a9e7f] dark:text-[#6cbc8e]' : 'text-gray-400 dark:text-gray-500'
-          }`}>
+          <span
+            className={`ml-3 float-right mt-1 text-[10px] ${
+              isOwn
+                ? "text-[#6a9e7f] dark:text-[#6cbc8e]"
+                : "text-gray-400 dark:text-gray-500"
+            }`}
+          >
             {formatBubbleTime(msg.createdAt ?? msg.timestamp)}
           </span>
         </div>
@@ -256,11 +290,11 @@ export default function CommunityChats() {
 
   return (
     <div
-      className="overflow-hidden rounded-2xl border border-gray-200 shadow-lg dark:border-gray-700 flex flex-col"
-      style={{ height: 'calc(100vh - 220px)', minHeight: 540 }}
+      className="overflow-hidden rounded-lg border border-gray-200 shadow-lg dark:border-gray-700 flex flex-col"
+      style={{ height: "calc(100vh - 220px)", minHeight: 540 }}
     >
       {/* ── Header ──────────────────────────────────────── */}
-      <div className="flex items-center gap-3 border-b border-gray-200 bg-[#f0f2f5] px-4 py-3 dark:border-gray-700 dark:bg-[#202c33] shrink-0">
+      <div className="flex items-center gap-2 border-b border-gray-200 bg-[#f0f2f5] px-4 py-3 dark:border-gray-700 dark:bg-[#202c33] shrink-0">
         <div
           className="flex size-11 shrink-0 items-center justify-center rounded-full text-xl shadow-sm"
           style={{ background: COMMUNITY_ROOM.gradient }}
@@ -268,7 +302,9 @@ export default function CommunityChats() {
           {COMMUNITY_ROOM.icon}
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="font-bold text-gray-900 dark:text-white">{COMMUNITY_ROOM.name}</h2>
+          <h2 className="font-bold text-gray-900 dark:text-white">
+            {COMMUNITY_ROOM.name}
+          </h2>
           <p className="text-[11px] text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-0.5">
             <Users size={10} />
             {memberCount.toLocaleString()} members
@@ -283,7 +319,7 @@ export default function CommunityChats() {
       {/* ── Messages area ───────────────────────────────── */}
       <div
         className="flex-1 overflow-y-auto py-3 space-y-0"
-        style={{ background: 'var(--chat-bg, #efeae2)' }}
+        style={{ background: "var(--chat-bg, #efeae2)" }}
       >
         <style>{`:root { --chat-bg: #efeae2; } .dark { --chat-bg: #0b141a; }`}</style>
 
@@ -292,22 +328,28 @@ export default function CommunityChats() {
             <div className="size-8 rounded-full border-2 border-turquoise-500 border-t-transparent animate-spin" />
           </div>
         ) : messages.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center gap-3 text-center px-4">
+          <div className="flex h-full flex-col items-center justify-center gap-2 text-center px-4">
             <span className="text-5xl">💬</span>
-            <p className="font-bold text-gray-500 dark:text-gray-400">No messages yet</p>
-            <p className="text-sm text-gray-400 dark:text-gray-500">Be the first to say hello to the community!</p>
+            <p className="font-bold text-gray-500 dark:text-gray-400">
+              No messages yet
+            </p>
+            <p className="text-sm text-gray-400 dark:text-gray-500">
+              Be the first to say hello to the community!
+            </p>
           </div>
         ) : (
           items.map((item) =>
-            item.type === 'sep'
-              ? <DateSep key={item.id} label={item.label} />
-              : <Bubble
-                  key={item.msg._id}
-                  msg={item.msg}
-                  prevMsg={item.prevMsg}
-                  isOwn={item.msg.userId?.toString() === meId}
-                  ownUser={user}
-                />
+            item.type === "sep" ? (
+              <DateSep key={item.id} label={item.label} />
+            ) : (
+              <Bubble
+                key={item.msg._id}
+                msg={item.msg}
+                prevMsg={item.prevMsg}
+                isOwn={item.msg.userId?.toString() === meId}
+                ownUser={user}
+              />
+            ),
           )
         )}
         <div ref={bottomRef} className="h-2" />
@@ -318,7 +360,7 @@ export default function CommunityChats() {
         {!user && (
           <button
             onClick={() => setShowLoginModal(true)}
-            className="mb-2 w-full rounded-xl bg-turquoise-50 py-2 text-center text-xs font-semibold text-turquoise-600 transition hover:bg-turquoise-100 dark:bg-turquoise-950/30 dark:text-turquoise-400"
+            className="mb-2 w-full rounded-lg bg-turquoise-50 py-2 text-center text-xs font-semibold text-turquoise-600 transition hover:bg-turquoise-100 dark:bg-turquoise-950/30 dark:text-turquoise-400"
           >
             🔒 Login to join the conversation
           </button>
@@ -341,21 +383,32 @@ export default function CommunityChats() {
 
           {/* Text input */}
           <div
-            className="flex flex-1 items-end gap-2 rounded-2xl bg-white px-4 py-2 shadow-sm dark:bg-[#2a3942] cursor-text"
-            onClick={() => { if (!user) setShowLoginModal(true); }}
+            className="flex flex-1 items-end gap-2 rounded-lg bg-white px-4 py-2 shadow-sm dark:bg-[#2a3942] cursor-text"
+            onClick={() => {
+              if (!user) setShowLoginModal(true);
+            }}
           >
             <textarea
               ref={inputRef}
               rows={1}
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  send();
+                }
+              }}
               disabled={!user}
-              placeholder={user ? 'Type a message…' : 'Login to chat…'}
+              placeholder={user ? "Type a message…" : "Login to chat…"}
               className="max-h-28 flex-1 resize-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-gray-100 dark:placeholder:text-gray-500 cursor-text"
             />
             {draft && (
-              <button type="button" onClick={() => setDraft('')} className="shrink-0 text-gray-400 hover:text-gray-600">
+              <button
+                type="button"
+                onClick={() => setDraft("")}
+                className="shrink-0 text-gray-400 hover:text-gray-600"
+              >
                 <X size={14} />
               </button>
             )}
@@ -363,7 +416,13 @@ export default function CommunityChats() {
 
           {/* Send */}
           <button
-            onClick={() => { if (!user) { setShowLoginModal(true); return; } send(); }}
+            onClick={() => {
+              if (!user) {
+                setShowLoginModal(true);
+                return;
+              }
+              send();
+            }}
             disabled={(!draft.trim() && !!user) || sending}
             className="flex size-10 shrink-0 items-center justify-center rounded-full bg-turquoise-600 text-white shadow transition hover:bg-turquoise-500 active:scale-95 disabled:opacity-40"
           >
@@ -383,22 +442,33 @@ export default function CommunityChats() {
       )}
 
       {/* ── Emoji picker portal ──────────────────────────── */}
-      {showEmoji && emojiAnchor && createPortal(
-        <div
-          style={{ position: 'fixed', top: pickerTop, left: pickerLeft, zIndex: 9999 }}
-          onMouseDown={(e) => e.stopPropagation()}
-        >
-          <EmojiPicker
-            onEmojiClick={(d) => { setDraft((p) => p + d.emoji); setShowEmoji(false); inputRef.current?.focus(); }}
-            theme="auto"
-            lazyLoadEmojis
-            height={370}
-            width={320}
-            searchPlaceholder="Search emoji…"
-          />
-        </div>,
-        document.body
-      )}
+      {showEmoji &&
+        emojiAnchor &&
+        createPortal(
+          <div
+            style={{
+              position: "fixed",
+              top: pickerTop,
+              left: pickerLeft,
+              zIndex: 9999,
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+            <EmojiPicker
+              onEmojiClick={(d) => {
+                setDraft((p) => p + d.emoji);
+                setShowEmoji(false);
+                inputRef.current?.focus();
+              }}
+              theme="auto"
+              lazyLoadEmojis
+              height={370}
+              width={320}
+              searchPlaceholder="Search emoji…"
+            />
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

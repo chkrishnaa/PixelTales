@@ -129,10 +129,10 @@ export default function Hero() {
               <span className="font-bold">PixelTales</span>.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-2">
               <Link
                 to="/dashboard"
-                className=" bg-white text-turquoise-700 hover:bg-white/90 flex justify-between items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition hover:bg-white/90"
+                className=" bg-white text-turquoise-700 hover:bg-white/90 flex justify-between items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold transition hover:bg-white/90"
               >
                 <Play size={20} fill="currentColor" />
                 Watch Now

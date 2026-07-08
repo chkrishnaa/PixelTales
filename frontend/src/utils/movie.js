@@ -2080,18 +2080,3 @@ export const CONTINUE_WATCHING = MOVIE_DETAILS.filter(
 export const WATCH_HISTORY = MOVIE_DETAILS.filter(
   (m) => m.progress != null && m.progress >= 80
 );
-
-export const PARTY_MOVIE_OPTIONS = ALL_MOVIES;
-
-/** Unique cartoons derived from ALL_MOVIES */
-export const CARTOON_OPTIONS = Array.from(
-  new Map(
-    ALL_MOVIES.map((m) => [
-      m.cartoonId,
-      {
-        id: m.cartoonId,
-        label: m.cartoonId.charAt(0).toUpperCase() + m.cartoonId.slice(1),
-      },
-    ])
-  ).values()
-);

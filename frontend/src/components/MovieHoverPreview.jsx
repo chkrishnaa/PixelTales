@@ -53,7 +53,7 @@ export default function MovieHoverPreview({ movie, anchorRect, side = 'right', o
   const navigate = useNavigate()
   if (!movie || !anchorRect) return null
 
-  const v         = movie.modern === false
+  const v         = movie.modern === false || movie.modern === 'false'
   const title     = getMovieTitle(movie)
   const allTitles = Array.isArray(movie.title) ? movie.title : [title]
   const altTitles = allTitles.slice(1).filter(Boolean)
@@ -73,15 +73,17 @@ export default function MovieHoverPreview({ movie, anchorRect, side = 'right', o
       onMouseLeave={onLeave}
       onClick={() => navigate(`/movie/${movie.id}`)}
       className={`fixed z-9999 overflow-hidden shadow-2xl cursor-pointer transition-none ${
-        v ? 'rounded-md' : 'rounded-2xl'
+        v ? "rounded-md" : "rounded-lg"
       }`}
       style={{ top, left, width: POPUP_W }}
     >
       {/* ── Thumbnail ── */}
       <div className="relative aspect-video w-full overflow-hidden">
         {/* Fallback gradient always rendered behind */}
-        <div className="absolute inset-0 flex items-center justify-center"
-          style={{ background: gradientBg }}>
+        <div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ background: gradientBg }}
+        >
           <Film size={40} className="text-white/40" />
         </div>
 
@@ -91,23 +93,36 @@ export default function MovieHoverPreview({ movie, anchorRect, side = 'right', o
             src={movie.thumbnail}
             alt={title}
             className="absolute inset-0 h-full w-full object-cover"
-            onError={(e) => { e.currentTarget.style.display = 'none' }}
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
           />
         )}
 
         {/* Classic overlays */}
         {v && (
           <>
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse at center, transparent 50%, rgba(15,10,2,0.5) 100%)' }} />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(ellipse at center, transparent 50%, rgba(15,10,2,0.5) 100%)",
+              }}
+            />
             <div className="absolute top-0 left-0 right-0 flex justify-around bg-[#1a1008]/80 px-1 py-[2px] z-10">
               {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="h-[4px] w-[7px] rounded-[1px] bg-[#fdf3d8] opacity-70" />
+                <div
+                  key={i}
+                  className="h-[4px] w-[7px] rounded-[1px] bg-[#fdf3d8] opacity-70"
+                />
               ))}
             </div>
             <div className="absolute bottom-0 left-0 right-0 flex justify-around bg-[#1a1008]/80 px-1 py-[2px] z-10">
               {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="h-[4px] w-[7px] rounded-[1px] bg-[#fdf3d8] opacity-70" />
+                <div
+                  key={i}
+                  className="h-[4px] w-[7px] rounded-[1px] bg-[#fdf3d8] opacity-70"
+                />
               ))}
             </div>
             <div className="absolute inset-0 pointer-events-none z-10">
@@ -118,9 +133,16 @@ export default function MovieHoverPreview({ movie, anchorRect, side = 'right', o
         )}
 
         {/* Year badge */}
-        <span className={`absolute top-2 left-2 z-20 px-2 py-0.5 text-[10px] font-extrabold shadow ${
-          v ? 'rounded-sm bg-[#1a1008]/80 text-amber-300' : 'rounded-full bg-white/90 text-turquoise-700'
-        }`} style={v ? vFont : undefined}>{movie.year}</span>
+        <span
+          className={`absolute top-2 left-2 z-20 px-2 py-0.5 text-[10px] font-extrabold shadow ${
+            v
+              ? "rounded-sm bg-[#1a1008]/80 text-amber-300"
+              : "rounded-full bg-white/90 text-turquoise-700"
+          }`}
+          style={v ? vFont : undefined}
+        >
+          {movie.year}
+        </span>
 
         {/* Classic stamp */}
         {v && (
@@ -131,48 +153,88 @@ export default function MovieHoverPreview({ movie, anchorRect, side = 'right', o
 
         {/* Unavailable badge */}
         {!hasVideo && (
-          <div className={`absolute left-0 right-0 z-20 flex justify-center ${v ? 'bottom-4' : 'bottom-2'}`}>
-            <span className={`px-2 py-[2px] text-[8px] font-black tracking-wider uppercase rounded-sm shadow-sm ${
-              v ? 'bg-[#1a1008]/90 text-amber-400 border border-amber-700/50' : 'bg-black/75 text-gray-300'
-            }`} style={v ? vFont : undefined}>✕ UNAVAILABLE</span>
+          <div
+            className={`absolute left-0 right-0 z-20 flex justify-center ${v ? "bottom-4" : "bottom-2"}`}
+          >
+            <span
+              className={`px-2 py-[2px] text-[8px] font-black tracking-wider uppercase rounded-sm shadow-sm ${
+                v
+                  ? "bg-[#1a1008]/90 text-amber-400 border border-amber-700/50"
+                  : "bg-black/75 text-gray-300"
+              }`}
+              style={v ? vFont : undefined}
+            >
+              ✕ UNAVAILABLE
+            </span>
           </div>
         )}
 
         {/* Rating */}
         {movie.rating && (
-          <span className={`absolute bottom-2 right-2 z-20 flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold shadow ${
-            v ? 'rounded-sm bg-[#1a1008]/80 text-amber-300' : 'rounded-full bg-black/70 text-white'
-          }`} style={v ? vFont : undefined}>
-            <Star size={9} className="fill-amber-400 text-amber-400" /> {movie.rating}
+          <span
+            className={`absolute bottom-2 right-2 z-20 flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold shadow ${
+              v
+                ? "rounded-sm bg-[#1a1008]/80 text-amber-300"
+                : "rounded-full bg-black/70 text-white"
+            }`}
+            style={v ? vFont : undefined}
+          >
+            <Star size={9} className="fill-amber-400 text-amber-400" />{" "}
+            {movie.rating}
           </span>
         )}
-
       </div>
 
       {/* ── Body ── */}
-      <div className={`p-3 ${
-        v
-          ? 'bg-[#fdf3d8] dark:bg-[#1e1508] border-2 border-t-0 border-dashed border-amber-700/50 dark:border-amber-800/40'
-          : 'bg-white dark:bg-gray-900 border border-t-0 border-gray-100 dark:border-gray-800'
-      }`}>
-        <p className={`font-bold leading-snug text-sm ${
-          v ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-white'
-        }`} style={v ? vFont : undefined}>{title}</p>
+      <div
+        className={`p-3 ${
+          v
+            ? "bg-[#fdf3d8] dark:bg-[#1e1508] border-2 border-t-0 border-dashed border-amber-700/50 dark:border-amber-800/40"
+            : "bg-white dark:bg-gray-900 border border-t-0 border-gray-100 dark:border-gray-800"
+        }`}
+      >
+        <p
+          className={`font-bold leading-snug text-sm ${
+            v
+              ? "text-amber-900 dark:text-amber-100"
+              : "text-gray-900 dark:text-white"
+          }`}
+          style={v ? vFont : undefined}
+        >
+          {title}
+        </p>
 
         {altTitles.length > 0 && (
-          <p className={`mt-0.5 text-[11px] italic leading-tight ${
-            v ? 'text-amber-700/70 dark:text-amber-600' : 'text-gray-400 dark:text-gray-500'
-          }`} style={v ? vFont : undefined}>{altTitles.join(' · ')}</p>
+          <p
+            className={`mt-0.5 text-[11px] italic leading-tight ${
+              v
+                ? "text-amber-700/70 dark:text-amber-600"
+                : "text-gray-400 dark:text-gray-500"
+            }`}
+            style={v ? vFont : undefined}
+          >
+            {altTitles.join(" · ")}
+          </p>
         )}
 
         <div className="mt-2 flex flex-wrap items-center gap-2">
-          <span className={`text-[11px] font-semibold ${
-            v ? 'text-amber-700 dark:text-amber-500' : 'text-turquoise-600 dark:text-turquoise-400'
-          }`} style={v ? vFont : undefined}>{cartoon}</span>
+          <span
+            className={`text-[11px] font-semibold ${
+              v
+                ? "text-amber-700 dark:text-amber-500"
+                : "text-turquoise-600 dark:text-turquoise-400"
+            }`}
+            style={v ? vFont : undefined}
+          >
+            {cartoon}
+          </span>
           {movie.duration && (
-            <span className={`flex items-center gap-1 text-[11px] ${
-              v ? 'text-amber-700/60 dark:text-amber-700' : 'text-gray-400'
-            }`} style={v ? vFont : undefined}>
+            <span
+              className={`flex items-center gap-1 text-[11px] ${
+                v ? "text-amber-700/60 dark:text-amber-700" : "text-gray-400"
+              }`}
+              style={v ? vFont : undefined}
+            >
               <Clock size={10} /> {movie.duration}m
             </span>
           )}
@@ -181,22 +243,35 @@ export default function MovieHoverPreview({ movie, anchorRect, side = 'right', o
         {(movie.genres?.length ?? 0) > 0 && (
           <div className="mt-2 flex flex-wrap gap-1">
             {(movie.genres ?? []).slice(0, 4).map((g) => (
-              <span key={g} className={`px-2 py-0.5 text-[10px] font-semibold ${
-                v
-                  ? 'rounded-sm bg-amber-700/15 text-amber-800 dark:text-amber-400'
-                  : `rounded-full ${GENRE_COLORS[g] ?? 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400'}`
-              }`} style={v ? vFont : undefined}>{g}</span>
+              <span
+                key={g}
+                className={`px-2 py-0.5 text-[10px] font-semibold ${
+                  v
+                    ? "rounded-sm bg-amber-700/15 text-amber-800 dark:text-amber-400"
+                    : `rounded-full ${GENRE_COLORS[g] ?? "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"}`
+                }`}
+                style={v ? vFont : undefined}
+              >
+                {g}
+              </span>
             ))}
           </div>
         )}
 
         {movie.description && (
-          <p className={`mt-2 line-clamp-2 text-[11px] leading-relaxed ${
-            v ? 'text-amber-900/70 dark:text-amber-300/60' : 'text-gray-500 dark:text-gray-400'
-          }`} style={v ? vFont : undefined}>{movie.description}</p>
+          <p
+            className={`mt-2 line-clamp-2 text-[11px] leading-relaxed ${
+              v
+                ? "text-amber-900/70 dark:text-amber-300/60"
+                : "text-gray-500 dark:text-gray-400"
+            }`}
+            style={v ? vFont : undefined}
+          >
+            {movie.description}
+          </p>
         )}
       </div>
     </div>,
-    document.body
-  )
+    document.body,
+  );
 }

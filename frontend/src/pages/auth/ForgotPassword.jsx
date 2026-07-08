@@ -142,12 +142,12 @@ export default function ForgotPassword() {
 
       {/* Error / Success */}
       {error && (
-        <p className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
+        <p className="mt-4 rounded-lg bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
           {error}
         </p>
       )}
       {success && (
-        <div className="mt-4 flex flex-col items-center gap-2 rounded-xl bg-emerald-50 px-4 py-4 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
+        <div className="mt-4 flex flex-col items-center gap-2 rounded-lg bg-emerald-50 px-4 py-4 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
           <CheckCircle size={28} />
           <p className="text-sm font-medium text-center">{success}</p>
           <p className="text-xs text-gray-500">Redirecting to login…</p>
@@ -192,7 +192,7 @@ export default function ForgotPassword() {
                 value={digit}
                 onChange={(e) => handleOtpChange(e.target.value, i)}
                 onKeyDown={(e) => handleOtpKeyDown(e, i)}
-                className="h-14 w-11 rounded-xl border-2 border-gray-200 bg-white text-center text-2xl font-bold text-gray-900 outline-none transition
+                className="h-14 w-11 rounded-lg border-2 border-gray-200 bg-white text-center text-2xl font-bold text-gray-900 outline-none transition
                            focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-turquoise-500"
               />
             ))}

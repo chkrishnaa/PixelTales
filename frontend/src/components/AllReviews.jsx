@@ -40,7 +40,7 @@ export default function Reviews() {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="card-surface h-48 animate-pulse rounded-2xl bg-gray-100 dark:bg-gray-800"
+              className="card-surface h-48 animate-pulse rounded-lg bg-gray-100 dark:bg-gray-800"
             />
           ))}
         </div>

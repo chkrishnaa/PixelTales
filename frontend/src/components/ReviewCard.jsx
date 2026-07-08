@@ -48,7 +48,7 @@ export default function ReviewCard({ review, onOpen }) {
 
       <article onClick={() => onOpen?.(review)} className="card-surface p-5">
         <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {/* Avatar */}
             <Avatar
               name={review.name ?? review.user}
@@ -94,7 +94,7 @@ export default function ReviewCard({ review, onOpen }) {
                 : "")}
           </p>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {/* Like */}
             <button
               onClick={(e) => {

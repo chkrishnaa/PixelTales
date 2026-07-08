@@ -29,34 +29,39 @@ function CollectionRow({ col, movieId, token, API, onToggle }) {
     <button
       onClick={handle}
       disabled={loading}
-      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all active:scale-98 ${
+      className={`flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left transition-all active:scale-98 ${
         col.saved
-          ? 'bg-turquoise-50 dark:bg-turquoise-950/30'
-          : 'hover:bg-gray-50 dark:hover:bg-gray-800/60'
+          ? "bg-turquoise-50 dark:bg-turquoise-950/30"
+          : "hover:bg-gray-50 dark:hover:bg-gray-800/60"
       }`}
     >
       {/* Checkbox */}
-      <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-all ${
-        col.saved
-          ? 'border-turquoise-500 bg-turquoise-500'
-          : 'border-gray-300 dark:border-gray-600'
-      }`}>
-        {loading
-          ? <Loader2 size={11} className="animate-spin text-white" />
-          : col.saved
-            ? <Check size={11} className="text-white" strokeWidth={3} />
-            : null
-        }
+      <div
+        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-all ${
+          col.saved
+            ? "border-turquoise-500 bg-turquoise-500"
+            : "border-gray-300 dark:border-gray-600"
+        }`}
+      >
+        {loading ? (
+          <Loader2 size={11} className="animate-spin text-white" />
+        ) : col.saved ? (
+          <Check size={11} className="text-white" strokeWidth={3} />
+        ) : null}
       </div>
 
-      <span className={`flex-1 text-sm font-semibold ${
-        col.saved ? 'text-turquoise-700 dark:text-turquoise-300' : 'text-gray-800 dark:text-gray-200'
-      }`}>
+      <span
+        className={`flex-1 text-sm font-semibold ${
+          col.saved
+            ? "text-turquoise-700 dark:text-turquoise-300"
+            : "text-gray-800 dark:text-gray-200"
+        }`}
+      >
         {col.name}
       </span>
 
       <span className="text-xs text-gray-400 dark:text-gray-500">
-        {col.count} {col.count === 1 ? 'movie' : 'movies'}
+        {col.count} {col.count === 1 ? "movie" : "movies"}
       </span>
     </button>
   );
@@ -209,14 +214,14 @@ export default function SaveToCollectionModal({ movieId, onClose }) {
                 onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 placeholder="Collection name…"
                 maxLength={80}
-                className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800 outline-none transition focus:border-turquoise-400 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-turquoise-600"
+                className="w-full rounded-lg border-2 border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800 outline-none transition focus:border-turquoise-400 focus:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-turquoise-600"
               />
               {nameError && <p className="text-xs text-red-500">{nameError}</p>}
               <div className="flex gap-2">
                 <button
                   onClick={handleCreate}
                   disabled={creating || !newName.trim()}
-                  className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-turquoise-600 py-2 text-sm font-bold text-white transition hover:bg-turquoise-500 disabled:opacity-40"
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-turquoise-600 py-2 text-sm font-bold text-white transition hover:bg-turquoise-500 disabled:opacity-40"
                 >
                   {creating ? (
                     <Loader2 size={14} className="animate-spin" />
@@ -231,7 +236,7 @@ export default function SaveToCollectionModal({ movieId, onClose }) {
                     setNewName("");
                     setNameError("");
                   }}
-                  className="rounded-xl border-2 border-gray-200 px-3 py-2 text-sm font-bold text-gray-500 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
+                  className="rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-bold text-gray-500 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
                 >
                   Cancel
                 </button>
@@ -240,7 +245,7 @@ export default function SaveToCollectionModal({ movieId, onClose }) {
           ) : (
             <button
               onClick={() => setShowCreate(true)}
-              className="flex w-full items-center gap-2 rounded-xl border-2 border-dashed border-turquoise-200 px-3 py-2.5 text-sm font-semibold text-turquoise-600 transition hover:border-turquoise-400 hover:bg-turquoise-50 dark:border-turquoise-800 dark:text-turquoise-400 dark:hover:bg-turquoise-950/30"
+              className="flex w-full items-center gap-2 rounded-lg border-2 border-dashed border-turquoise-200 px-3 py-2.5 text-sm font-semibold text-turquoise-600 transition hover:border-turquoise-400 hover:bg-turquoise-50 dark:border-turquoise-800 dark:text-turquoise-400 dark:hover:bg-turquoise-950/30"
             >
               <FolderPlus size={16} />
               New collection

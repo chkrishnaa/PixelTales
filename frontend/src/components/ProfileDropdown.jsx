@@ -5,7 +5,6 @@ import {
   Heart,
   Clock,
   Globe,
-  PartyPopper,
   MessageCircle,
   User,
   LogOut,
@@ -21,7 +20,6 @@ const MENU_ITEMS = [
   { to: '/profile?tab=favorites', label: 'Favorites', icon: Heart },
   { to: '/profile?tab=history', label: 'Watch History', icon: Clock },
   { to: '/community', label: 'Community', icon: Globe },
-  { to: '/party', label: 'Watch Party', icon: PartyPopper },
   { to: '/feedback', label: 'Feedback', icon: MessageCircle },
 ]
 
@@ -71,18 +69,20 @@ export default function ProfileDropdown() {
 
       {open && (
         <div
-          className="absolute right-0 top-[calc(100%+0.5rem)] z-[100] w-64 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900"
+          className="absolute right-0 top-[calc(100%+0.5rem)] z-[100] w-64 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900"
           role="menu"
         >
           {/* User info header */}
-          <div className="flex items-center gap-3 border-b border-gray-200 bg-turquoise-50 p-4 dark:border-gray-700 dark:bg-turquoise-950/40">
+          <div className="flex items-center gap-2 border-b border-gray-200 bg-turquoise-50 p-4 dark:border-gray-700 dark:bg-turquoise-950/40">
             <Avatar user={user} size={11} />
             <div className="min-w-0">
               <p className="truncate text-sm font-extrabold text-gray-800 dark:text-gray-100">
-                {user?.name ?? 'Guest'}
+                {user?.name ?? "Guest"}
               </p>
-              <p className="truncate text-xs text-gray-500">{user?.email ?? ''}</p>
-              {user?.role === 'admin' && (
+              <p className="truncate text-xs text-gray-500">
+                {user?.email ?? ""}
+              </p>
+              {user?.role === "admin" && (
                 <span className="mt-0.5 inline-block rounded bg-turquoise-600 px-1.5 py-[1px] text-[10px] font-bold text-white">
                   Admin
                 </span>
@@ -112,8 +112,12 @@ export default function ProfileDropdown() {
             className="flex w-full items-center gap-2.5 border-t border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
             onClick={toggleTheme}
           >
-            {theme === 'light' ? <Moon size={18} aria-hidden /> : <Sun size={18} aria-hidden />}
-            {theme === 'light' ? 'Dark mode' : 'Light mode'}
+            {theme === "light" ? (
+              <Moon size={18} aria-hidden />
+            ) : (
+              <Sun size={18} aria-hidden />
+            )}
+            {theme === "light" ? "Dark mode" : "Light mode"}
           </button>
 
           <button
@@ -128,5 +132,5 @@ export default function ProfileDropdown() {
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -22,28 +22,28 @@ export default function ThemeSelector({ theme = "system", onChange }) {
   return (
     // <div className="space-y-2">
 
-      <div
-        className="
+    <div
+      className="
           inline-flex
-          rounded-2xl
+          rounded-lg
           border border-gray-200
           bg-gray-100
           p-1
           dark:border-gray-700
           dark:bg-gray-800
         "
-      >
-        {THEMES.map(({ id, label, icon: Icon }) => {
-          const active = theme === id;
+    >
+      {THEMES.map(({ id, label, icon: Icon }) => {
+        const active = theme === id;
 
-          return (
-            <button
-              key={id}
-              type="button"
-              onClick={() => onChange(id)}
-              className={`
+        return (
+          <button
+            key={id}
+            type="button"
+            onClick={() => onChange(id)}
+            className={`
                 flex items-center gap-2
-                rounded-xl
+                rounded-lg
                 px-2 sm:px-4 py-2
                 text-sm font-semibold
                 transition-all
@@ -53,13 +53,13 @@ export default function ThemeSelector({ theme = "system", onChange }) {
                     : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 }
               `}
-            >
-              <Icon size={16} />
-              <span className="hidden sm:inline">{label}</span>
-            </button>
-          );
-        })}
-      </div>
+          >
+            <Icon size={16} />
+            <span className="hidden sm:inline">{label}</span>
+          </button>
+        );
+      })}
+    </div>
     // </div>
   );
 }
