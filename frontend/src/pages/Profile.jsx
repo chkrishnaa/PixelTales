@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import {
   Camera, FastForward, Heart, Clock,
   Bookmark, Trash2, ChevronLeft, Loader2,
@@ -71,9 +71,19 @@ function idsToMovies(ids) {
 /* Collection detail view                                      */
 /* ─────────────────────────────────────────────────────────── */
 function CollectionDetail({ col, token, API, onBack, onDeleted }) {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1)
   const allMovies  = idsToMovies(col.movieIds ?? [])
   const totalMovies = allMovies.length
+
+  useEffect(() => {
+  const totalPages = Math.max(1, Math.ceil(totalMovies / PAGE_SIZE));
+
+  if (page > totalPages) {
+    setPage(totalPages);
+  }
+}, [totalMovies, page]);
+
   const movies     = allMovies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   const handleDelete = async () => {
@@ -120,10 +130,22 @@ function CollectionDetail({ col, token, API, onBack, onDeleted }) {
       </p>
 
       {movies.length === 0 ? (
-        <p className="card-surface p-8 text-center text-gray-500">
-          This collection is empty. Save movies from any movie page.
-        </p>
-      ) : (
+  <div className="card-surface flex flex-col items-center gap-4 p-8 text-center">
+    <p className="text-gray-500">
+      This collection is empty.
+      <br />
+      Start adding movies to build your collection.
+    </p>
+
+    <button
+      onClick={() => navigate("/dashboard")}
+      className="flex items-center gap-2 rounded-full bg-turquoise-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-turquoise-500"
+    >
+      <FilmIcon size={16} />
+      Add Movies
+    </button>
+  </div>
+) : (
         <>
           <MovieGrid movies={movies} />
           {totalMovies > PAGE_SIZE && (
@@ -206,6 +228,16 @@ function CollectionsTab({ token, API, user }) {
     setSelectedCol(null)
   }
 
+  const paged = collections.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+
+  useEffect(() => {
+    const totalPages = Math.max(1, Math.ceil(collections.length / PAGE_SIZE));
+
+    if (page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [collections.length, page]);
+  
   if (selectedCol) return (
     <CollectionDetail
       col={selectedCol}
@@ -215,8 +247,6 @@ function CollectionsTab({ token, API, user }) {
       onDeleted={handleDeleted}
     />
   )
-
-  const paged = collections.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
     <div>
@@ -384,6 +414,15 @@ function HistoryTab({ watchHistory, clearHistory }) {
   const [page, setPage] = useState(1)
   const allMovies  = watchHistory.map((h) => getMovieById(h.movieId)).filter(Boolean)
   const total      = allMovies.length
+
+  useEffect(() => {
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+  if (page > totalPages) {
+    setPage(totalPages);
+  }
+}, [total, page]);
+
   const movies     = allMovies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
@@ -507,6 +546,14 @@ export default function Profile() {
     return []
   }, [activeTab, allMovies, continueMovieIds, getProgress])
 
+  useEffect(() => {
+  const totalPages = Math.max(1, Math.ceil(allTabMovies.length / PAGE_SIZE));
+
+  if (page > totalPages) {
+    setPage(totalPages);
+  }
+}, [allTabMovies.length, page]);
+
   /* Paginated slice */
   const pagedMovies = allTabMovies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
@@ -520,53 +567,65 @@ export default function Profile() {
   return (
     <div className="page-container py-8">
       {/* ── Profile header ──────────────────────────────────── */}
-      <div className="card-surface relative mb-6 flex flex-wrap items-center gap-6 p-6 md:p-8">
-        <div className="absolute top-4 right-4">
+      <div className="card-surface relative overflow-hidden p-4 xs:p-5 sm:p-6 md:p-8 mb-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-turquoise-500/5 via-transparent to-purple-500/5 pointer-events-none" />
+
+        <div className="mb-5 flex justify-center md:absolute md:right-6 md:top-6 md:mb-0">
           <Logo size="xl" />
         </div>
-        <div className="flex flex-col items-center gap-2">
-          {/* Avatar: real photo or gradient initials */}
-          <Avatar
-            user={user}
-            size={24}
-            className="border-4 border-turquoise-100 dark:border-turquoise-900"
-          />
-          <label
-            className={`flex cursor-pointer items-center gap-1 text-xs font-bold text-turquoise-600 ${avatarUploading ? "opacity-50 pointer-events-none" : ""}`}
-          >
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleAvatarChange}
-              disabled={avatarUploading}
+
+        <div className="relative z-10 flex flex-col items-center gap-5 sm:flex-row sm:items-center sm:gap-6">
+          <div className="flex flex-col items-center gap-3 flex-shrink-0">
+            <Avatar
+              user={user}
+              size={24}
+              className="border-4 border-turquoise-100 dark:border-turquoise-900 shadow-lg"
             />
-            <Camera size={14} />
-            {avatarUploading ? "Uploading…" : "Change avatar"}
-          </label>
-        </div>
-        <div>
-          <h1 className="font-display text-2xl text-turquoise-700 dark:text-turquoise-400 md:text-3xl">
-            {user?.name ?? "Guest"}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            {user?.email ?? ""}
-          </p>
-          <div className="mt-4 flex flex-wrap gap-8">
-            {[
-              ["Watched", watchHistory.length],
-              ["Favorites", allMovies.filter((m) => m.favorited).length],
-              ["In Progress", continueMovieIds.length],
-            ].map(([label, val]) => (
-              <div key={label}>
-                <strong className="block text-2xl font-extrabold text-turquoise-600">
-                  {val}
-                </strong>
-                <span className="text-sm font-semibold text-gray-500">
-                  {label}
-                </span>
-              </div>
-            ))}
+
+            <label
+              className={`flex cursor-pointer items-center gap-1 rounded-full bg-turquoise-50 dark:bg-turquoise-900/30 px-3 py-1.5 text-xs font-semibold text-turquoise-600 transition-all hover:scale-105 hover:bg-turquoise-100 dark:hover:bg-turquoise-900/50 ${avatarUploading ? "pointer-events-none opacity-50" : ""}`}
+            >
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarChange}
+                disabled={avatarUploading}
+              />
+              <Camera size={14} />
+              {avatarUploading ? "Uploading..." : "Change Avatar"}
+            </label>
+          </div>
+
+          <div className="flex-1 text-center sm:text-left">
+            <h className="font-display text-2xl text-turquoise-700 dark:text-turquoise-400 xs:text-[1.7rem] sm:text-3xl lg:text-4xl">
+              {user?.name ?? "Guest"}
+            </h>
+
+            <p className="mt-1 break-all text-sm text-gray-600 dark:text-gray-400 sm:text-base">
+              {user?.email ?? ""}
+            </p>
+
+            <div className="mt-6 grid w-full grid-cols-3 gap-3 xs:gap-4 sm:max-w-md sm:gap-6">
+              {[
+                ["Watched", watchHistory.length],
+                ["Favorites", allMovies.filter((m) => m.favorited).length],
+                ["In Progress", continueMovieIds.length],
+              ].map(([label, val]) => (
+                <div
+                  key={label}
+                  className="rounded-xl bg-white/60 p-3 text-center shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:bg-gray-900/40 dark:shadow-[0_5px_15px_rgba(255,255,255,0.08)] dark:hover:shadow-[0_12px_35px_rgba(255,255,255,0.18)]"
+                >
+                  <strong className="block text-xl font-extrabold text-turquoise-600 sm:text-2xl lg:text-3xl">
+                    {val}
+                  </strong>
+
+                  <span className="mt-1 block text-[11px] font-semibold text-gray-500 xs:text-xs sm:text-sm">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -596,25 +655,46 @@ export default function Profile() {
       </div>
 
       {/* ── Tab bar ──────────────────────────────────────────── */}
-      <div className="mb-6 flex flex-wrap gap-2" role="tablist">
+      <div
+        className="mb-5 flex gap-2 overflow-x-auto pb-2 scrollbar-hide xs:gap-2.5 sm:mb-6 sm:flex-wrap sm:overflow-visible md:gap-3"
+        role="tablist"
+      >
         {TABS.map(({ id, label, icon: Icon }) => {
           const count = tabCount(id);
+
           return (
             <button
               key={id}
               type="button"
               role="tab"
               aria-selected={activeTab === id}
-              className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition ${
-                activeTab === id
-                  ? "border-turquoise-500 bg-turquoise-500 text-white"
-                  : "border-gray-200 bg-white text-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400"
-              }`}
               onClick={() => handleTabSwitch(id)}
+              className={`group flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-xs font-bold transition-all duration-300 active:scale-95 xs:px-4 xs:py-2.5 xs:text-sm md:px-5 lg:px-6 ${
+                activeTab === id
+                  ? "scale-105 border-turquoise-500 bg-turquoise-500 text-white shadow-lg shadow-turquoise-500/30 dark:shadow-[0_8px_25px_rgba(255,255,255,0.12)]"
+                  : "border-gray-200 bg-white text-gray-600 hover:-translate-y-0.5 hover:border-turquoise-300 hover:text-turquoise-600 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-turquoise-500 dark:hover:text-turquoise-400 dark:hover:shadow-[0_8px_25px_rgba(255,255,255,0.08)]"
+              }`}
             >
-              <Icon size={16} />
-              {label}
-              {count !== "" && <span className="opacity-80">({count})</span>}
+              <Icon
+                size={16}
+                className={`transition-transform duration-300 ${
+                  activeTab === id ? "scale-110" : "group-hover:scale-110"
+                }`}
+              />
+
+              <span>{label}</span>
+
+              {count !== "" && (
+                <span
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-bold xs:text-xs ${
+                    activeTab === id
+                      ? "bg-white/20 text-white"
+                      : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300"
+                  }`}
+                >
+                  {count}
+                </span>
+              )}
             </button>
           );
         })}

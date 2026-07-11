@@ -87,6 +87,33 @@ export default function MoviePlayer({
       .catch(() => setLikeCount(0));
   }, [movie.id, API, token]);
 
+  const loadSavedStatus = useCallback(async () => {
+    if (!user || !token) {
+      setSavedToAny(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/api/collections/saved/${movie.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setSavedToAny(data.data.some((c) => c.saved));
+      }
+    } catch {
+      setSavedToAny(false);
+    }
+  }, [API, movie.id, token, user]);
+
+  useEffect(() => {
+    loadSavedStatus();
+  }, [loadSavedStatus]);
+
   const handleLike = async () => {
     if (!user) {
       setShowLoginModal(true);
@@ -282,22 +309,6 @@ export default function MoviePlayer({
               : "border-turquoise-100 dark:border-turquoise-900/30"
           }`}
         >
-          {/* Watch Party */}
-          <button
-            onClick={() =>
-              navigate(`/party?cartoon=${movie.cartoonId}&movie=${movie.id}`)
-            }
-            className={`flex items-center justify-center gap-2 px-4 xs:px-5 py-2 xs:py-2.5 text-[13px] xs:text-sm font-bold text-white shadow-md transition-all duration-200 active:scale-95 ${
-              v
-                ? "rounded-sm bg-amber-700 hover:bg-amber-600"
-                : "rounded-lg bg-turquoise-700 hover:bg-turquoise-600"
-            }`}
-            style={v ? vFont : undefined}
-          >
-            <Tv size={16} />
-            Watch Party
-          </button>
-
           {/* Like */}
           <button
             onClick={handleLike}
@@ -367,12 +378,10 @@ export default function MoviePlayer({
           <div className="relative">
             <button
               onClick={handleShare}
-              className={`flex items-center gap-2 border-2 bg-transparent px-4 py-2.5 text-sm font-bold transition-all duration-200 active:scale-95 ${
-                v ? "rounded-sm" : "rounded-lg"
-              } ${
+              className={`flex items-center justify-center gap-2 px-4 xs:px-5 py-2 xs:py-2.5 text-[13px] xs:text-sm font-bold text-white shadow-md transition-all duration-200 active:scale-95 ${
                 v
-                  ? "border-amber-700/40 text-amber-800/70 hover:border-amber-600 hover:text-amber-800 dark:border-amber-800/50 dark:text-amber-500 dark:hover:border-amber-600"
-                  : "border-gray-200 text-gray-600 hover:border-gray-300 hover:text-gray-800 dark:border-gray-700 dark:text-gray-400"
+                  ? "rounded-sm bg-amber-700 hover:bg-amber-600"
+                  : "rounded-lg bg-turquoise-700 hover:bg-turquoise-600"
               }`}
               style={v ? vFont : undefined}
             >
@@ -402,7 +411,7 @@ export default function MoviePlayer({
           movieId={movie.id}
           onClose={() => {
             setShowCollection(false);
-            setSavedToAny(true);
+            loadSavedStatus();
           }}
         />
       )}

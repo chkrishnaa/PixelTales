@@ -55,7 +55,7 @@
   }
 
   .page-container {
-    @apply mx-auto w-full h-full max-w-7xl px-5;
+    @apply mx-auto w-full h-full max-w-7xl px-2 xs:px-3 sm:px-5;
   }
 
   .movie-grid {

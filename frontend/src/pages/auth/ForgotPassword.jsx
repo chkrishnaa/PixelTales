@@ -112,8 +112,8 @@ export default function ForgotPassword() {
   const stepIdx = STEPS.indexOf(step);
 
   return (
-    <div className="card-surface p-8">
-      <h1 className="font-sans text-center text-2xl text-turquoise-700 dark:text-turquoise-400">
+    <div className="card-surface p-6 sm:p-8">
+      <h1 className="font-display text-center text-2xl text-turquoise-700 dark:text-turquoise-400">
         {step === "email"
           ? "Forgot Password?"
           : step === "otp"
@@ -192,7 +192,7 @@ export default function ForgotPassword() {
                 value={digit}
                 onChange={(e) => handleOtpChange(e.target.value, i)}
                 onKeyDown={(e) => handleOtpKeyDown(e, i)}
-                className="h-14 w-11 rounded-lg border-2 border-gray-200 bg-white text-center text-2xl font-bold text-gray-900 outline-none transition
+                className="h-11 xs:h-14 w-11 rounded-lg border-2 border-gray-200 bg-white text-center text-2xl font-bold text-gray-900 outline-none transition
                            focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-turquoise-500"
               />
             ))}

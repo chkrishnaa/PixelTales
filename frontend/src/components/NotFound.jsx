@@ -10,7 +10,7 @@ export default function NotFound({
 }) {
   return (
     <section className="page-container flex min-h-[60vh] items-center justify-center py-10">
-      <div className="w-full max-w-lg rounded-3xl border border-gray-200 bg-white p-8 text-center shadow-xl dark:border-gray-800 dark:bg-gray-900">
+      <div className="w-full max-w-lg rounded-xl xs:rounded-2xl sm:rounded-3xl border border-gray-200 bg-white p-8 text-center shadow-xl dark:border-gray-800 dark:bg-gray-900">
         {Icon && (
           <div className="mb-5 flex justify-center">
             <div className="flex h-24 w-24 items-center justify-center rounded-full bg-turquoise-100 text-turquoise-600 dark:bg-turquoise-900/30 dark:text-turquoise-400">

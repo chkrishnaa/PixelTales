@@ -37,8 +37,8 @@ export default function Login() {
   };
 
   return (
-    <div className="card-surface p-8">
-      <h1 className="font-sans text-center text-2xl text-turquoise-700 dark:text-turquoise-400">
+    <div className="card-surface p-6 sm:p-8">
+      <h1 className="font-display text-center text-2xl text-turquoise-700 dark:text-turquoise-400">
         Welcome back!
       </h1>
       <p className="mt-1 text-center text-sm text-gray-600 dark:text-gray-400">

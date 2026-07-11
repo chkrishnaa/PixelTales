@@ -265,7 +265,7 @@ export default function MovieDetails() {
 
       {user?.role === "admin" && editMode && (
         <div className="page-container pt-3 xs:pt-4">
-          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl sm:rounded-3xl border px-4 py-3 shadow-sm backdrop-blur border-turquoise-200 bg-white/80 px-4 py-3 shadow-sm backdrop-blur dark:border-turquoise-900/40 dark:bg-gray-900/70">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl sm:rounded-3xl border px-4 py-3 shadow-sm backdrop-blur border-turquoise-200 bg-white/80 dark:border-turquoise-900/40 dark:bg-gray-900/70">
             <div>
               <p className="text-xs xs:text-sm font-semibold text-turquoise-600">
                 Admin edit mode
