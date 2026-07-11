@@ -30,7 +30,12 @@ export const submitReview = async (req, res, next) => {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    const { name, email, rating, review } = req.body;
+    const { rating, review } = req.body;
+
+    const name = req.user.name;
+    const email = req.user.email;
+    const avatar = req.user.avatar;
+
     const normalizedEmail = email.toLowerCase().trim();
 
     // Enforce one review per user — including soft-deleted ones
@@ -45,7 +50,13 @@ export const submitReview = async (req, res, next) => {
       });
     }
 
-    const newReview = await Review.create({ name, email: normalizedEmail, rating, review });
+    const newReview = await Review.create({
+      name,
+      email: normalizedEmail,
+      avatar,
+      rating,
+      review,
+    });
 
     res.status(201).json({
       success: true,
@@ -68,7 +79,11 @@ export const updateReview = async (req, res, next) => {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    const { email, rating, review } = req.body;
+    const { rating, review } = req.body;
+
+    const email = req.user.email;
+    const avatar = req.user.avatar;
+
     const normalizedEmail = email.toLowerCase().trim();
 
     const existing = await Review.findById(req.params.id);
@@ -83,6 +98,10 @@ export const updateReview = async (req, res, next) => {
 
     if (rating !== undefined) existing.rating = rating;
     if (review  !== undefined) existing.review  = review;
+    
+    existing.name = req.user.name;
+existing.email = normalizedEmail;
+existing.avatar = avatar;
 
     await existing.save();
 

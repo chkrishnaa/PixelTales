@@ -351,7 +351,7 @@ export default function MovieGridCard({
         <div
           className={`flex-1 px-3 pt-2.5 pb-1.5 ${v ? "bg-[#fdf3d8] dark:bg-[#1e1508]" : ""}`}
         >
-          <h3 className="line-clamp-2 min-h-[40px] text-sm font-bold leading-snug text-gray-900 dark:text-white">
+          <h3 className="line-clamp-1 xs:line-clamp-2 min-h-[20px] sm:min-h-[40px] text-sm font-bold leading-snug text-gray-900 dark:text-white">
             {getMovieTitle(movie)}
           </h3>
 

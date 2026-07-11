@@ -5,6 +5,7 @@ import LoginModal      from './LoginModal';
 import Avatar from "./Avatar";
 
 export default function ReviewCard({ review, onOpen }) {
+
   const { user, token, API } = useAuth();
 
   const [likes,    setLikes]    = useState(review.likedBy?.length    ?? review.likes    ?? 0);

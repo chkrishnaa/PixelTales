@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState, useMemo } from "react";
 import { Play, PartyPopper } from 'lucide-react'
 import { AnimatePresence, motion } from "framer-motion";
+import { useMediaQuery } from "@mantine/hooks";
+
 import {
   BUBBLES,
   BANNERS,
@@ -12,9 +14,16 @@ import {
 export default function Hero() {
   const [index, setIndex] = useState(0);
 
+  const isXs = useMediaQuery("(max-width: 400px)");
+  const isSm = useMediaQuery("(max-width: 640px)");
+  const isMd = useMediaQuery("(max-width: 768px)");
+  const isLg = useMediaQuery("(max-width: 1024px)");
+
+  const visibleBubbles = isXs ? 20 : isSm ? 30 : isMd ? 40 : 50;
+
   const bubbleAnimations = useMemo(
     () =>
-      BUBBLES.map(() => {
+      BUBBLES.slice(0, visibleBubbles).map(() => {
         const angle = Math.random() * Math.PI * 2;
         const distance = 36 + Math.random() * 84;
 
@@ -48,7 +57,7 @@ export default function Hero() {
       }}
     >
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {BUBBLES.map((bubble, i) => (
+        {BUBBLES.slice(0, visibleBubbles).map((bubble, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-white/90 border border-white/30 backdrop-blur-sm shadow-[0_0_20px_rgba(255,255,255,0.15)]"

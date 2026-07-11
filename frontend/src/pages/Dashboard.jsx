@@ -10,6 +10,7 @@ import EmptyState from '../components/EmptyState'
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../context/AuthContext'
 import AdminMovieModal from "../components/Utility/AdminMovieModal";
+import Avatar from "../components/Avatar";
 
 /* sentiment → emoji mapping (aligned with Feedback form) */
 const SENTIMENT_EMOJI = Object.fromEntries(
@@ -131,13 +132,14 @@ export default function Dashboard() {
               </span>
             </p>
 
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 grid-cols-1 xs:grid-cols-2 md:grid-cols-3">
               {paginatedFeedbacks.map((item) => {
                 const typeMeta = TYPE_META[item.feedbackType] ?? {
                   icon: "💬",
                   label: item.feedbackType,
                 };
                 const emoji = SENTIMENT_EMOJI[item.sentiment] ?? "💬";
+
                 return (
                   <article
                     key={item._id}
@@ -146,9 +148,11 @@ export default function Dashboard() {
                   >
                     <div className="flex justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600 font-bold text-white text-sm uppercase">
-                          {item.name?.[0] ?? "?"}
-                        </div>
+                        <Avatar
+                          name={item.name}
+                          avatar={item.avatar}
+                          size={9}
+                        />
                         <span className="text-sm font-extrabold">
                           {item.name}
                         </span>
@@ -207,9 +211,11 @@ export default function Dashboard() {
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-turquoise-300 to-turquoise-600 font-bold text-white text-xl uppercase">
-                  {selectedFeedback.name?.[0] ?? "?"}
-                </div>
+                <Avatar
+                  name={selectedFeedback.name}
+                  avatar={selectedFeedback.avatar}
+                  size={12}
+                />
                 <div>
                   <h3 className="font-sans text-xl font-bold text-gray-900 dark:text-white">
                     {selectedFeedback.name}

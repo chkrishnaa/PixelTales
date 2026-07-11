@@ -7,18 +7,11 @@ import {
   deleteFeedback,
   updateFeedbackStatus,
 } from '../controllers/feedbackController.js';
+import { protect } from "../middlewares/auth.js";
 
 const router = express.Router();
 
 const feedbackValidation = [
-  body('name')
-    .trim()
-    .notEmpty().withMessage('Name is required')
-    .isLength({ max: 100 }).withMessage('Name cannot exceed 100 characters'),
-
-  body('email')
-    .isEmail().withMessage('Valid email is required')
-    .normalizeEmail(),
 
   body('feedbackType')
     .optional()
@@ -41,7 +34,7 @@ const feedbackValidation = [
 ];
 
 // Public — submit feedback (multiple submissions allowed)
-router.post('/', feedbackValidation, submitFeedback);
+router.post("/", protect, feedbackValidation, submitFeedback);
 
 // Public — get feedbacks by email (?email=)
 router.get('/mine', getMyFeedback);

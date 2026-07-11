@@ -13,11 +13,12 @@ export const submitFeedback = async (req, res, next) => {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    const { name, email, feedbackType, sentiment, message } = req.body;
+const { feedbackType, sentiment, message } = req.body;
 
     const feedback = await Feedback.create({
-      name,
-      email,
+      name: req.user.name,
+      email: req.user.email.toLowerCase().trim(),
+      avatar: req.user.avatar,
       feedbackType,
       sentiment,
       message,

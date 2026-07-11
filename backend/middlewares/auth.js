@@ -17,6 +17,10 @@ export const protect = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'User no longer exists.' });
     }
 
+    await User.findByIdAndUpdate(user._id, {
+      lastSeen: new Date(),
+    });
+
     req.user = user;
     next();
   } catch (err) {

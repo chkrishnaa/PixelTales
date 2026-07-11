@@ -31,7 +31,6 @@ const TABS = [
 export default function MovieDetails() {
   const { movieId } = useParams();
 
-  console.log("Movie ID:", movieId);
   const { trackVisit } = useWatch();
 
   const [activeTab, setActiveTab] = useState("overview");
@@ -58,14 +57,17 @@ export default function MovieDetails() {
   const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const availableMovies = recommendedMovies.filter(
+  (movie) => movie.videoUrl?.trim()
+);
+
   const isClassic = movie?.modern === false || movie?.modern === "false";
 
   useEffect(() => {
     if (!movieId) return;
     setLoading(true);
     setError(null);
-
-    console.log("Fetching:", `${API}/api/movies/${movieId}`);
 
     fetch(`${API}/api/movies/${movieId}`)
       .then((r) => {
@@ -326,7 +328,7 @@ export default function MovieDetails() {
         />
       </div>
 
-      <RecommendedMovies movies={recommendedMovies} isClassic={isClassic} />
+      <RecommendedMovies movies={availableMovies} isClassic={isClassic} />
 
       <div ref={reviewsRef}>
         <MovieComments movie={movie} />

@@ -69,7 +69,7 @@ export default function LoginModal({
          <div className="mt-6 flex flex-col gap-3">
            <button
              onClick={() => go("/login")}
-             className="btn-primary flex h-11 items-center justify-center gap-2 rounded-full text-sm font-semibold sm:h-12"
+             className="btn-primary flex h-11 items-center justify-center gap-2 rounded-lg text-sm font-semibold sm:h-12"
            >
              <LogIn size={16} />
              Sign In
@@ -77,7 +77,7 @@ export default function LoginModal({
 
            <button
              onClick={() => go("/signup")}
-             className="flex h-11 items-center justify-center gap-2 rounded-full border-2 border-turquoise-300 text-sm font-semibold text-turquoise-700 transition hover:bg-turquoise-50 sm:h-12 dark:border-turquoise-700 dark:text-turquoise-400 dark:hover:bg-turquoise-950/40"
+             className="flex h-11 items-center justify-center gap-2 rounded-lg border-2 border-turquoise-300 text-sm font-semibold text-turquoise-700 transition hover:bg-turquoise-50 sm:h-12 dark:border-turquoise-700 dark:text-turquoise-400 dark:hover:bg-turquoise-950/40"
            >
              <UserPlus size={16} />
              Create Account

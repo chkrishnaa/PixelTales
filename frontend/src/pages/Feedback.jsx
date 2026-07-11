@@ -62,7 +62,7 @@ function MyFeedbackCard({ item, onDelete, deleting }) {
 }
 
 export default function Feedback() {
-  const { user, API } = useAuth()
+  const { user, token, API } = useAuth();
 
   const [name,         setName]         = useState(user?.name  ?? '')
   const [email,        setEmail]        = useState(user?.email ?? '')
@@ -107,11 +107,18 @@ export default function Feedback() {
     setSuccessMsg('')
     setLoading(true)
     try {
-      const res  = await fetch(`${API}/api/feedback`, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ name, email, feedbackType, sentiment, message }),
-      })
+      const res = await fetch(`${API}/api/feedback`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          feedbackType,
+          sentiment,
+          message,
+        }),
+      });
       const data = await res.json()
       if (!res.ok) {
         setError(data.errors?.[0]?.msg ?? data.message ?? 'Submission failed.')

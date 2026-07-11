@@ -47,15 +47,41 @@ function insertReply(comments, targetId, reply) {
 function applyLike(comments, targetId, liked, newCount, currentUser = null) {
   return comments.map((c) => {
     if (c.id === targetId) {
-      const myId   = currentUser?._id ?? currentUser?.id ?? '';
-      const myName = currentUser?.name ?? 'You';
+      const myId = currentUser?._id ?? currentUser?.id ?? "";
+      const myName = currentUser?.name ?? "You";
+      const myAvatar = currentUser?.avatar ?? null;
+
       const likedBy = liked
-        ? [...(c.likedBy ?? []).filter((u) => u.userId !== myId && u.name !== myName),
-            { name: myName, userId: myId, isMe: true }]
-        : (c.likedBy ?? []).filter((u) => u.userId !== myId && u.name !== myName);
-      return { ...c, likedByMe: liked, likes: newCount, likedBy };
+        ? [
+            ...(c.likedBy ?? []).filter(
+              (u) => u.userId !== myId && u.name !== myName,
+            ),
+            {
+              name: myName,
+              userId: myId,
+              avatar: myAvatar, // ✅ ADD THIS
+              isMe: true,
+            },
+          ]
+        : (c.likedBy ?? []).filter(
+            (u) => u.userId !== myId && u.name !== myName,
+          );
+
+      return {
+        ...c,
+        likedByMe: liked,
+        likes: newCount,
+        likedBy,
+      };
     }
-    if (c.replies?.length) return { ...c, replies: applyLike(c.replies, targetId, liked, newCount, currentUser) };
+
+    if (c.replies?.length) {
+      return {
+        ...c,
+        replies: applyLike(c.replies, targetId, liked, newCount, currentUser),
+      };
+    }
+
     return c;
   });
 }
@@ -131,7 +157,15 @@ function LikersModal({ likers, onClose }) {
                     liker.isMe ? "bg-turquoise-500" : getAvatarColor(liker.name)
                   }`}
                 >
-                  {getInitials(liker.name)}
+                  {liker.avatar ? (
+                    <img
+                      src={liker.avatar}
+                      alt={liker.name}
+                      className="h-full w-full rounded-full object-cover"
+                    />
+                  ) : (
+                    getInitials(liker.name)
+                  )}
                 </div>
 
                 <p className="min-w-0 truncate text-xs xs:text-sm font-semibold text-gray-900 dark:text-white">
@@ -292,7 +326,13 @@ function CommentThread({
                 : ""
             }`}
           >
-            {isAdmin ? (
+            {comment.avatar ? (
+              <img
+                src={comment.avatar}
+                alt={comment.user}
+                className="h-full w-full object-cover"
+              />
+            ) : isAdmin ? (
               <Shield size={13} className="xs:size-[14px]" />
             ) : (
               getInitials(comment.user)

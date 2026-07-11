@@ -79,16 +79,19 @@ function Bubble({ msg, prevMsg, isOwn, ownUser }) {
 
   return (
     <div
-      className={`flex items-end gap-2 px-4 ${isOwn ? "flex-row-reverse" : "flex-row"} ${sameAuthor ? "mt-0.5" : "mt-3"}`}
+      className={`flex items-end px-4 ${
+        isOwn ? "justify-end" : "justify-start gap-2"
+      } ${sameAuthor ? "mt-0.5" : "mt-3"}`}
     >
-      {/* Avatar slot — both sides */}
+      {/* Avatar slot */}
       <div className="w-8 shrink-0 flex justify-center">
-        {showAvatar &&
-          (isOwn ? (
-            <Avatar name={ownName} avatar={ownAvatar} size={32} />
-          ) : (
-            <Avatar name={msg.userName} size={32} />
-          ))}
+        {!isOwn && (
+          <div className="w-8 shrink-0 flex justify-center">
+            {showAvatar && (
+              <Avatar name={msg.userName} avatar={msg.avatar} size={32} />
+            )}
+          </div>
+        )}
       </div>
 
       <div
@@ -111,42 +114,6 @@ function Bubble({ msg, prevMsg, isOwn, ownUser }) {
           }`}
           style={isOwn ? undefined : { boxShadow: "0 1px 2px rgba(0,0,0,.08)" }}
         >
-          {!sameAuthor && (
-            <span
-              className={`absolute top-0 ${isOwn ? "right-[-5px]" : "left-[-5px]"} overflow-hidden`}
-              style={{ width: 8, height: 13 }}
-            >
-              <svg width="8" height="13" viewBox="0 0 8 13">
-                {isOwn ? (
-                  <path
-                    d="M1 1 Q8 1 8 8 L8 13 Z"
-                    fill="#dcf8c6"
-                    className="dark:hidden"
-                  />
-                ) : (
-                  <path
-                    d="M7 1 Q0 1 0 8 L0 13 Z"
-                    fill="white"
-                    className="dark:hidden"
-                  />
-                )}
-                {isOwn ? (
-                  <path
-                    d="M1 1 Q8 1 8 8 L8 13 Z"
-                    fill="#025c4c"
-                    className="hidden dark:block"
-                  />
-                ) : (
-                  <path
-                    d="M7 1 Q0 1 0 8 L0 13 Z"
-                    fill="#1f2c34"
-                    className="hidden dark:block"
-                  />
-                )}
-              </svg>
-            </span>
-          )}
-
           <span className="break-words">{msg.text}</span>
 
           <span
@@ -177,11 +144,16 @@ export default function CommunityChats() {
   const [showEmoji,   setShowEmoji]   = useState(false);
   const [emojiAnchor, setEmojiAnchor] = useState(null);
   const [memberCount, setMemberCount] = useState(COMMUNITY_ROOM.memberCount);
+  const [onlineMembers, setOnlineMembers] = useState(0);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const bottomRef    = useRef(null);
   const inputRef     = useRef(null);
   const emojiBtnRef  = useRef(null);
+
+  const displayOnlineMembers = user
+    ? Math.max(1, onlineMembers)
+    : onlineMembers;
 
   /* ── Fetch messages ───────────────────────────────────── */
   const fetchMessages = useCallback(async (silent = false) => {
@@ -201,13 +173,25 @@ export default function CommunityChats() {
 
   /* ── Fetch community info ─────────────────────────────── */
   useEffect(() => {
-    (async () => {
+    const fetchCommunity = async () => {
       try {
-        const res  = await fetch(`${API}/api/chat/community`);
+        const res = await fetch(`${API}/api/chat/community`);
         const data = await res.json();
-        if (data.success) setMemberCount(data.data?.memberCount ?? COMMUNITY_ROOM.memberCount);
-      } catch {}
-    })();
+
+        if (data.success) {
+          setMemberCount(data.data.memberCount ?? 0);
+          setOnlineMembers(data.data.onlineMembers ?? 0);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchCommunity();
+
+    const timer = setInterval(fetchCommunity, 10000);
+
+    return () => clearInterval(timer);
   }, [API]);
 
   /* ── Initial load + polling ───────────────────────────── */
@@ -305,10 +289,16 @@ export default function CommunityChats() {
           <h2 className="font-bold text-gray-900 dark:text-white">
             {COMMUNITY_ROOM.name}
           </h2>
-          <p className="text-[11px] text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-0.5">
-            <Users size={10} />
-            {memberCount.toLocaleString()} members
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="mt-0.5 flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
+              <Users size={10} />
+              {memberCount.toLocaleString()} members
+            </p>
+
+            <p className="ml-4 mt-0.5 text-[10px] font-medium text-emerald-500">
+              {displayOnlineMembers} online
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
           <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />

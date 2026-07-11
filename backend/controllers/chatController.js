@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator';
 import ChatRoom from '../models/ChatRoom.js';
 import Message  from '../models/Message.js';
+import User     from '../models/User.js';
 
 /* ── Single community room config ───────────────────────── */
 const COMMUNITY_SLUG = 'community';
@@ -32,13 +33,35 @@ async function getCommunityRoomDoc() {
  */
 export const getCommunity = async (req, res, next) => {
   try {
-    const room    = await getCommunityRoomDoc();
-    const lastMsg = await Message.findOne({ room: room._id, isDeleted: false })
+    const room = await getCommunityRoomDoc();
+
+    const lastMsg = await Message.findOne({
+      room: room._id,
+      isDeleted: false,
+    })
       .sort({ createdAt: -1 })
-      .select('userName text createdAt')
+      .select("userName text createdAt")
       .lean();
 
-    res.json({ success: true, data: { ...room.toObject(), lastMessage: lastMsg ?? null } });
+    // Total registered users
+    const totalMembers = await User.countDocuments();
+
+    // Online users
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+
+    const onlineMembers = await User.countDocuments({
+      lastSeen: { $gte: fiveMinutesAgo },
+    });
+
+    res.json({
+      success: true,
+      data: {
+        ...room.toObject(),
+        memberCount: totalMembers,
+        onlineMembers,
+        lastMessage: lastMsg ?? null,
+      },
+    });
   } catch (err) {
     next(err);
   }

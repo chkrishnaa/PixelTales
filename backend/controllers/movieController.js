@@ -17,25 +17,40 @@ function buildCommentTree(flatComments, meId) {
 
   for (const c of flatComments) {
     map[c._id.toString()] = {
-      id:         c._id.toString(),
-      _dbId:      c._id.toString(),
-      user:       c.userName,
-      isAdmin:    false,
-      replyTo:    c.replyToName ?? null,
-      text:       c.text,
-      likes:      c.likedBy.length,
-      likedByMe:  meId ? c.likedBy.some((u) => (u._id ?? u).toString() === meId) : false,
-      likedBy:    c.likedBy.map((u) => ({ name: u?.name ?? 'User', userId: u?._id?.toString() ?? '' })),
-      timestamp:  timeAgo(c.createdAt),
-      createdAt:  c.createdAt,
-      userId:     c.userId?.toString() ?? null,
-      parentId:   c.parentId?.toString() ?? null,
-      replies:    [],
+      id: c._id.toString(),
+      _dbId: c._id.toString(),
+
+      // User
+      user: c.userName,
+      userId: c.userId?._id?.toString() ?? null,
+      avatar: c.userId?.avatar ?? null,
+
+      isAdmin: false,
+      replyTo: c.replyToName ?? null,
+      text: c.text,
+
+      likes: c.likedBy.length,
+
+      likedByMe: meId
+        ? c.likedBy.some((u) => (u._id ?? u).toString() === meId)
+        : false,
+
+      likedBy: c.likedBy.map((u) => ({
+        name: u?.name ?? "User",
+        userId: u?._id?.toString() ?? "",
+        avatar: u?.avatar ?? null,
+      })),
+
+      timestamp: timeAgo(c.createdAt),
+      createdAt: c.createdAt,
+      parentId: c.parentId?.toString() ?? null,
+      replies: [],
     };
   }
 
   for (const id of Object.keys(map)) {
     const node = map[id];
+
     if (node.parentId && map[node.parentId]) {
       map[node.parentId].replies.push(node);
     } else {
@@ -185,7 +200,8 @@ export const getComments = async (req, res, next) => {
 
     const flat = await MovieComment.find({ movieId, isDeleted: false })
       .sort({ createdAt: 1 })
-      .populate('likedBy', 'name')
+      .populate("likedBy", "name avatar")
+      .populate("userId", "name avatar")
       .lean();
 
     const tree = buildCommentTree(flat, meId);

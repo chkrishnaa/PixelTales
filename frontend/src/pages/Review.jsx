@@ -7,7 +7,7 @@ import LoginModal        from '../components/LoginModal';
 const MAX = 1000;
 
 export default function Review() {
-  const { user, API } = useAuth();
+  const { user, token, API } = useAuth();
 
   const [name,       setName]       = useState(user?.name  ?? '');
   const [email,      setEmail]      = useState(user?.email ?? '');
@@ -61,15 +61,19 @@ export default function Review() {
       const res = await fetch(
         isUpdate ? `${API}/api/reviews/${reviewId}` : `${API}/api/reviews`,
         {
-          method:  isUpdate ? 'PUT' : 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(
+          method: isUpdate ? "PUT" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(
             isUpdate
-              ? { email, rating, review }
-              : { name, email, rating, review },
+              ? { email, avatar: user?.avatar, rating, review }
+              : { name, email, avatar: user?.avatar, rating, review },
           ),
         },
       );
+
       const data = await res.json();
       if (data.success) {
         if (!isUpdate && data.data?._id) setReviewId(data.data._id);

@@ -54,13 +54,13 @@ router.get('/', getAllReviews);
 router.get('/me', getMyReview);
 
 // Public — submit review (one per user/email)
-router.post('/', reviewValidation, submitReview);
+router.post('/', protect, reviewValidation, submitReview);
 
 // Authenticated user — edit own review (verified by email match)
-router.put('/:id', updateValidation, updateReview);
+router.put('/:id', protect, updateValidation, updateReview);
 
 // Authenticated user — soft-delete own review (verified by email match)
-router.delete('/:id', deleteReview);
+router.delete('/:id', protect, deleteReview);
 
 // Authenticated — like / dislike (must be logged in)
 router.post('/:id/like',    protect, likeReview);
