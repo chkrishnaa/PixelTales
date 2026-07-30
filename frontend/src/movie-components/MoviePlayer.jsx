@@ -11,10 +11,12 @@ import {
   Save,
 } from "lucide-react";
 import { getMovieTitle } from "../utils/movie";
+
 import { useAuth }  from "../context/AuthContext";
 import { useWatch } from "../context/WatchContext";
 import SaveToCollectionModal from "../components/SaveToCollectionModal";
 import LoginModal from "../components/LoginModal";
+
 
 export default function MoviePlayer({
   movie,
@@ -37,10 +39,12 @@ export default function MoviePlayer({
   const [copied, setCopied] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const activeSecsRef = useRef(0);
-  const lastTickRef = useRef(null);
-  const tickerRef = useRef(null);
-  const totalDurationSecs = (movie.duration ?? 0) * 60;
+  const activeSecsRef      = useRef(0);
+  const lastTickRef        = useRef(null);
+  const tickerRef          = useRef(null);
+  const videoRef           = useRef(null); // ref to <video> element for MediaSession actions
+  const totalDurationSecs  = (movie.duration ?? 0) * 60;
+
 
   const startTicker = useCallback(() => {
     if (tickerRef.current) return;
@@ -73,6 +77,68 @@ export default function MoviePlayer({
     startTicker();
     return stopTicker;
   }, [startTicker, stopTicker]);
+
+  /* ── Media Session API ────────────────────────────────────
+     Sets the system notification to show:
+       Title   : actual movie name (e.g. "Doraemon: Nobita's Treasure Island")
+       Artist  : studio name
+       Album   : cartoon/series name
+       Artwork : movie thumbnail
+     Also wires up play/pause/seek action handlers so the
+     notification controls actually work.
+  ─────────────────────────────────────────────────────────── */
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) return;
+
+    const title    = getMovieTitle(movie);
+    const artist   = movie.studio ?? movie.director ?? 'PixelTales';
+    const rawSeries = movie.cartoonId ?? '';
+    const album    = rawSeries
+      ? rawSeries.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+      : 'PixelTales';
+
+    const artwork  = movie.thumbnail ? [{ src: movie.thumbnail, sizes: '512x512', type: 'image/jpeg' }] : [];
+
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({ title, artist, album, artwork });
+    } catch (_) {}
+
+    // Action handlers — only work for native <video> (not iframe)
+    const seek = (delta) => {
+      const vid = videoRef.current;
+      if (!vid) return;
+      vid.currentTime = Math.max(0, Math.min(vid.duration || 0, vid.currentTime + delta));
+    };
+
+    const handlers = [
+      ['play',         () => videoRef.current?.play()],
+      ['pause',        () => videoRef.current?.pause()],
+      ['seekbackward', (d) => seek(-(d?.seekOffset ?? 10))],
+      ['seekforward',  (d) => seek(+(d?.seekOffset ?? 10))],
+    ];
+
+    for (const [action, handler] of handlers) {
+      try { navigator.mediaSession.setActionHandler(action, handler); } catch (_) {}
+    }
+
+    return () => {
+      // Clear metadata on unmount so next page doesn't inherit stale movie info
+      try {
+        navigator.mediaSession.metadata = null;
+        for (const [action] of handlers) {
+          try { navigator.mediaSession.setActionHandler(action, null); } catch (_) {}
+        }
+      } catch (_) {}
+    };
+  }, [movie]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── Document title — show movie name in browser tab ─────── */
+  useEffect(() => {
+    const original = document.title;
+    const movieName = getMovieTitle(movie);
+    if (movieName) document.title = `${movieName} — PixelTales`;
+    return () => { document.title = original; };
+  }, [movie]);
 
   useEffect(() => {
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
@@ -211,9 +277,20 @@ export default function MoviePlayer({
               />
             ) : (
               <video
+                ref={videoRef}
                 controls
                 poster={movie.thumbnail}
                 className="aspect-video w-full max-h-[45vh] xs:max-h-[55vh] md:max-h-[65vh] lg:max-h-[75vh] bg-black"
+                onPlay={() => {
+                  if ('mediaSession' in navigator) {
+                    navigator.mediaSession.playbackState = 'playing';
+                  }
+                }}
+                onPause={() => {
+                  if ('mediaSession' in navigator) {
+                    navigator.mediaSession.playbackState = 'paused';
+                  }
+                }}
                 onTimeUpdate={(e) => {
                   activeSecsRef.current = e.currentTarget.currentTime;
                   updateProgress(
@@ -221,6 +298,16 @@ export default function MoviePlayer({
                     Math.floor(e.currentTarget.currentTime),
                     totalDurationSecs,
                   );
+                  // Keep MediaSession position state in sync
+                  if ('mediaSession' in navigator && e.currentTarget.duration) {
+                    try {
+                      navigator.mediaSession.setPositionState({
+                        duration:     e.currentTarget.duration,
+                        playbackRate: e.currentTarget.playbackRate,
+                        position:     e.currentTarget.currentTime,
+                      });
+                    } catch (_) {}
+                  }
                 }}
               >
                 <source src={movie.videoUrl} type="video/mp4" />
