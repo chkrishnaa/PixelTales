@@ -7,6 +7,7 @@ import {
   PencilLine,
   Save,
   Plus,
+  Check,
 } from "lucide-react";
 import { getMovieTitle } from "../utils/movie";
 
@@ -145,7 +146,7 @@ export default function MovieCast({
             />
 
             <h2
-              className={`font-sans text-xl xs:text-2xl font-bold ${
+              className={`font-display text-xl xs:text-2xl ${
                 v ? V.headerTitle : "text-gray-900 dark:text-white"
               }`}
               style={v ? V.font : undefined}
@@ -229,7 +230,7 @@ export default function MovieCast({
           )}
 
           {/* ── Character Grid ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 xs:gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 xs:gap-3 md:grid-cols-3">
             {paginated.map((character, i) => {
               const globalIdx = page * ITEMS_PER_PAGE + i;
               const theme = getTheme(character.role);
@@ -321,7 +322,7 @@ export default function MovieCast({
                           : `rounded-full ${theme.pill.split(" ")[0]}`
                       }`}
                     >
-                      ✓
+                      <Check size={12} strokeWidth={2} absoluteStrokeWidth />
                     </div>
                   )}
                 </button>

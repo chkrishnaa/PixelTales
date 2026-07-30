@@ -6,9 +6,6 @@ import {
   ChevronRight,
   X,
   ZoomIn,
-  PencilLine,
-  Save,
-  Plus,
   Image,
 } from "lucide-react";
 import { getMovieTitle } from "../utils/movie";
@@ -33,6 +30,24 @@ const V = {
 function Lightbox({ gallery, index, movieTitle, onClose, onPrev, onNext, onGoTo, isClassic }) {
 
   const total = gallery.length;
+  const MAX_DOTS = 15;
+  const MAX_THUMBS = 15;
+
+let thumbStart = Math.max(
+    0,
+    index - Math.floor(MAX_THUMBS / 2)
+);
+
+thumbStart = Math.min(
+    thumbStart,
+    Math.max(0, total - MAX_THUMBS)
+);
+
+const visibleThumbs = gallery.slice(
+    thumbStart,
+    thumbStart + MAX_THUMBS
+);
+
 
   useEffect(() => {
     const onKey = (e) => {
@@ -43,6 +58,12 @@ function Lightbox({ gallery, index, movieTitle, onClose, onPrev, onNext, onGoTo,
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onPrev, onNext, onClose]);
+
+  let start = Math.max(0, index - Math.floor(MAX_DOTS / 2));
+
+  start = Math.min(start, Math.max(0, total - MAX_DOTS));
+
+  const visibleDots = gallery.slice(start, start + MAX_DOTS);
 
   return createPortal(
     <div
@@ -55,7 +76,7 @@ function Lightbox({ gallery, index, movieTitle, onClose, onPrev, onNext, onGoTo,
         onClick={(e) => e.stopPropagation()}
       >
         {/* Left */}
-        <div className="flex min-w-0 items-center gap-2">
+        <div className="flex flex-1 min-w-0 items-center gap-2">
           <Film
             size={16}
             className={isClassic ? "text-amber-500" : "text-turquoise-400"}
@@ -70,23 +91,29 @@ function Lightbox({ gallery, index, movieTitle, onClose, onPrev, onNext, onGoTo,
         </div>
 
         {/* Center */}
-        <div className="hidden xs:flex items-center gap-1.5">
-          {gallery.map((_, i) => (
-            <button
-              key={i}
-              className={`h-1.5 rounded-full transition-all duration-200 ${
-                i === index
-                  ? isClassic
-                    ? "w-5 bg-amber-500"
-                    : "w-5 bg-turquoise-400"
-                  : "w-1.5 bg-white/30 hover:bg-white/60"
-              }`}
-            />
-          ))}
+        <div className="hidden flex-1 xs:flex justify-center items-center gap-1.5">
+          {" "}
+          {visibleDots.map((_, i) => {
+            const actualIndex = start + i;
+
+            return (
+              <button
+                key={actualIndex}
+                onClick={() => onGoTo(actualIndex)}
+                className={`h-1.5 rounded-full transition-all duration-200 ${
+                  actualIndex === index
+                    ? isClassic
+                      ? "w-5 bg-amber-500"
+                      : "w-5 bg-turquoise-400"
+                    : "w-1.5 bg-white/30 hover:bg-white/60"
+                }`}
+              />
+            );
+          })}
         </div>
 
         {/* Right */}
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex flex-1 justify-end items-center gap-2">
           <span className="rounded-sm bg-white/10 px-2 xs:px-3 py-1 text-[10px] xs:text-xs font-bold text-white backdrop-blur-sm">
             {index + 1} / {total}
           </span>
@@ -150,15 +177,18 @@ function Lightbox({ gallery, index, movieTitle, onClose, onPrev, onNext, onGoTo,
         className="shrink-0 flex justify-start sm:justify-center gap-2 overflow-x-auto px-3 xs:px-4 pt-3 pb-2 scrollbar-hide"
         onClick={(e) => e.stopPropagation()}
       >
-        {gallery.map((src, i) => (
+        {visibleThumbs.map((src, i) => {
+    const actualIndex = thumbStart + i;
+
+    return (
           <button
-            key={i}
+            key={actualIndex}
             onClick={(e) => {
               e.stopPropagation();
-              onGoTo(i);
+              onGoTo(actualIndex);
             }}
             className={`flex shrink-0 flex-col items-center gap-1 transition-all duration-200 ${
-              i === index
+              actualIndex === index
                 ? "scale-105 opacity-100"
                 : "opacity-50 hover:opacity-80"
             }`}
@@ -167,7 +197,7 @@ function Lightbox({ gallery, index, movieTitle, onClose, onPrev, onNext, onGoTo,
               className={`relative h-12 w-16 xs:h-14 xs:w-20 overflow-hidden border-2 ${
                 isClassic ? "rounded-sm" : "rounded-lg"
               } ${
-                i === index
+                actualIndex === index
                   ? isClassic
                     ? "border-amber-500"
                     : "border-turquoise-400"
@@ -176,7 +206,7 @@ function Lightbox({ gallery, index, movieTitle, onClose, onPrev, onNext, onGoTo,
             >
               <img
                 src={src}
-                alt={`Thumb ${i + 1}`}
+                alt={`Thumb ${actualIndex + 1}`}
                 className={`h-full w-full object-cover ${
                   isClassic ? "sepia" : ""
                 }`}
@@ -185,14 +215,15 @@ function Lightbox({ gallery, index, movieTitle, onClose, onPrev, onNext, onGoTo,
 
             <span
               className={`text-[8px] xs:text-[9px] font-bold tracking-wide ${
-                i === index ? "text-white" : "text-white/40"
+                actualIndex === index ? "text-white" : "text-white/40"
               }`}
               style={isClassic ? V.font : undefined}
             >
-              Scene {i + 1}
+              Scene {actualIndex + 1}
             </span>
           </button>
-        ))}
+        );
+      })}
       </div>
 
       <style>{`
@@ -217,20 +248,12 @@ function Lightbox({ gallery, index, movieTitle, onClose, onPrev, onNext, onGoTo,
 
 export default function MovieGallery({
   movie,
-  editMode = false,
-  activeEditor,
-  setActiveEditor,
-  onUpdate,
 }) {
   const v = movie.modern === false || movie.modern === 'false';
   const gallery = (movie.gallery || []).filter(Boolean);
 
   const [page, setPage] = useState(0);
   const [lightbox, setLightbox] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [galleryText, setGalleryText] = useState(
-    (movie.gallery || []).join("\n"),
-  );
 
   if (!gallery.length) return null;
 
@@ -248,29 +271,6 @@ export default function MovieGallery({
     () => setLightbox((i) => (i === gallery.length - 1 ? 0 : i + 1)),
     [gallery.length],
   );
-
-  const openEditor = () => {
-    setGalleryText((movie.gallery || []).join("\n"));
-    setIsEditing(true);
-    setActiveEditor("gallery");
-  };
-
-  const addImage = () => {
-    const nextGallery = [...(movie.gallery || []), ""];
-    setGalleryText(nextGallery.join("\n"));
-    setIsEditing(true);
-    setActiveEditor("gallery");
-  };
-
-  const saveChanges = () => {
-    const parsed = galleryText
-      .split(/\n+/)
-      .map((line) => line.trim())
-      .filter(Boolean);
-    onUpdate?.({ gallery: parsed });
-    setIsEditing(false);
-    setActiveEditor(null);
-  };
 
   return (
     <section className="page-container py-4 xs:py-5 sm:py-6">
@@ -301,7 +301,7 @@ export default function MovieGallery({
             />
 
             <h2
-              className={`font-sans text-xl xs:text-2xl font-bold truncate ${
+              className={`font-display text-xl xs:text-2xl truncate ${
                 v ? V.headerTitle : "text-gray-900 dark:text-white"
               }`}
               style={v ? V.font : undefined}
@@ -312,27 +312,6 @@ export default function MovieGallery({
 
           {/* Right */}
           <div className="flex flex-wrap items-center gap-2 xs:gap-2.5">
-            {editMode && !activeEditor && (
-              <>
-                <button
-                  type="button"
-                  onClick={openEditor}
-                  className="inline-flex items-center gap-1.5 xs:gap-2 rounded-full border border-turquoise-200 px-3 xs:px-3.5 py-2 text-xs xs:text-sm font-semibold text-turquoise-700 transition hover:bg-turquoise-50 dark:border-turquoise-800 dark:text-turquoise-300 dark:hover:bg-turquoise-950/30"
-                >
-                  <PencilLine size={14} />
-                  Edit Gallery
-                </button>
-
-                <button
-                  type="button"
-                  onClick={addImage}
-                  className="inline-flex items-center gap-1.5 xs:gap-2 rounded-full border border-turquoise-200 px-3 xs:px-3.5 py-2 text-xs xs:text-sm font-semibold text-turquoise-700 transition hover:bg-turquoise-50 dark:border-turquoise-800 dark:text-turquoise-300 dark:hover:bg-turquoise-950/30"
-                >
-                  <Plus size={14} />
-                  Add Image
-                </button>
-              </>
-            )}
 
             <span
               className={`inline-flex items-center rounded-full px-3 py-1 text-xs xs:text-sm font-bold ${
@@ -348,43 +327,7 @@ export default function MovieGallery({
         </div>
 
         <div className={`p-4 xs:p-5 sm:p-6 ${v ? V.body : ""}`}>
-          {isEditing && editMode && activeEditor === "gallery" && (
-            <div className="mb-4 xs:mb-5 rounded-lg border border-gray-200 bg-gray-50 p-3 xs:p-4 dark:border-gray-800 dark:bg-gray-900/50">
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                Gallery URLs
-                <textarea
-                  rows={6}
-                  value={galleryText}
-                  onChange={(e) => setGalleryText(e.target.value)}
-                  className="mt-2 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-turquoise-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                  placeholder="One URL per line"
-                />
-              </label>
-
-              <div className="mt-3 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={saveChanges}
-                  className="inline-flex items-center gap-2 rounded-full bg-turquoise-600 px-3 py-2 text-xs xs:text-sm font-semibold text-white transition hover:bg-turquoise-500"
-                >
-                  <Save size={14} />
-                  Save Gallery
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsEditing(false);
-                    setActiveEditor(null);
-                  }}
-                  className="rounded-full border border-gray-200 px-3 py-2 text-xs xs:text-sm font-semibold text-gray-600 transition hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          )}
-
+          
           {/* ── Image Grid ── */}
           <div className="grid grid-cols-2 gap-2 xs:gap-3 md:grid-cols-3">
             {paginated.map((src, i) => {

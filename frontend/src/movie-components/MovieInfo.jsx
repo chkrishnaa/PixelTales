@@ -15,23 +15,6 @@ import {
 } from "lucide-react";
 import { getMovieTitle, countAllComments } from "../utils/movie";
 
-function buildExtendedDescription(movie) {
-  const base = movie.description || "";
-  const genreStr = movie.genres?.join(", ") || "Animation";
-  const year = movie.year || "Unknown Year";
-  const studio = movie.studio || "a renowned animation studio";
-  const director = movie.director || "a talented director";
-  const duration = movie.duration || "";
-  return (
-    base +
-    ` Set against a richly animated world bursting with imagination and wonder, this ${genreStr} feature takes its audience on an unforgettable journey filled with heart, humour, and high-stakes adventure. ` +
-    `Produced by ${studio} and brought to life under the vision of ${director}, the film showcases the kind of storytelling that resonates across every age group. ` +
-    `Released in ${year}${duration ? ` and running for ${duration}` : ""}, it balances breathtaking action sequences with deeply emotional character moments that linger long after the credits roll. ` +
-    `The vibrant animation style and memorable musical score elevate the narrative, making it a standout entry in its franchise. ` +
-    `Whether you are revisiting a beloved childhood favourite or discovering it for the first time, this film promises a cinematic experience that is both thrilling and warmly nostalgic.`
-  );
-}
-
 export default function MovieInfo({
   movie,
   likes,
@@ -42,7 +25,6 @@ export default function MovieInfo({
   onUpdate,
 }) {
   const v = movie.modern === false || movie.modern === 'false';
-  const fullDescription = buildExtendedDescription(movie);
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState({
     title: Array.isArray(movie.title) ? movie.title[0] : movie.title || "",
@@ -243,7 +225,7 @@ export default function MovieInfo({
 
               {/* Movie Title */}
               <h1
-                className={`font-sans text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight break-words ${C.titleText}`}
+                className={`font-display text-2xl xs:text-3xl sm:text-4xl lg:text-5xl leading-tight break-words ${C.titleText}`}
                 style={v ? C.font : undefined}
               >
                 {getMovieTitle(movie)}
@@ -519,7 +501,7 @@ export default function MovieInfo({
               className={`text-sm xs:text-[15px] sm:text-base leading-6 xs:leading-7 text-justify ${C.descText}`}
               style={v ? C.font : undefined}
             >
-              {fullDescription}
+              {movie.description}
             </p>
           </div>
 

@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import express      from 'express';
 import cors          from 'cors';
-import morgan        from 'morgan';
 import cookieParser  from 'cookie-parser';
 import passport      from 'passport';
 
@@ -14,6 +13,8 @@ import chatRoutes          from './routes/chatRoutes.js';
 import movieRoutes         from './routes/movieRoutes.js';
 import collectionRoutes    from './routes/collectionRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
+import watchRoutes     from './routes/watchRoutes.js';
+
 import { errorHandler }    from './middlewares/errorHandler.js';
 
 const app = express();
@@ -52,9 +53,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-if (process.env.NODE_ENV !== 'production') {
-  app.use(morgan('dev'));
-}
+
 
 // ── Routes ────────────────────────────────────────────────
 app.use("/api/auth", authRoutes);
@@ -64,6 +63,8 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/movies", movieRoutes);
 app.use("/api/collections", collectionRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/watch",     watchRoutes);
+
 
 // Health check
 app.get('/api/health', (_req, res) =>

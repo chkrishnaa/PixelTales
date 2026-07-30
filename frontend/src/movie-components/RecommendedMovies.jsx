@@ -56,10 +56,10 @@ export default function RecommendedMovies({ movies, isClassic = false }) {
 
             <div className="min-w-0">
               <h2
-                className="font-sans text-xl xs:text-2xl leading-tight text-white"
+                className="font-display text-xl xs:text-2xl leading-tight text-white"
                 style={v ? vFont : undefined}
               >
-                {v ? "More Classics" : "More Like This"}
+                More Movies For You
               </h2>
 
               <p

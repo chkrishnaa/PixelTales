@@ -62,10 +62,11 @@ const DUMMY_COLLECTIONS = [
   },
 ]
 
-/* ── Helper: movie IDs → full movie objects ─────────────── */
+/* ── Helper: movie IDs → full movie objects (static fallback) */
 function idsToMovies(ids) {
   return ids.map((id) => getMovieById(id)).filter(Boolean)
 }
+
 
 /* ─────────────────────────────────────────────────────────── */
 /* Collection detail view                                      */
@@ -410,20 +411,21 @@ function CollectionsTab({ token, API, user }) {
 /* ─────────────────────────────────────────────────────────── */
 /* History tab                                                 */
 /* ─────────────────────────────────────────────────────────── */
-function HistoryTab({ watchHistory, clearHistory }) {
+function HistoryTab({ watchHistory, clearHistory, movieCache }) {
   const [page, setPage] = useState(1)
-  const allMovies  = watchHistory.map((h) => getMovieById(h.movieId)).filter(Boolean)
-  const total      = allMovies.length
+
+  // Map history entries to movie objects using the shared cache (MongoDB data)
+  const allMovies = watchHistory
+    .map((h) => movieCache[h.movieId] ?? getMovieById(h.movieId))
+    .filter(Boolean)
+  const total = allMovies.length
 
   useEffect(() => {
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    if (page > totalPages) setPage(totalPages);
+  }, [total, page]);
 
-  if (page > totalPages) {
-    setPage(totalPages);
-  }
-}, [total, page]);
-
-  const movies     = allMovies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const movies = allMovies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
     <div>
@@ -464,6 +466,7 @@ function HistoryTab({ watchHistory, clearHistory }) {
     </div>
   )
 }
+
 
 
 
@@ -510,8 +513,43 @@ export default function Profile() {
     getProgress,
   } = useWatch()
 
-  const [allMovies, setAllMovies] = useState(() => MOVIE_DETAILS)
 
+  // Shared cache: movieId → full movie object fetched from MongoDB
+  const [movieCache, setMovieCache] = useState({})
+
+  // All unique IDs we need movie data for (continue + history)
+  const allNeededIds = useMemo(() => {
+    const ids = new Set([
+      ...continueMovieIds,
+      ...watchHistory.map((h) => h.movieId),
+    ])
+    return [...ids]
+  }, [continueMovieIds, watchHistory])
+
+  // Fetch any missing IDs from MongoDB
+  useEffect(() => {
+    const missing = allNeededIds.filter((id) => !movieCache[id])
+    if (missing.length === 0) return
+
+    Promise.all(
+      missing.map((id) =>
+        fetch(`${API}/api/movies/${id}`)
+          .then((r) => (r.ok ? r.json() : null))
+          .then((data) => (data?.success ? data.data : null))
+          .catch(() => null)
+      )
+    ).then((results) => {
+      const entries = {}
+      results.forEach((movie) => {
+        if (movie) entries[movie.movieId ?? movie.id] = movie
+      })
+      if (Object.keys(entries).length > 0) {
+        setMovieCache((prev) => ({ ...prev, ...entries }))
+      }
+    })
+  }, [allNeededIds, API]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [allMovies, setAllMovies] = useState(() => MOVIE_DETAILS)
 
 
   useEffect(() => {
@@ -535,7 +573,8 @@ export default function Profile() {
     if (activeTab === 'continue') {
       return continueMovieIds
         .map((id) => {
-          const base = getMovieById(id)
+          // Prefer MongoDB data, fall back to static data
+          const base = movieCache[id] ?? getMovieById(id)
           if (!base) return null
           const prog = getProgress(id)
           return { ...base, progress: prog?.progress ?? null }
@@ -544,7 +583,7 @@ export default function Profile() {
     }
     if (activeTab === 'favorites') return allMovies.filter((m) => m.favorited)
     return []
-  }, [activeTab, allMovies, continueMovieIds, getProgress])
+  }, [activeTab, allMovies, continueMovieIds, getProgress, movieCache])
 
   useEffect(() => {
   const totalPages = Math.max(1, Math.ceil(allTabMovies.length / PAGE_SIZE));
@@ -704,7 +743,8 @@ export default function Profile() {
       {activeTab === "collections" ? (
         <CollectionsTab user={user} token={token} API={API} />
       ) : activeTab === "history" ? (
-        <HistoryTab watchHistory={watchHistory} clearHistory={clearHistory} />
+        <HistoryTab watchHistory={watchHistory} clearHistory={clearHistory} movieCache={movieCache} />
+
       ) : pagedMovies.length > 0 ? (
         <>
           <MovieGrid

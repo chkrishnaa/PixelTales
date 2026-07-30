@@ -119,7 +119,7 @@ function LikersModal({ likers, onClose }) {
           <div className="flex items-center gap-2 min-w-0">
             <Heart size={16} className="fill-rose-500 text-rose-500 shrink-0" />
 
-            <h3 className="font-sans text-base xs:text-lg font-bold text-gray-900 dark:text-white truncate">
+            <h3 className="font-display text-base xs:text-lg text-gray-900 dark:text-white truncate">
               Liked by
             </h3>
 
@@ -995,7 +995,7 @@ export default function MovieComments({ movie }) {
             />
 
             <h2
-              className={`font-sans text-lg xs:text-xl sm:text-2xl font-bold truncate ${
+              className={`font-display text-lg xs:text-xl sm:text-2xl truncate ${
                 v
                   ? "text-amber-900 dark:text-amber-100"
                   : "text-gray-900 dark:text-white"

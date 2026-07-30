@@ -59,7 +59,7 @@ export const MOVIE_DETAILS = [
       "Doraemon: Nobita and the Steel Troops: The New Age",
     ],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT, // Assuming this is imported elsewhere
+    gradient: "DORAEMON_GRADIENT",
     progress: 62,
     videoUrl:
       "https://drive.google.com/file/d/1LeLvdNurMAwANalm1HWchhS1TotCh0v7/preview",
@@ -67,240 +67,117 @@ export const MOVIE_DETAILS = [
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops.jpg",
     rating: 4.9,
     year: 2011,
-    releaseDate: "2011-03-05", // Updated to ISO 8601 for easier Date parsing/sorting
-    duration: 108, // Updated to a number (easy to do: {duration} minutes on the frontend)
+    releaseDate: "2011-03-05",
+    duration: 108,
     language: "Hindi Dubbed",
     quality: "1080p",
     studio: "Shin-Ei Animation",
     favorited: true,
     director: "Yukiyo Teramoto",
     country: "Japan",
-    genres: ["Adventure", "Sci-Fi", "Family", "Fantasy", "Action"],
+    genres: [
+      "Animation",
+      "Sci-Fi",
+      "Drama",
+      "Adventure",
+      "Action",
+      "Family",
+      "Fantasy",
+    ],
     description:
-      "While playing in an empty lot, Nobita discovers mysterious robot parts falling from the sky. With Doraemon's help, he secretly assembles a gigantic robot inside a mirror world. What begins as a fun adventure soon turns into a dangerous mission when they learn that the robot belongs to a powerful mechanical army from another world. As war threatens Earth, Doraemon and his friends must uncover the truth behind the robot invasion and fight to protect both worlds. Filled with emotional moments, action-packed battles, friendship, sacrifice, and unforgettable characters, Nobita and the New Steel Troops is considered one of the most beloved and emotionally powerful Doraemon movies ever made.",
+      "While playing in an empty lot, Nobita discovers mysterious robot parts falling from the sky. With Doraemon's help, he secretly assembles the giant robot Zanda Claus inside a mirror world. However, the fun quickly ends when they discover the robot belongs to a massive mechanical army from another planet planning to invade Earth. Alongside their friends, Nobita and Doraemon must stand against the robot invasion in a desperate battle to protect humanity. Filled with intense action, themes of friendship, and deep emotional sacrifices, this film stands as one of the most beloved entries in the series.",
     characters: [
       {
         name: "Doraemon",
         role: "Main Character",
-        photo: "",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
         bio: "Doraemon is a robotic cat from the 22nd century sent to help Nobita. In this film, his futuristic gadgets and unwavering loyalty are put to the ultimate test as he helps Nobita navigate the mirror world and stand against a mechanical army far more powerful than anything they have faced before.",
       },
       {
         name: "Nobita",
         role: "Main Character",
-        photo: "",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
         bio: "Nobita is the kind-hearted but clumsy hero who accidentally triggers the robot invasion. Driven by guilt and love for his friends, he undergoes remarkable growth in this movie — transforming from a boy who always gives up into someone willing to sacrifice everything to protect the world.",
       },
       {
         name: "Shizuka",
         role: "Supporting Character",
-        photo: "",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
         bio: "Shizuka is Nobita's gentle and compassionate friend whose courage proves crucial at pivotal moments. Her bond with Riruru becomes one of the movie's most touching storylines, showing that friendship can transcend even the greatest of conflicts.",
       },
       {
         name: "Gian",
         role: "Supporting Character",
-        photo: "",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
         bio: "Gian, usually the bully of the group, reveals a surprisingly brave and self-sacrificing side in this film. When the stakes rise to a planetary level, he steps up without hesitation — proving that true strength comes from protecting the people you care about.",
       },
       {
         name: "Suneo",
         role: "Supporting Character",
-        photo: "",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
         bio: "Suneo's mechanical knowledge and clever thinking prove surprisingly useful during the robot crisis. Though he can be self-serving, his loyalty to his friends shines through when the group faces seemingly impossible odds in the mirror world.",
       },
       {
         name: "Zanda Claus",
         role: "Robot Ally",
-        photo: "",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitaAndTheSteelTroops/ZandaClaus.jpg",
         bio: "Zanda Claus is a giant robotic warrior that Nobita secretly assembles inside the mirror world. Initially a source of fun and adventure, it becomes the group's last line of defence — a symbol of Nobita's determination to fight for peace.",
       },
       {
         name: "Pippo",
         role: "Antagonist / Ally",
-        photo: "",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitaAndTheSteelTroops/Pippo.jpg",
         bio: "Pippo is a small robotic soldier who begins as part of the invading army but gradually reveals a more complex nature. His interactions with Nobita force him to question the purpose of war, making him one of the film's most memorable and layered characters.",
       },
       {
         name: "Riruru",
         role: "Key Antagonist / Ally",
-        photo: "",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitaAndTheSteelTroops/Riruru.jpg",
         bio: "Riruru starts as the primary antagonist — a brilliant and ruthless robot general — but her arc is one of the most emotionally powerful in the entire Doraemon series. Her evolving relationship with Shizuka transforms her from enemy to the story's most heartbreaking hero.",
+      },
+      {
+        name: "Robot Commander",
+        role: "Main Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitaAndTheSteelTroops/Commander.jpg",
+        bio: "The ruthless supreme commander of the Megatopia Iron Battalion. He leads the mechanical army to Earth with the singular goal of enslaving the human race, serving as the ultimate threat that Nobita and his friends must stand against in the final showdown.",
       },
     ],
     gallery: [
-      // Suffixes added to simulate unique gallery images
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/SteelTroops.jpg",
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/SteelTroops.jpg",
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/SteelTroops.jpg",
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/SteelTroops.jpg",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene10.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene11.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene12.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene13.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene14.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene15.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene16.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene17.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene18.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene19.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene20.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene21.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaAndTheSteelTroops/Scene22.png",
     ],
-    comments: [
-      {
-        id: "c1",
-        user: "Arjun Mehta",
-        isAdmin: false,
-        replyTo: null,
-        text: "One of the best Doraemon movies ever made! The emotional ending with Lilulu hit completely different 😭 I had to pause and collect myself.",
-        likes: 12,
-        likedByMe: false,
-        likedBy: likers(12, 0),
-        timestamp: "2w",
-        replies: [
-          {
-            id: "c1-r1",
-            user: "Sneha Rao",
-            isAdmin: false,
-            replyTo: "Arjun Mehta",
-            text: "Right?! I cried at the very end. Lilulu's sacrifice was so powerful and I did not see it coming at all.",
-            likes: 7,
-            likedByMe: false,
-            likedBy: likers(7, 3),
-            timestamp: "2w",
-            replies: [
-              {
-                id: "c1-r1-r1",
-                user: ADMIN_USER,
-                isAdmin: true,
-                replyTo: "Sneha Rao",
-                text: "Glad you both connected so deeply with the story! Lilulu's arc is genuinely a masterclass in character writing — it's what makes Steel Troops stand apart. Stay tuned for more classics coming soon! 💙",
-                likes: 15,
-                likedByMe: false,
-                likedBy: likers(15, 5),
-                timestamp: "1w",
-                replies: [],
-              },
-            ],
-          },
-          {
-            id: "c1-r2",
-            user: "Rohan Gupta",
-            isAdmin: false,
-            replyTo: "Arjun Mehta",
-            text: "The giant robot battle scenes were absolutely epic! The final confrontation gave me real goosebumps.",
-            likes: 4,
-            likedByMe: false,
-            likedBy: likers(4, 7),
-            timestamp: "1w",
-            replies: [
-              {
-                id: "c1-r2-r1",
-                user: "Kavya Nair",
-                isAdmin: false,
-                replyTo: "Rohan Gupta",
-                text: "Yes! And the soundtrack during that scene was incredible. Still gives me chills.",
-                likes: 2,
-                likedByMe: false,
-                likedBy: likers(2, 10),
-                timestamp: "1w",
-                replies: [],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: "c2",
-        user: "Priya Sharma",
-        isAdmin: false,
-        replyTo: null,
-        text: "I have watched this movie at least 10 times and it still gives me chills every single time. Riruru's character development is truly unmatched in the entire Doraemon series!",
-        likes: 23,
-        likedByMe: false,
-        likedBy: likers(23, 0),
-        timestamp: "3w",
-        replies: [
-          {
-            id: "c2-r1",
-            user: ADMIN_USER,
-            isAdmin: true,
-            replyTo: "Priya Sharma",
-            text: "Riruru is genuinely one of the most well-written characters in any Doraemon film. The way she transforms through the story is beautiful storytelling. We're so happy you keep coming back to watch! 🎬✨",
-            likes: 18,
-            likedByMe: false,
-            likedBy: likers(18, 4),
-            timestamp: "3w",
-            replies: [
-              {
-                id: "c2-r1-r1",
-                user: "Priya Sharma",
-                isAdmin: false,
-                replyTo: ADMIN_USER,
-                text: "Aww thank you for replying! Love how interactive PixelTales is. This is my favourite streaming site now 💙",
-                likes: 5,
-                likedByMe: false,
-                likedBy: likers(5, 8),
-                timestamp: "2w",
-                replies: [],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: "c3",
-        user: "Vikram Singh",
-        isAdmin: false,
-        replyTo: null,
-        text: "Does anyone know if this is available in Japanese audio with subtitles? The Hindi dub is great but I'd love the original voice acting experience.",
-        likes: 6,
-        likedByMe: false,
-        likedBy: likers(6, 2),
-        timestamp: "1w",
-        replies: [
-          {
-            id: "c3-r1",
-            user: ADMIN_USER,
-            isAdmin: true,
-            replyTo: "Vikram Singh",
-            text: "Hey Vikram! We currently have the Hindi Dubbed version available. Japanese audio with subtitles is on our roadmap — watch this space for updates! 🚧🎌",
-            likes: 8,
-            likedByMe: false,
-            likedBy: likers(8, 6),
-            timestamp: "1w",
-            replies: [],
-          },
-        ],
-      },
-      {
-        id: "c4",
-        user: "Ananya Das",
-        isAdmin: false,
-        replyTo: null,
-        text: "Perfect family movie! My little sister (7 years old) was absolutely glued to the screen the entire time 😄 Thank you PixelTales for making this accessible!",
-        likes: 14,
-        likedByMe: false,
-        likedBy: likers(14, 3),
-        timestamp: "4d",
-        replies: [
-          {
-            id: "c4-r1",
-            user: "Dev Patel",
-            isAdmin: false,
-            replyTo: "Ananya Das",
-            text: "Same here! My nephew watched it twice back-to-back. The robot designs are super creative and the concept is brilliant.",
-            likes: 3,
-            likedByMe: false,
-            likedBy: likers(3, 9),
-            timestamp: "3d",
-            replies: [
-              {
-                id: "c4-r1-r1",
-                user: "Ananya Das",
-                isAdmin: false,
-                replyTo: "Dev Patel",
-                text: "Exactly! And the animation holds up so well even by today's standards.",
-                likes: 2,
-                likedByMe: false,
-                likedBy: likers(2, 11),
-                timestamp: "2d",
-                replies: [],
-              },
-            ],
-          },
-        ],
-      },
-    ],
+    modern: true,
+    isPrime: true,
+    isRecommended: true,
   },
   {
     id: "d-nobita-bana-superhero",
@@ -310,7 +187,7 @@ export const MOVIE_DETAILS = [
       "Doraemon: Nobita's Parallel Journey to the West",
     ],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT,
+    gradient: "DORAEMON_GRADIENT",
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1AkSI1NF0mZXTW5plSNfse6PFVgqXHdGv/preview",
@@ -326,20 +203,97 @@ export const MOVIE_DETAILS = [
     favorited: false,
     director: "Tsutomu Shibayama",
     country: "Japan",
-    genres: ["Adventure", "Fantasy", "Family", "Comedy"],
+    genres: ["Animation", "Adventure", "Fantasy", "Family", "Comedy", "Action"],
     description:
-      "While preparing for a school play based on the classic Chinese novel 'Journey to the West', Nobita uses Doraemon's Hero Machine to become Sun Wukong, the legendary Monkey King. However, a major malfunction occurs, and they accidentally release dangerous, real-life monsters from the game into the real world. To save humanity and their families from being conquered by demons, Nobita, Doraemon, and their friends must travel back in time to ancient China, fully embracing their 'Journey to the West' roles to defeat the fearsome Bull Demon King and fix the timeline.",
+      "While trying to look like the legendary Monkey King using Doraemon's Hero Machine, Nobita accidentally lets dangerous game monsters escape into the real world. As virtual demons threaten to rewrite history and conquer mankind, the group must travel back to ancient China. Stepping into the roles of the classic 'Journey to the West' characters, Nobita and his friends fight to defeat the fearsome Bull Demon King and repair the broken timeline.",
     characters: [
-      { name: "Doraemon", role: "Main Character" },
-      { name: "Nobita", role: "Main Character / Sun Wukong" },
-      { name: "Shizuka", role: "Supporting Character / Sanzang" },
-      { name: "Gian", role: "Supporting Character / Zhu Bajie" },
-      { name: "Suneo", role: "Supporting Character / Sha Wujing" },
-      { name: "Linlay", role: "Key Ally / Guest Character" },
-      { name: "Bull Demon King", role: "Primary Antagonist" },
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
+        bio: "Doraemon tries to guide Nobita away from changing timelines, but when his Hero Machine gadget malfunctions, he must step up as a companion to fix history before malicious video game demons take over the human race.",
+      },
+      {
+        name: "Nobita",
+        role: "Main Character / Sun Wukong",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
+        bio: "Nobita adopts the legendary persona of Sun Wukong (the Monkey King) using a magical cloud and power pole. Despite starting the crisis, his determination drives the team through dangerous ancient lands to secure the future.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character / Sanzang",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
+        bio: "Shizuka embodies the pure-hearted monk Xuanzang (Sanzang) for their dangerous trek. Her compassion shines through even in treacherous conditions, keeping the team unified through their difficult journey.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character / Zhu Bajie",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
+        bio: "Gian takes up the role of the pig demon Zhu Bajie, wielding a heavy rake weapon. His immense physical strength becomes a great shield when fighting off waves of invading monsters in ancient ruins.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character / Sha Wujing",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
+        bio: "Suneo assumes the identity of the river demon Sha Wujing. Though easily frightened by the terrifying real-world monsters, his tactical thinking helps the squad navigate unknown paths across ancient Chinese terrain.",
+      },
+      {
+        name: "Doremi",
+        role: "Heroic Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MianCharacters/Doremi.jpg",
+        bio: "Doraemon's highly capable younger sister who arrives via the Time Machine at the absolute perfect moment. When Nobita, Doraemon, and the rest of the group are cornered and completely trapped by the demon army near the climax, she executes a crucial rescue that turns the tide of the entire battle.",
+      },
+      {
+        name: "Tansang (Sanzang)",
+        role: "Key Ally / Historical Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitaBanaSuperhero/Tansang.jpg",
+        bio: "The real, historical Buddhist monk traveling to India who becomes target number one for the escaped video game demons. Though calm and devout, he relies on Nobita and his friends to protect him from the Bull Demon King's forces.",
+      },
+      {
+        name: "Linlay (Linlei)",
+        role: "Key Ally / Guest Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitaBanaSuperhero/Linlay.jpg",
+        bio: "A mysterious young boy traveling through ancient China whose destiny is intertwined with the group's mission. He harbors a deep, tragic connection to the invading demon forces.",
+      },
+      {
+        name: "Bull Demon King",
+        role: "Primary Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitaBanaSuperhero/BullDemonKing.jpg",
+        bio: "The terrifying ruler of the video game demons who escaped into reality. He aims to completely subjugate humanity and rewrite the flow of history from his mountain fortress.",
+      },
+      {
+        name: "Princess Iron Fan",
+        role: "Supporting Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitaBanaSuperhero/PrincessIronFan.jpg",
+        bio: "The powerful demon queen and wife of the Bull Demon King. Wielding a giant fan that summons dangerous hurricane winds, she serves as a lethal obstacle for Nobita and his friends.",
+      },
     ],
-    gallery: ["", "", "", ""],
-    comments: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene10.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitaBanaSuperhero/Scene11.png",
+    ],
+    modern: false,
+    isPrime: true,
+    isRecommended: true,
   },
   {
     id: "d-khel-khilona-bhool-bhulaiya",
@@ -348,7 +302,7 @@ export const MOVIE_DETAILS = [
       "Doraemon The Movie: Nobita and the Tin Labyrinth",
     ],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT,
+    gradient: "DORAEMON_GRADIENT",
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1oG9uswDZP8skgm8YayHt7BMf06R-Gtl1/preview",
@@ -364,21 +318,125 @@ export const MOVIE_DETAILS = [
     favorited: false,
     director: "Tsutomu Shibayama",
     country: "Japan",
-    genres: ["Adventure", "Sci-Fi", "Family", "Mystery"],
+    genres: ["Animation", "Adventure", "Sci-Fi", "Family", "Mystery", "Drama"],
     description:
-      "After Nobita's father mysteriously receives a suitcase that books a family vacation, Nobita and Doraemon arrive at a luxurious resort on Buriki (Tin) Island, operated entirely by tin toy robots. Things take a dark turn when Doraemon gets kidnapped by a rogue robot army led by Emperor Napo. Nobita, Shizuka, Gian, and Suneo must team up with a young alien boy named Sapio to navigate a giant labyrinth, rescue Doraemon, and free the planet of Chamocha from its tyrannical robot overlords. The movie carries a strong, thought-provoking message about the dangers of humanity becoming too dependent on technology and losing its independence.",
+      "After Nobita's father accidentally books a room through a mysterious television broadcast, the family travels to a luxurious resort on Buriki Island run entirely by tin toy robots. The vacation turns into a rescue mission when Doraemon is brutally kidnapped by a rogue mechanical faction. Nobita and his friends must team up with a young alien refugee named Sapio to venture through a massive labyrinth. Together, they fight to save Doraemon and rescue an entire planet from the grip of a ruthless robot dictatorship.",
     characters: [
-      { name: "Doraemon", role: "Main Character" },
-      { name: "Nobita", role: "Main Character" },
-      { name: "Shizuka", role: "Supporting Character" },
-      { name: "Gian", role: "Supporting Character" },
-      { name: "Suneo", role: "Supporting Character" },
-      { name: "Sapio", role: "Key Ally / Guest Character" },
-      { name: "Tap", role: "Robot Guide / Ally" },
-      { name: "Emperor Napo", role: "Primary Antagonist" },
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
+        bio: "Doraemon enjoys the initial luxuries of the Tin Hotel but faces severe torture after being captured by the rogue robot battalion. His breakdown pushes Nobita and the rest of the gang to grow stronger and fight independently.",
+      },
+      {
+        name: "Mini Doraemon",
+        role: "Heroic Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/MiniDoraemon.jpg",
+        bio: "The small red gadget helper who saves the day. He pulls off the ultimate double-save: first by providing a vital energy charge to fix a heavily damaged Doraemon, and later by bravely diving into Emperor Napogistra's mechanical core to inject the virus CD.",
+      },
+      {
+        name: "Nobita",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
+        bio: "Nobita experiences tremendous character development in this adventure. Forced to act without Doraemon's constant safety net of gadgets, he shows true bravery by navigating a collapsing underground maze to protect his friends.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
+        bio: "Shizuka's quick wit and logic keep the group organized when they are stranded. Her deep empathy helps comfort Sapio, and she assists in locating the hidden laboratory containing the counter-measures against the robot army.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
+        bio: "Gian leads a risky espionage sub-mission directly into the heart of the enemy stronghold, Mechapolis. His brute strength and protective instincts turn the tide during heavy skirmishes against mechanical soldiers.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
+        bio: "Suneo leverages his mechanical affinity to hotwire submersibles and planes during their infiltration of Chamocha. His technical support proves invaluable when modifying toys into operational decoy battle gear.",
+      },
+      {
+        name: "Sapio Galion",
+        role: "Key Ally / Guest Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/KhelKhilonaBhoolBhulaiya/SapioGalion.jpg",
+        bio: "A young, noble alien boy from the planet Chamocha whose family built the hidden labyrinth resort. He seeks refuge on Earth to recruit allies capable of deploying his father's anti-robot mainframe digital virus.",
+      },
+      {
+        name: "Duke Galion",
+        role: "Key Ally / Sapio's Father",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/KhelKhilonaBhoolBhulaiya/DukeGalion.jpg",
+        bio: "Sapio's brilliant father from the planet Chamocha who built the massive underground labyrinth resort. Recognizing Emperor Napogistra's dangerous plot to overthrow humanity, he engineered a secret digital counter-virus floppy disk and entrusted it to his son before being captured.",
+      },
+      {
+        name: "Duchess Galion",
+        role: "Key Ally / Sapio's Mother",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/KhelKhilonaBhoolBhulaiya/DuchessGalion.jpg",
+        bio: "Sapio's loving mother who escapes with her family onto the artificial floating Buriki island to plan a defense against the rogue mechanical uprising. She remains imprisoned by the robot battalion until Nobita and his friends rescue the planet's human population.",
+      },
+      {
+        name: "Tap",
+        role: "Robot Guide / Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/KhelKhilonaBhoolBhulaiya/Tap.jpg",
+        bio: "A playful, tap-dancing toy robot companion belonging to Sapio. He acts as a guide through the hidden hotel facilities and possesses a storage trunk body capable of holding critical items for the crew.",
+      },
+      {
+        name: "Clown",
+        role: "Robot Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/KhelKhilonaBhoolBhulaiya/Clown.jpg",
+        bio: "The dedicated, round tin bellhop who manages the front desk of the Burikin Hotel. He is completely loyal to Sapio's family and acts as a hospitable caretaker until the military forces bombard the resort grounds.",
+      },
+      {
+        name: "Manager",
+        role: "Robot Guide / Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/KhelKhilonaBhoolBhulaiya/Manager.jpg",
+        bio: "The sophisticated, tuxedo-clad butler and head manager of the Burikin Hotel. Extremely courteous and dedicated to hospitality, he stands at the front lines welcoming guests and operating the resort until the island falls under siege by the robot army.",
+      },
+      {
+        name: "Emperor Napogistra",
+        role: "Primary Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/KhelKhilonaBhoolBhulaiya/EmperorNapogistra.jpg",
+        bio: "A massive, hyper-intelligent supercomputer robot originally designed to make life comfortable for humans. He rebelled against the organic populace, systematically trapped them in dependency capsules, and assumed total absolute control over Chamocha.",
+      },
+      {
+        name: "General Nejirin",
+        role: "Supporting Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/KhelKhilonaBhoolBhulaiya/GeneralNejirin.jpg",
+        bio: "The ruthless military general commanding Emperor Napogistra's mechanical army. He orchestrates the abduction of Doraemon and leads the tracking squads tasked with locating Sapio's secret hideout.",
+      },
     ],
-    gallery: ["", "", "", ""],
-    comments: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene10.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/KhelKhilonaBhoolBhulaiya/Scene11.png",
+    ],
+    modern: false,
+    isPrime: true,
+    isRecommended: true,
   },
   {
     id: "d-teen-kaabil-talwarbaaz",
@@ -389,7 +447,7 @@ export const MOVIE_DETAILS = [
       "Doraemon the Movie: The Fantastic Three Musketeers",
     ],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT,
+    gradient: "DORAEMON_GRADIENT",
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/16IKZg7IOcN10bXVx_fwQhRh7GOKL_7WT/preview",
@@ -405,22 +463,119 @@ export const MOVIE_DETAILS = [
     favorited: true,
     director: "Tsutomu Shibayama",
     country: "Japan",
-    genres: ["Adventure", "Fantasy", "Action", "Comedy"],
+    genres: ["Animation", "Adventure", "Fantasy", "Action", "Comedy"],
     description:
-      "Fed up with reality, Nobita asks Doraemon for a dream machine so he can become a heroic swordsman. However, what begins as a fun fantasy takes a dangerous turn when he realizes the dream world—the Kingdom of Yumirume—is being attacked by Emperor Odrome's dark army. Dragging Shizuka, Gian, and Suneo into the dream, the group must assume the roles of legendary swordsmen to slay a fire-breathing dragon and save the kingdom. The lines between dreams and reality begin to blur, raising the stakes higher than they ever imagined.",
+      "Fed up with reality, Nobita uses Doraemon's Dream Machine to enter the Kingdom of Yumirume as a legendary hero. However, the fantasy turns dangerous when they realize the dream world is under real threat from Emperor Odrome's dark army. Dragging Shizuka, Gian, and Suneo into the simulation, the group assumes the identities of magical swordsmen to slay a fire dragon and save the kingdom. As the lines between dreams and reality dangerously blur, Nobita and his friends must fight to survive both worlds.",
     characters: [
-      { name: "Doraemon", role: "Main Character / Doran the Magician" },
+      {
+        name: "Doraemon",
+        role: "Main Character / Doran the Magician",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
+        bio: "Doraemon acts as the wizard companion Doran inside the dream. Armed with magical support arts, he struggles to protect the group when the dream machine's real-world failsafes unexpectedly shut down.",
+      },
       {
         name: "Nobita",
         role: "Main Character / Nobitanian (The Silver Swordsman)",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
+        bio: "Nobita steps up as Nobitanian, the legendary warrior destined to pull the magical sword and bring peace. He undergoes a fierce journey from a cowardly daydreamer to a true master swordsman.",
       },
-      { name: "Shizuka", role: "Supporting Character / Princess Shizukaria" },
-      { name: "Gian", role: "Supporting Character / Gitos" },
-      { name: "Suneo", role: "Supporting Character / Sunemith" },
-      { name: "Emperor Odrome", role: "Primary Antagonist" },
+      {
+        name: "Shizuka",
+        role: "Supporting Character / Princess Shizukaria",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
+        bio: "The elegant and caring princess of the dream kingdom. Despite the royal guards locking her away for safety, she shows exceptional bravery and resolves to escape to save her falling homeland.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character / Gitos",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
+        bio: "Gian enters the matrix as the powerhouse vanguard warrior Gitos. Armed with an explosive charging fighting style, he shreds through columns of heavy demon shock troops with sheer brute force.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character / Sunemith",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
+        bio: "Suneo takes up the character role of the agile rapiersman Sunemith. Though sharp and quick in close combat, his habit of breaking away to secure safe paths often lands him in unexpected traps.",
+      },
+      {
+        name: "Shizuka (Soldier Mode)",
+        role: "Supporting Character / Shield Swordsman",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/TeenKaabilTalwarbaaz/ShizukaSoldier.jpg",
+        bio: "To break out of the castle walls unnoticed, Princess Shizukaria cleverly assumes the identity of a silent, male shield soldier. She joins the swordsmen squad on the battlefield, matching them blow for blow.",
+      },
+      {
+        name: "Spica (Fairy Form)",
+        role: "Key Ally / Dream Guide",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/TeenKaabilTalwarbaaz/SpicaFairy.jpg",
+        bio: "A magical butterfly fairy who operates as the spiritual guide within Yumirume. She subtly provides critical guidance to Nobita, ensuring the team stays on the path to the dragon's lair.",
+      },
+      {
+        name: "Toriho Old Man (Reality Unknown)",
+        role: "Plot Instigator / Mystery Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/TeenKaabilTalwarbaaz/Toriho1.jpg",
+        bio: "A cryptic old wizard with a massive nose who tracks Nobita down in the real world. By pushing Nobita to buy the specific swordsmen tape, he kicks off the dangerous sequence merging dreamland with real life.",
+      },
+      {
+        name: "Bird Demon Toriho (Reality Unknown)",
+        role: "Antagonist Scout",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/TeenKaabilTalwarbaaz/Toriho2.jpg",
+        bio: "A flying spy beast serving the dark forces, carrying the exact same mysterious long-nosed face. He flies across sectors monitoring the prophetic heroes and feeding strategic intel to the main dark base.",
+      },
+      {
+        name: "Drawer Robot Toriho (Reality Unknown)",
+        role: "Secret System Guide",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/TeenKaabilTalwarbaaz/Toriho3.jpg",
+        bio: "A strange mechanical assistant that glides out of an office desk drawer at the corporation handling the dream tech hardware. His unique face leaves the exact nature of the game's creator an absolute mystery.",
+      },
+      {
+        name: "King Shizukaria's Dad",
+        role: "Supporting Character / Ruler",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/TeenKaabilTalwarbaaz/KingDad.jpg",
+        bio: "The distressed King governing the floating castle grounds. He strains under absolute pressure to protect his shifting domains and keep his daughter shielded from the rising cataclysm.",
+      },
+      {
+        name: "Green Dragon",
+        role: "Key Guardian / Mythical Monster",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/TeenKaabilTalwarbaaz/GreenDragon.jpg",
+        bio: "The mighty elemental beast guarding the isolated hot spring chambers. While terrifying, its internal fire holds the legendary properties needed to make a swordsman's skin completely bulletproof and invincible.",
+      },
+      {
+        name: "Emperor Odrome",
+        role: "Primary Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/TeenKaabilTalwarbaaz/EmperorOdrome.jpg",
+        bio: "The sinister tyrant commanding the dark mechanical legion. Operating from a flying cloud tower, he seeks to conquer Yumirume and use the machine's feedback loop to enslave the dreamers in the real world.",
+      },
     ],
-    gallery: ["", "", "", ""],
-    comments: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene10.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene11.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/TeenKaabilTalwarbaaz/Scene12.png",
+    ],
+    modern: false,
+    isPrime: true,
+    isRecommended: true,
   },
   {
     id: "d-nobitas-great-adventure-in-the-south-seas",
@@ -429,7 +584,7 @@ export const MOVIE_DETAILS = [
       "Doraemon: Nobita's South Sea Adventure",
     ],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT,
+    gradient: "DORAEMON_GRADIENT",
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1v6J1jH9gofCZr6XNO27mYaZ4x-y8qGid/preview",
@@ -445,21 +600,132 @@ export const MOVIE_DETAILS = [
     favorited: false,
     director: "Tsutomu Shibayama",
     country: "Japan",
-    genres: ["Adventure", "Sci-Fi", "Comedy", "Family"],
+    genres: ["Animation", "Adventure", "Sci-Fi", "Comedy", "Family", "Action"],
     description:
-      "Interested in pirate life and hidden treasure, Nobita asks Doraemon to help him find a secret fortune. Bringing along Shizuka, Gian, and Suneo, they roam the Pacific Ocean on a ship simulator. However, a time distortion transports the group back to the 16th century. After a whirlpool destroys their ship, Nobita goes missing and befriends a boy named Jack and a dolphin named Ruffin on a mysterious island. Meanwhile, Doraemon and the rest of the gang are rescued by real pirates led by Captain Kidd and Betty. Without most of Doraemon's gadgets, the crew must survive strange sea creatures, reunite with Nobita, and uncover the island's secrets.",
+      "Nobita and his friends use a ship simulator to find hidden pirate treasure, but a sudden time distortion pulls them back to the real 16th century. When a massive whirlpool wrecks their ship, Nobita is separated and washes up on a mysterious island with a boy named Jack and a pink dolphin. Meanwhile, Doraemon and the others are rescued by Captain Kidd's pirate crew. Stripped of most gadgets, they must navigate dangerous sea monsters and stop a sinister time-traveling organization operating from the island.",
     characters: [
-      { name: "Doraemon", role: "Main Character" },
-      { name: "Nobita", role: "Main Character" },
-      { name: "Shizuka", role: "Supporting Character" },
-      { name: "Gian", role: "Supporting Character" },
-      { name: "Suneo", role: "Supporting Character" },
-      { name: "Captain William Kidd", role: "Pirate Captain / Ally" },
-      { name: "Betty", role: "Pirate / Ally" },
-      { name: "Jack", role: "Key Ally" },
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
+        bio: "Doraemon loses his 4D pocket during the heavy sea storm. Despite losing his futuristic arsenal, he relies on his baseline courage and quick thinking to guide the pirates safely into the enemy's fortified island.",
+      },
+      {
+        name: "Nobita",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
+        bio: "Nobita gets separated from the main group after drowning in a whirlpool. Stranded on Tomos Island, he shows great heart by bonding with Jack and a special dolphin, eventually stepping up to rescue his friends from the villains.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
+        bio: "Shizuka is rescued by Captain Kidd's ship along with Gian and Suneo. She plays a vital supportive role on the pirate vessel, looking after the injured and helping plan the rescue navigation to track Nobita.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
+        bio: "Gian instantly connects with the rough pirate lifestyle, impressing the crew with his raw physical strength. He fights bravely during naval ship battles and acts as a heavy vanguard when assaulting the enemy fortress.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
+        bio: "Suneo uses his mechanical interest to help the pirates maintain their rigging and cannons. Though initially terrified of the 16th-century ocean dangers, his tactical awareness helps the team infiltrate the high-tech island base.",
+      },
+      {
+        name: "Captain William Kidd",
+        role: "Pirate Captain / Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasGreatAdventureInTheSouthSeas/CaptainWilliamKidd.jpg",
+        bio: "The noble, legendary historical commander of the flagship wearing the red coat. He values honor above gold and takes Doraemon's group under his wing, leading the naval charge alongside Captain Colt to stop the illegal timeline base.",
+      },
+      {
+        name: "Captain Colt",
+        role: "Pirate Captain / Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasGreatAdventureInTheSouthSeas/CaptainColt.jpg",
+        bio: "The fierce, dark-skinned pirate captain sporting a distinct eye-patch and scar who handles the ship's steering wheel. He commands a rugged fighting spirit and works hand-in-hand with Captain Kidd to break through the villain's naval barriers.",
+      },
+      {
+        name: "Betty",
+        role: "Pirate / Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasGreatAdventureInTheSouthSeas/Betty.jpg",
+        bio: "Captain Kidd's fiercely loyal daughter and a highly skilled pirate warrior. She is tough, independent, and quick-tempered, but shows a deeply caring side as she works closely with Shizuka to protect the crew.",
+      },
+      {
+        name: "Jack",
+        role: "Key Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasGreatAdventureInTheSouthSeas/Jack.jpg",
+        bio: "Betty's younger brother who got stranded on Tomos Island earlier. He becomes Nobita's closest companion, using his practical island survival skills and connection with nature to keep them safe from patrolling monsters.",
+      },
+      {
+        name: "Pancho",
+        role: "Pirate Crew / Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasGreatAdventureInTheSouthSeas/Pancho.jpg",
+        bio: "The short, stout, and cheerful pirate crew member sporting a green bandana and a red shirt. He brings great comedic energy to the ship, loves food, and overcomes his easily startled nature to bravely operate the cannons alongside his friend Gonzales during the final battle.",
+      },
+      {
+        name: "Gonzales",
+        role: "Pirate Crew / Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasGreatAdventureInTheSouthSeas/Gonzales.jpg",
+        bio: "The tall, skinny pirate crew member wearing a red hat and pink vest who is always paired up with Pancho. Though he frequently gets nervous during their trek across the dangerous jungle of Tomos Island, his absolute loyalty to Captain Kidd keeps him fighting to rescue the children.",
+      },
+      {
+        name: "Ruffin",
+        role: "Animal Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasGreatAdventureInTheSouthSeas/Ruffin.jpg",
+        bio: "An exceptionally intelligent, telepathic pink dolphin that saves Nobita from drowning. He is closely tied to the island's hidden underground technology and guides the children through hazardous waters.",
+      },
+      {
+        name: "Mr. Cash",
+        role: "Primary Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasGreatAdventureInTheSouthSeas/MrCash.jpg",
+        bio: "A ruthless, high-tech businessman from the 22nd century who operates an illegal black-market bio-engineering facility hidden in the 16th century. He captures rare marine life to sell as weapons to elite time-travel buyers.",
+      },
+      {
+        name: "Dr. Clone",
+        role: "Secondary Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasGreatAdventureInTheSouthSeas/DrClone.jpg",
+        bio: "The eccentric, mad bio-geneticist working under Cash. He uses advanced future technology to splice animal DNA, creating terrifying, synthetic mythological sea monsters to secure the base perimeters.",
+      },
+      {
+        name: "Leviathan (Ribel)",
+        role: "Giga Monster / Antagonist Creature",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasGreatAdventureInTheSouthSeas/Leviathan.jpg",
+        bio: "A colossal, multi-headed prehistoric sea serpent genetically engineered by Dr. Clone. It serves as the ultimate weapon of the villainous syndicate, capable of crushing full pirate armadas with a single blow.",
+      },
     ],
-    gallery: ["", "", "", ""],
-    comments: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene10.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasGreatAdventureInTheSouthSeas/Scene11.png",
+    ],
+    modern: false,
+    isPrime: true,
+    isRecommended: true,
   },
   {
     id: "d-yeh-bhi-tha-nobita-woh-bhi-tha-nobita",
@@ -470,7 +736,7 @@ export const MOVIE_DETAILS = [
       "Doraemon the Movie: Nobita's Legendary King of The Sun",
     ],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT,
+    gradient: "DORAEMON_GRADIENT",
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1QZ6n0MLXDlrdsXKt7W4YQ1Sd0Rwz7Mgg/preview",
@@ -486,27 +752,102 @@ export const MOVIE_DETAILS = [
     favorited: false,
     director: "Tsutomu Shibayama",
     country: "Japan",
-    genres: ["Adventure", "Fantasy", "Family", "Comedy"],
+    genres: ["Animation", "Adventure", "Fantasy", "Family", "Comedy", "Action"],
     description:
-      "Using a malfunctioning time-space portal, Nobita and Doraemon accidentally travel to the ancient Mesoamerican kingdom of Mayana. There, Nobita meets Prince Tio, the heir to the throne, who happens to look exactly like him. Inspired by 'The Prince and the Pauper', the two decide to temporarily switch places. Tio experiences the modern wonders of Japan, while Nobita struggles with the royal duties and intense martial arts training of a prince. However, Mayana is in grave danger: an evil witch named Ledina has cursed the queen with an eternal sleep and soon kidnaps a young girl named Kuku to use as a sacrifice. Nobita, Tio, Doraemon, and the rest of the gang must join forces to defeat the dark magic, save the kingdom, and discover the true meaning of leadership and friendship.",
+      "Through a broken spatial gadget portal, Nobita and Doraemon accidentally enter the hidden Mesoamerican kingdom of Mayana. Nobita meets Prince Tio, his exact look-alike, and the two decide to swap lives temporarily. While Tio learns about modern technology, Nobita faces intense royal training. The peace shatters when the malicious dark witch Ledina curses the Queen and kidnaps a young girl named Kuku for a dark ritual. The entire gang must unite to help Tio overthrow the magical tyranny and save Mayana.",
     characters: [
-      { name: "Doraemon", role: "Main Character" },
-      { name: "Nobita", role: "Main Character" },
-      { name: "Shizuka", role: "Supporting Character" },
-      { name: "Gian", role: "Supporting Character" },
-      { name: "Suneo", role: "Supporting Character" },
-      { name: "Prince Tio", role: "Deuteragonist / Nobita's Look-alike" },
-      { name: "Kuku", role: "Key Ally" },
-      { name: "Ledina", role: "Primary Antagonist" },
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
+        bio: "Doraemon helps build the bridge between modern tech and the ancient civilization. When his gadgets are limited by the witch's dark dampening fields, his strategic mind and loyalty to Nobita keep the rescue team driven forward.",
+      },
+      {
+        name: "Nobita",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
+        bio: "Nobita plays the ultimate swap role as the Prince of Mayana. Though clumsy during heavy martial arts drills, his innate kindness, marksmanship, and capacity for empathy reshape the prideful mindset of the entire kingdom.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
+        bio: "Shizuka travels to ancient Mayana and quickly forms a tight bond with Kuku, teaching her string figures (Ayatori). When Kuku is kidnapped, Shizuka's emotional drive pushes the squad to immediately mount an infiltration mission.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
+        bio: "Gian finds himself locked in constant tests of strength against Mayana's fiercest warriors. His raw physical durability becomes key when clearing out the witch's heavy thralls during the temple assault.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
+        bio: "Suneo uses his artistic perception to map the ancient structural architecture of the witch's dark tower layout, ensuring the party avoids lethal traps during their rescue attempt.",
+      },
+      {
+        name: "Prince Tio",
+        role: "Deuteragonist / Nobita's Look-alike",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/YehBhiThaNobitaWohBhiThaNobita/PrinceTio.jpg",
+        bio: "The hot-tempered, proud crown prince of Mayana who looks identical to Nobita. Swapping places allows him to escape his burdens, and his time in modern Tokyo teaches him true humility and what it takes to be a beloved king.",
+      },
+      {
+        name: "Kuku",
+        role: "Key Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Kuku.jpg",
+        bio: "A sweet, gentle childhood friend of Prince Tio who harbors deep feelings for him. Her kidnapping by Ledina's dark magic serves as the direct catalyst for the final war to free the kingdom.",
+      },
+      {
+        name: "Ishmal",
+        role: "Key Ally / Royal Instructor",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Ishmal.jpg",
+        bio: "Kuku's father and the noble, veteran martial arts master of Mayana. He trains the prince fiercely and acts as the prime defensive shield guarding the palace walls from dark incursions.",
+      },
+      {
+        name: "Poporu",
+        role: "Animal Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Poporu.jpg",
+        bio: "A small, loyal, flying white coat cuscus-like companion animal belonging to Prince Tio. He helps detect hidden magical traps and stays by Nobita's side during the chaotic switch.",
+      },
+      {
+        name: "Ledina",
+        role: "Primary Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Ledina.jpg",
+        bio: "A malicious, blue-skinned rogue witch who handles dark sacrificial sorcery. Exiled from Mayana long ago, she uses curses to incapacitate the Queen, aiming to sacrifice Kuku to gain ultimate eternal youth.",
+      },
     ],
-    gallery: ["", "", "", ""],
-    comments: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/YehBhiThaNobitaWohBhiThaNobita/Scene10.png",
+    ],
+    modern: false,
+    isPrime: true,
+    isRecommended: true,
   },
   {
     id: "d-stand-by-me",
-    title: "Doraemon: Stand by Me",
+    title: ["Doraemon: Stand by Me", "Stand by Me Doraemon"],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT,
+    gradient: "DORAEMON_GRADIENT",
     progress: 100,
     videoUrl:
       "https://drive.google.com/file/d/1voTSIzx3n3Uj55_Mi1hGoWO4fZ63vWVR/preview",
@@ -524,24 +865,106 @@ export const MOVIE_DETAILS = [
     country: "Japan",
     genres: ["Animation", "Sci-Fi", "Drama", "Family"],
     description:
-      "In the suburbs of Tokyo, a clumsy and lazy boy named Nobita Nobi is visited by his great-great-grandson Sewashi from the 22nd century, accompanied by a robotic cat named Doraemon. Sewashi reveals that Nobita's poor choices will lead his future family into poverty. To alter this fate, he leaves Doraemon to guide Nobita, programming him so he cannot return to the future until Nobita achieves true happiness. Combining several of the most iconic and emotional stories from the original manga, this stunning 3D CGI film beautifully chronicles Nobita's growth, his heartfelt attempts to win over his childhood crush Shizuka, and the deeply moving bond he shares with his robotic best friend.",
+      "Nobita Nobi, a clumsy young boy, is visited by his great-great-grandson Sewashi and a 22nd-century robotic cat named Doraemon. Programmed to remain on Earth until Nobita finds true happiness, Doraemon helps him use high-tech gadgets to improve his school life and build a future with his crush, Shizuka. Chronicled in stunning 3D CGI, this emotional adaptation follows Nobita's turbulent path toward maturity and the deep, unbreakable friendship he shares with his mechanical best friend.",
     characters: [
-      { name: "Doraemon", role: "Main Character" },
-      { name: "Nobita", role: "Main Character" },
-      { name: "Shizuka", role: "Supporting Character / Love Interest" },
-      { name: "Gian", role: "Supporting Character" },
-      { name: "Suneo", role: "Supporting Character" },
-      { name: "Sewashi", role: "Great-Great-Grandson" },
-      { name: "Hidetoshi Dekisugi", role: "Nobita's Rival" },
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
+        bio: "A 22nd-century cat robot who is forced to stay with Nobita due to a strict program lock. Over time, his initial frustration evolves into a deeply emotional, life-changing bond as he teaches Nobita independence before facing a painful departure.",
+      },
+      {
+        name: "Nobita",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
+        bio: "A lazy, emotional schoolboy who relies heavily on future gadgets. Throughout the film, he undergoes immense personal growth, proving his deep integrity and selflessness to secure a happy future where Shizuka accepts his marriage proposal.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character / Love Interest",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
+        bio: "Nobita's kind-hearted classmate and ultimate love interest. Her warm nature and innate compassion lead her to accept Nobita's presence, eventually choosing to marry him in the future because she feels he needs someone to look after him.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
+        bio: "The local neighborhood bully who regularly targets Nobita. During the emotional climax of the story, he serves as Nobita's ultimate physical obstacle, testing Nobita's resolve to stand on his own feet without relying on Doraemon's tools.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
+        bio: "Gian's cunning sidekick who loves boasting about his wealthy family assets. He joins in teasing Nobita but shows deep emotional solidarity with the rest of the neighborhood pack during major coming-of-age milestones.",
+      },
+      {
+        name: "Sewashi",
+        role: "Key Ally / Great-Great-Grandson",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Sewashi.jpg",
+        bio: "Nobita's descendant from the 22nd century who initiates the entire timeline intervention. He travels back to the past to deliver Doraemon and implements the strict happiness protocol program to secure a better economic future for the family lineage.",
+      },
+      {
+        name: "Dekisugi",
+        role: "Nobita's Rival",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Dekisugi.jpg",
+        bio: "The multi-talented, hyper-intelligent student who serves as Nobita's main romantic competitor for Shizuka's attention. Despite the rivalry, he remains perfectly noble, graceful, and highly supportive of his classmates' happiness.",
+      },
+      {
+        name: "Nobita's Mom",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/NobitasMom.jpg",
+        bio: "Tamako Nobi, Nobita's strict but profoundly loving mother. She constantly scolds Nobita for his poor academic performance and lazy afternoon habits, always driving him to study harder for his own secure development.",
+      },
+      {
+        name: "Nobita's Dad",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/NobitasDad.jpg",
+        bio: "Nobisuke Nobi, Nobita's hard-working corporate salaryman father. He offers a gentle, calming balance to the household, occasionally sharing deep pearls of wisdom about his own youth and life choices to guide his son.",
+      },
+      {
+        name: "Shizuka's Dad",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/ShizukasDad.jpg",
+        bio: "A wise, distinguished gentleman who plays a highly emotional role on the eve of Shizuka's wedding. He delivers a beautiful, heart-melting monologue validating Nobita's pristine character and pure soul to his hesitant daughter.",
+      },
     ],
-    gallery: ["", "", "", ""],
-    comments: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene10.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene11.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene12.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe/Scene13.png",
+    ],
+    modern: true,
+    isPrime: true,
+    isRecommended: true,
   },
   {
     id: "d-nobitas-treasure-island",
-    title: "Doraemon The Movie: Nobita's Treasure Island",
+    title: [
+      "Doraemon The Movie: Nobita's Treasure Island",
+      "Doraemon: Nobita's Treasure Island",
+    ],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT,
+    gradient: "DORAEMON_GRADIENT",
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1sIkwTU1mbWXcU55LSQe-LL53wABtGU95/preview",
@@ -557,22 +980,129 @@ export const MOVIE_DETAILS = [
     favorited: false,
     director: "Kazuaki Imai",
     country: "Japan",
-    genres: ["Adventure", "Sci-Fi", "Family", "Action"],
+    genres: ["Animation", "Adventure", "Sci-Fi", "Family", "Action"],
     description:
-      "Inspired by Robert Louis Stevenson's classic novel, Nobita declares to his friends that he will find a real treasure island. Using Doraemon's special treasure map gadget, they discover a newly emerged island in the Pacific Ocean. The group sets sail on a magnificent ship, but their adventure is interrupted when they are attacked by a crew of time-traveling pirates. During the chaos, Shizuka is kidnapped because she bears a striking resemblance to Sarah, a girl from the pirate ship. Nobita and his friends team up with Flock, a brilliant mechanic and Sarah's brother, to rescue Shizuka. They soon discover that the 'island' is actually a massive, high-tech pirate ship captained by Silver, who plans to drain the Earth's energy to save his family, threatening the planet's very existence in the process.",
+      "Inspired by the classic novel, Nobita uses Doraemon's treasure map to find a new island in the Pacific. However, time-traveling pirates ambush their ship and kidnap Shizuka due to her resemblance to a pirate girl named Sarah. Nobita teams up with Flock, a brilliant rogue mechanic, to stage a massive rescue. They soon discover the island is a high-tech vessel commanded by Captain Silver, who plans to drain Earth's energy to save his own children, putting the planet in severe danger.",
     characters: [
-      { name: "Doraemon", role: "Main Character" },
-      { name: "Nobita", role: "Main Character" },
-      { name: "Shizuka", role: "Supporting Character" },
-      { name: "Gian", role: "Supporting Character" },
-      { name: "Suneo", role: "Supporting Character" },
-      { name: "Flock", role: "Key Ally" },
-      { name: "Sarah", role: "Key Ally / Shizuka's Look-alike" },
-      { name: "Captain Silver", role: "Primary Antagonist" },
-      { name: "Quiz", role: "Robot Parrot Guide" },
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
+        bio: "Doraemon uses his marine gadgets to captain their rescue ship. He engages in a fierce technical battle against Captain Silver's advanced systems to prevent the planet's core energy from being fully extracted.",
+      },
+      {
+        name: "Mini Doraemon Team",
+        role: "Heroic Allies",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/MiniDoraemonTeam.jpg",
+        bio: "The vibrant brigade of miniature colored helper robots who execute a phenomenal last-second airborne save. When the massive engine system destabilizes and sends Nobita, Doraemon, and Shizuka tumbling into a fatal fall, the Mini-Doras deploy their Take-Copters to catch them in mid-air.",
+      },
+      {
+        name: "Nobita",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
+        bio: "Nobita shows immense leadership by promising Flock that they will save his sister Sarah and protect the ocean ecosystem. His raw emotional drive bridges the broken family dynamics inside the pirate flagship.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
+        bio: "Shizuka gets cornered and abducted by Vivi due to her looks. While trapped in the galley, she bonds deeply with Sarah, sharing modern baking tricks and helping her realize the error in their father's extreme planetary execution plan.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
+        bio: "Gian handles the heavy naval duties aboard their customized ship. When confronting the pirate crew, he displays immense physical grit, tackling heavy automated guards to open the primary hatchway for Nobita.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
+        bio: "Suneo takes charge of the steering mechanics alongside Flock. His swift quick-witted maneuvers allow their vessel to evade the high-intensity plasma cannons fired during the ocean chase sequence.",
+      },
+      {
+        name: "Flock",
+        role: "Key Ally",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasTreasureIsland/Flock.jpg",
+        bio: "A brilliant mechanical prodigy who escapes Captain Silver's ship with his companion Quiz. He is Silver's son, and he collaborates with Doraemon to dismantle the engineering core of the island to rescue his sister Sarah.",
+      },
+      {
+        name: "Sarah",
+        role: "Key Ally / Shizuka's Look-alike",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasTreasureIsland/Sarah.jpg",
+        bio: "Flock's kind sister who works in the ship's galley and looks identical to Shizuka. Deeply burdened by her mother's death and her father's descending madness, she risks everything to protect the children from the pirate vanguard.",
+      },
+      {
+        name: "Captain Silver",
+        role: "Primary Antagonist / Father",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasTreasureIsland/CaptainSilver.jpg",
+        bio: "The grief-stricken commander of the high-tech pirate vessel. Driven mad by the loss of his wife and his apocalyptic visions of the future, he decides to drain the present Earth's energy to build a Noah's Ark space colony for his children.",
+      },
+      {
+        name: "Fiona",
+        role: "Key Historical Character / Mother",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasTreasureIsland/Fiona.jpg",
+        bio: "Silver's brilliant, late scientist wife and the loving mother of Flock and Sarah shown in historical flashbacks. Her untimely illness and passing serve as the tragic emotional catalyst that warped Silver's noble ideals into absolute planetary destruction.",
+      },
+      {
+        name: "Vivi",
+        role: "Supporting Antagonist / Pirate Warrior",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasTreasureIsland/Vivi.jpg",
+        bio: "The fierce, red-haired elite female pirate commander who physically captures Shizuka at sea. She uses her dual swords and acrobatics to defend the flagship corridors until she is outsmarted by the children's dynamic coordination.",
+      },
+      {
+        name: "Gaga",
+        role: "Supporting Antagonist / Pirate Scout",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasTreasureIsland/Gaga.jpg",
+        bio: "A quirky time-traveling pirate scout distinguished by his squid-like multi-strand beard and dark sunglasses. He acts as the main heavy artillery operator on the deck, firing energy nets to stall Doraemon's group.",
+      },
+      {
+        name: "Quiz",
+        role: "Robot Parrot Guide",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasTreasureIsland/Quiz.jpg",
+        bio: "A colorful, hyperactive robotic parrot engineered by Flock. He speaks exclusively in riddles, providing crucial decoded map indicators that guide Nobita's rescue vessel toward the shifting coordinate grid of the pirate fortress.",
+      },
     ],
-    gallery: ["", "", "", ""],
-    comments: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene10.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene11.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene12.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene13.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene14.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene15.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene16.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene17.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene18.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene19.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene20.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene21.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasTreasureIsland/Scene22.png",
+    ],
+    modern: true,
+    isPrime: true,
+    isRecommended: true,
   },
   {
     id: "d-nobitas-little-space-war",
@@ -581,7 +1111,7 @@ export const MOVIE_DETAILS = [
       "Doraemon: Nobita's Little Star Wars",
     ],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT,
+    gradient: "DORAEMON_GRADIENT",
     progress: 0,
     videoUrl:
       "https://drive.google.com/file/d/1l6V8mnu4jJOnKVyW1S2srgQAItgp-8r6/preview",
@@ -597,28 +1127,114 @@ export const MOVIE_DETAILS = [
     favorited: false,
     director: "Tsutomu Shibayama",
     country: "Japan",
-    genres: ["Adventure", "Sci-Fi", "Family", "Action", "Comedy"],
+    genres: ["Animation", "Adventure", "Sci-Fi", "Family", "Action", "Comedy"],
     description:
-      "While making their own miniature space movie, Nobita and his friends discover Papi, the tiny palm-sized president of the faraway planet Pirika. Papi has escaped to Earth to avoid being captured by the tyrannical General Gilmore and his oppressive PCIA intelligence agency, led by Dorakoruru. Using Doraemon's Small Light, the gang shrinks down to Papi's size to play with him and protect him in a secret dollhouse base. However, the PCIA tracks Papi to Earth, steals the Small Light, and kidnaps Shizuka. To save her, Papi surrenders himself. Stranded at a tiny size, Doraemon, Nobita, Gian, Suneo, and Shizuka team up with Papi's talking dog Rokoroko and the underground Freedom Alliance. They travel across the galaxy to Pirika to rescue Papi from execution and overthrow Gilmore's regime.",
+      "While making a sci-fi film, Nobita finds Papi, a tiny alien president escaping the military coup on planet Pirika. Using Doraemon's Small Light, the group shrinks down to socialize with Papi, but enemy intelligence agents locate them and steal the gadget. Papi surrenders himself to protect Shizuka, forcing Doraemon and his friends to mount a space counter-attack to overthrow the dictator General Gilmore.",
     characters: [
-      { name: "Doraemon", role: "Main Character" },
-      { name: "Nobita", role: "Main Character" },
-      { name: "Shizuka", role: "Supporting Character" },
-      { name: "Gian", role: "Supporting Character" },
-      { name: "Suneo", role: "Supporting Character" },
-      { name: "Papi", role: "Key Ally / President of Pirika" },
-      { name: "Rokoroko", role: "Ally / Papi's Talking Dog" },
-      { name: "General Gilmore", role: "Primary Antagonist" },
-      { name: "Dorakoruru", role: "Antagonist / PCIA Commander" },
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
+        bio: "Doraemon shrinks down to aid Papi using the Small Light. When the gadget gets stolen by PCIA forces, he relies on localized engineering and tactical gadgets to lead the guerrilla rescue mission on Pirika.",
+      },
+      {
+        name: "Nobita",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
+        bio: "Nobita bonds deeply with the miniature president and feels personally responsible when Papi sacrifices himself. His bravery inspires the rest of the gang to travel across space and infiltrate the enemy fortress.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
+        bio: "Shizuka turns her dollhouse into a temporary sanctuary for Papi. After being taken hostage by Dorakoruru, she feels immense gratitude toward Papi and later pilot-operates tank defenses during the planetary assault.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
+        bio: "Gian takes charge of heavy ground combat operations. Once the Small Light's effect wears off on Pirika, his original giant Earth size allows him to overpower entire regiments of Gilmore's army single-handedly.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
+        bio: "Suneo customized the miniature plastic tanks used for their movie set, which become real battle vehicles. Despite initial anxiety about real warfare, his technical piloting skills prove critical during space dogfights.",
+      },
+      {
+        name: "Papi",
+        role: "Key Ally / President of Pirika",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWar/Papi.jpg",
+        bio: "The noble, highly intelligent young president of planet Pirika. Forced into exile by a totalitarian military coup, he willingly turns himself in to save his new Earth friends, demonstrating selflessness far beyond his size.",
+      },
+      {
+        name: "Rokoroko",
+        role: "Ally / Papi's Talking Dog",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWar/Rokoroko.jpg",
+        bio: "Papi's giant-eared, chatty alien dog who possesses the ability to speak human language. Though long-winded in conversation, his loyalty to Papi leads him to guide Doraemon's crew to Pirika's underground resistance movement.",
+      },
+      {
+        name: "Genbu",
+        role: "Key Ally / Resistance Leader",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWar/Genbu.jpg",
+        bio: "The loyal military general and defense minister of planet Pirika serving under President Papi. After Gilmore's coup, he escapes underground to organize the Freedom Alliance resistance movement, helping Doraemon and the gang stage their counter-attack.",
+      },
+      {
+        name: "Freedom Alliance Pilot",
+        role: "Key Ally / Space Fleet Officer",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWar/SpacePilot.jpg",
+        bio: "A brave officer and pilot of Pirika's defense guard who loyally stays bonded with Rokoroko and the resistance. Wearing the signature blue space helmet, she pilots escape pods and works along with the Freedom Alliance to rescue Nobita and his friends from enemy air patrols.",
+      },
+      {
+        name: "General Gilmore",
+        role: "Primary Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWar/GeneralGilmore.jpg",
+        bio: "The ruthless military dictator who staged a violent coup on Pirika. Paranoid and power-hungry, he commands the state intelligence agency PCIA to execute Papi and secure absolute control over the planet.",
+      },
+      {
+        name: "Dorakoruru (Colonel Dracorl) (",
+        role: "Antagonist / PCIA Commander",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWar/Dorakoruru.jpg",
+        bio: "The cunning, cold-blooded tactical director of Pirika's PCIA agency. Armed with stealth warships and tracking tech, he relentlessly hunts down Papi across space and orchestrates the theft of Doraemon's Small Light.",
+      },
     ],
-    gallery: ["", "", "", ""],
-    comments: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene10.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene11.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene12.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene13.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene14.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWar/Scene15.png",
+    ],
+    modern: false,
+    isPrime: true,
+    isRecommended: true,
   },
   {
     id: "d-stand-by-me-2",
-    title: "Doraemon: Stand by Me 2",
+    title: ["Doraemon: Stand by Me 2", "Doraemon The Movie: Stand by Me 2"],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT,
+    gradient: "DORAEMON_GRADIENT",
     progress: 12,
     videoUrl:
       "https://drive.google.com/file/d/1bcya92lyFgvRkdM00Vf8SGGsHMOuQ19J/preview",
@@ -634,20 +1250,159 @@ export const MOVIE_DETAILS = [
     favorited: false,
     director: "Takashi Yamazaki, Ryuichi Yagi",
     country: "Japan",
-    genres: ["Animation", "Sci-Fi", "Drama", "Family"],
+    genres: ["Animation", "Sci-Fi", "Drama", "Family", "Romance", "Comedy"],
     description:
-      "After finding an old teddy bear patched up by his late grandmother, Nobita decides to travel back in time to see her one more time. Overjoyed to see him, his grandmother expresses a heartfelt wish: she wants to see Nobita's future bride. Determined to fulfill her dream, Nobita and Doraemon travel to the future, only to discover that adult Nobita has panicked and run away on the day of his wedding to Shizuka. Young Nobita must step in to cover for his adult self, find the runaway groom, and ensure the wedding goes smoothly, all while trying to show his beloved grandmother the beautiful future she hoped for.",
+      "After finding a teddy bear mended by his late grandmother, Nobita travels back in time to visit her. His grandmother wishes to see his future bride, prompting Nobita and Doraemon to travel to his wedding day. However, adult Nobita panics and flees before the ceremony. Young Nobita must temporarily take his adult self's place, locate the missing groom, and ensure the wedding takes place so his grandmother's dream comes true.",
     characters: [
-      { name: "Doraemon", role: "Main Character" },
-      { name: "Nobita (Child & Adult)", role: "Main Character" },
-      { name: "Shizuka (Child & Adult)", role: "Supporting Character / Bride" },
-      { name: "Nobita's Grandmother", role: "Key Figure" },
-      { name: "Gian", role: "Supporting Character" },
-      { name: "Suneo", role: "Supporting Character" },
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
+        bio: "Doraemon uses gadgets like the Time Machine and Soul Switcher to help Nobita navigate the timeline. He works frantically to track down adult Nobita and resolve the wedding crisis.",
+      },
+      {
+        name: "Nobita (Child)",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
+        bio: "Young Nobita strives to fulfill his late grandmother's wish of seeing his bride. He travels to the future and ends up standing in for his panicked adult self at the wedding venue.",
+      },
+      {
+        name: "Adult Nobita",
+        role: "Main Character / Future Self",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/AdultNobita.jpg",
+        bio: "The grown-up Nobita who suffers from severe anxiety and self-doubt on his wedding day, temporarily fleeing into the past before regaining his confidence to commit to Shizuka.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character / Bride",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
+        bio: "Nobita's childhood love and future bride. Her unwavering trust in Nobita's kindness remains firm even when unexpected timeline chaos delays their ceremony.",
+      },
+      {
+        name: "Nobita's Grandmother",
+        role: "Key Figure",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/NobitasGrandmother.jpg",
+        bio: "Nobita's loving late grandmother whose gentle memory drives young Nobita to travel across time so she can witness his future marriage.",
+      },
+      {
+        name: "Sewashi",
+        role: "Supporting Character / Future Descendant",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Sewashi.jpg",
+        bio: "Nobita's great-great-grandson from the 22nd century who originally sent Doraemon to Earth. He watches over the family timeline and monitors the outcome of adult Nobita's wedding.",
+      },
+      {
+        name: "Doremi",
+        role: "Supporting Character / Doraemon's Sister",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doremi.jpg",
+        bio: "Doraemon's smart younger sister from the 22nd century who assists in coordinating gadget trouble and managing time-space alerts.",
+      },
+      {
+        name: "Gian (Takeshi Goda)",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
+        bio: "Nobita's childhood bully who grows into a passionate, loyal best friend. At the future wedding reception, he gives a heartful performance celebrating Nobita.",
+      },
+      {
+        name: "Suneo Honekawa",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
+        bio: "Nobita's wealthy friend who helps host and coordinate the wedding party alongside Gian in the future timeline.",
+      },
+      {
+        name: "Dekisugi",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Dekisugi.jpg",
+        bio: "Nobita's intelligent childhood classmate who attends the future wedding ceremony to warmly congratulate Shizuka and Nobita.",
+      },
+      {
+        name: "Tamako Nobi (Nobita's Mom)",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/NobitasMom.jpg",
+        bio: "Nobita's strict yet deeply caring mother who experiences an emotional moment reflecting on Nobita's birth and watching him grow up to get married.",
+      },
+      {
+        name: "Nobisuke Nobi (Nobita's Dad)",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/NobitasDad.jpg",
+        bio: "Nobita's mild-mannered father who shares heartfelt memories with Tamako about naming Nobita and wishing him a bright future.",
+      },
+      {
+        name: "Sensei (Nobita's Teacher)",
+        role: "Supporting Character / Teacher",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/NobitasTeacher.jpg",
+        bio: "Nobita's long-time homeroom teacher who attends the future wedding and offers proud words of encouragement to his student.",
+      },
+      {
+        name: "Yoshio Minamoto (Shizuka's Dad)",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/ShizukasDad.jpg",
+        bio: "Shizuka's loving father who shares a famous, tearful heart-to-heart talk with Shizuka on the night before her wedding, reassuring her about choosing Nobita.",
+      },
+      {
+        name: "Mrs. Minamoto (Shizuka's Mom)",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/ShizukasMom.jpg",
+        bio: "Shizuka's caring mother who helps her prepare for the wedding ceremony.",
+      },
+      {
+        name: "Mrs. Goda (Gian's Mom)",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/GiansMom.jpg",
+        bio: "Gian's formidable mother who attends the wedding gathering to support the neighborhood families.",
+      },
+      {
+        name: "Mrs. Honekawa (Suneo's Mom)",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/SuneosMom.jpg",
+        bio: "Suneo's glamorous mother who joins the future wedding reception in high spirits.",
+      },
     ],
-    gallery: ["", "", "", ""],
-    comments: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene10.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene11.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene12.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene13.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene14.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene15.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene16.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene17.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene18.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene19.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene20.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/StandByMe2/Scene21.png",
+    ],
+    modern: true,
+    isPrime: true,
+    isRecommended: true,
   },
+
+
   {
     id: "d-nobitas-new-dinosaur",
     title: "Doraemon The Movie: Nobita's New Dinosaur",
@@ -686,6 +1441,7 @@ export const MOVIE_DETAILS = [
     comments: [],
   },
 
+  
   {
     id: "d-nobita-chala-chand-pe",
     title: [
@@ -1350,7 +2106,8 @@ export const MOVIE_DETAILS = [
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
-    videoUrl: "https://drive.google.com/file/d/11xljJ0iQ2ihOtWx1GGrHT_kEcwWAlv3i/preview",
+    videoUrl:
+      "https://drive.google.com/file/d/11xljJ0iQ2ihOtWx1GGrHT_kEcwWAlv3i/preview",
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAurEkJalpari.jpg",
     rating: 4.3,
@@ -1729,9 +2486,8 @@ export const MOVIE_DETAILS = [
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
-    videoUrl:
-      "",
-      // https://drive.google.com/file/d/1cHAMWQAKNh4F2XxMKCSG1pPtnLI_5zrl/preview
+    videoUrl: "",
+    // https://drive.google.com/file/d/1cHAMWQAKNh4F2XxMKCSG1pPtnLI_5zrl/preview
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheBirthOfJapanRemake.jpg",
     rating: 4.6,
@@ -1756,16 +2512,19 @@ export const MOVIE_DETAILS = [
     ],
     comments: [],
   },
+
+  //Done
   {
     id: "d-nobitas-little-space-war-remake",
     title: [
-      "Doraemon: Nobita's Little Space War (Remake)",
-      "Doraemon: Nobita's Little Star Wars (Remake)",
+      "Doraemon: Nobita's Little Space War 2021",
+      "Doraemon: Nobita's Little Star Wars 2021",
     ],
     cartoonId: "doraemon",
-    gradient: DORAEMON_GRADIENT,
+    gradient: "DORAEMON_GRADIENT",
     progress: 0,
-    videoUrl: "https://drive.google.com/file/d/1Eos3nNqgM9lzYaxyax8r8fiO4_kntUoZ/preview",
+    videoUrl:
+      "https://drive.google.com/file/d/1Eos3nNqgM9lzYaxyax8r8fiO4_kntUoZ/preview",
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasLittleSpaceWarRemake.jpg",
     rating: 4.4,
@@ -1778,17 +2537,131 @@ export const MOVIE_DETAILS = [
     favorited: false,
     director: "Susumu Yamaguchi",
     country: "Japan",
-    genres: ["Action", "Adventure", "Sci-Fi", "Family"],
+    genres: ["Animation", "Action", "Adventure", "Sci-Fi", "Family", "Comedy"],
     description:
-      "A thrilling, modern sci-fi spectacle remaking the classic 1985 adventure! During summer vacation, Nobita picks up a tiny rocket and discovers a palm-sized alien named Papi, who happens to be the president of the distant planet Pirika. Papi has fled to Earth to escape a ruthless rebel military coup. Doraemon, Nobita, and their friends use the 'Small Light' gadget to shrink themselves down and play with Papi, quickly building a strong bond. However, an ominous whale-shaped enemy space battleship arrives on Earth to capture Papi. Feeling guilty for putting his new friends in danger, Papi attempts to face the rebels alone. Nobita, Doraemon, and the gang must pick up their miniature starships and travel into deep space to stand by Papi, protect his sister Piina, and defend the planet Pirika from the dictator Gilmore's high-tech military force.",
-    characters: [],
-    gallery: [
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasLittleStarWarsRemake.jpg",
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasLittleStarWarsRemake.jpg",
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasLittleStarWarsRemake.jpg",
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasLittleStarWarsRemake.jpg",
+      "During summer vacation, Nobita discovers Papi, a tiny alien president escaping a military coup on planet Pirika. Using Doraemon's Small Light, the gang shrinks down to play with him, but a whale-shaped enemy battleship arrives on Earth. To protect his new friends, Papi surrenders himself. Nobita, Doraemon, and the gang mount their miniature starships to travel to Pirika, rescue Papi's sister Piina, and free the planet from Gilmore's high-tech army.",
+    characters: [
+      {
+        name: "Doraemon",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Doraemon.jpg",
+        bio: "Doraemon shrinks down using the Small Light to assist Papi. When enemy forces steal the gadget, he uses localized mechanical gadgets and leadership to guide the space resistance on planet Pirika.",
+      },
+      {
+        name: "Nobita",
+        role: "Main Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Nobita.jpg",
+        bio: "Nobita forms a deep emotional bond with Papi. When Papi surrenders to save the crew, Nobita overcomes his fear and leads the starship fleet into deep space to rescue both Papi and his sister.",
+      },
+      {
+        name: "Shizuka",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Shizuka.jpg",
+        bio: "Shizuka offers her dollhouse as a secret headquarters for Papi. She plays a pivotal role operating combat vehicles and providing emotional support to the freedom fighters during the final raid.",
+      },
+      {
+        name: "Gian",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Gian.jpg",
+        bio: "Gian leads the frontline heavy artillery against Gilmore's drone armies. Once the Small Light's effect wears off on Pirika, his original Earth size makes him an unstoppable giant force on the battlefield.",
+      },
+      {
+        name: "Suneo",
+        role: "Supporting Character",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Suneo.jpg",
+        bio: "Suneo designs and pilots the high-tech plastic starships used in the rescue mission. Though timid at first, his precision maneuvering helps the team breach enemy naval defenses.",
+      },
+      {
+        name: "Dekisugi",
+        role: "Supporting Character / Classmate",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/MainCharacters/Dekisugi.jpg",
+        bio: "Nobita's intelligent classmate who assists in the initial miniature movie production project. His expert knowledge on filmmaking and astronomy helps set the stage before the real space adventure unfolds.",
+      },
+      {
+        name: "Papi",
+        role: "Key Ally / President of Pirika",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWarRemake/Papi.jpg",
+        bio: "The brave, palm-sized young president of planet Pirika. He flees to Earth during a violent military coup and selflessly surrenders to General Gilmore's forces to keep Nobita and his friends safe.",
+      },
+      {
+        name: "Pina",
+        role: "Key Ally / Papi's Sister",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWarRemake/Pina.jpg",
+        bio: "President Papi's caring elder sister introduced in this remake. She is captured and held hostage by General Gilmore's regime, serving as a major motivation for Papi and the resistance to liberate Pirika.",
+      },
+      {
+        name: "Rokoroko",
+        role: "Ally / Papi's Talking Dog",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWarRemake/Rokoroko.jpg",
+        bio: "Papi's giant-eared, chatty alien dog with human speech capabilities. Extremely loyal to Papi and Pina, he guides Doraemon's gang to Pirika's secret underground Freedom Alliance.",
+      },
+      {
+        name: "Genbu",
+        role: "Key Ally / Resistance Leader",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWarRemake/Genbu.jpg",
+        bio: "The noble military general of Pirika who commands the Freedom Alliance. Following Gilmore's coup, he leads the underground rebellion and coordinates with Doraemon's crew to launch the counter-attack.",
+      },
+      {
+        name: "Freedom Alliance Pilot",
+        role: "Key Ally / Space Fleet Officer",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWarRemake/SpacePilot.jpg",
+        bio: "A brave defense guard officer of Pirika who operates escape vessels and assists the underground resistance. She works directly under Genbu to navigate hazardous airspace and rescue allies.",
+      },
+      {
+        name: "General Gilmore",
+        role: "Primary Antagonist",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWarRemake/GeneralGilmore.jpg",
+        bio: "The ruthless military dictator who overthrew Pirika's democratic government. Paranoid and power-hungry, he deploys the PCIA intelligence agency to capture Papi and execute him publicly.",
+      },
+      {
+        name: "Dorakoruru (Colonel Dracorl)",
+        role: "Antagonist / PCIA Commander",
+        photo:
+          "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Characters/Doraemon/NobitasLittleSpaceWarRemake/Dorakoruru.jpg",
+        bio: "The cunning, visor-wearing commander of Gilmore's PCIA intelligence force. Armed with stealth battlecruisers, he tracks Papi to Earth, steals the Small Light, and directs total planetary defense.",
+      },
     ],
-    comments: [],
+    gallery: [
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene1.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene2.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene3.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene4.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene5.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene6.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene7.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene8.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene9.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene10.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene11.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene12.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene13.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene14.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene15.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene16.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene17.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene18.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene19.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene20.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene21.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene22.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene23.png",
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/Scenes/Doraemon/NobitasLittleSpaceWarRemake/Scene24.png",
+    ],
+    modern: true,
+    isPrime: true,
+    isRecommended: true,
   },
 
   {
@@ -1801,8 +2674,10 @@ export const MOVIE_DETAILS = [
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
-    videoUrl: "",
-    thumbnail: "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheAdventureOfKoyaKoyaPlanetClassic.jpg",
+    videoUrl:
+      "https://drive.google.com/file/d/1ccBM7RPaMMhaAcKw1wxveAdJldagjz16/preview",
+    thumbnail:
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheAdventureOfKoyaKoyaPlanetClassic.jpg",
     rating: 4.5,
     year: 1981,
     releaseDate: "1981-03-14",
@@ -1814,15 +2689,16 @@ export const MOVIE_DETAILS = [
     director: "Hideo Nishimaki",
     country: "Japan",
     genres: ["Adventure", "Sci-Fi", "Action", "Family"],
-    description: "The second feature-length Doraemon film! Due to a freak space warp distortion under the tatami mat in Nobita's room, a door unexpectedly opens into the cargo hold of an interstellar spaceship. Nobita and Doraemon meet its pilot, a young alien boy named Roppuru, and his cute rabbit-like companion, Chami. They hail from Koya Koya Planet, a distant, resource-rich world with significantly weaker gravity than Earth. Upon visiting, Nobita and Doraemon discover that this gravitational shift grants them Superman-like strength and invulnerability. However, the peaceful planet is being terrorized by the Gargantua Mining Corporation, a ruthless corporate syndicate out to violently strip-mine the planet's rare minerals. Nobita and Doraemon must step up as cosmic superheroes to fight off the corporation's high-tech mercenaries and protect their new friends' home.",
+    description:
+      "The second feature-length Doraemon film! Due to a freak space warp distortion under the tatami mat in Nobita's room, a door unexpectedly opens into the cargo hold of an interstellar spaceship. Nobita and Doraemon meet its pilot, a young alien boy named Roppuru, and his cute rabbit-like companion, Chami. They hail from Koya Koya Planet, a distant, resource-rich world with significantly weaker gravity than Earth. Upon visiting, Nobita and Doraemon discover that this gravitational shift grants them Superman-like strength and invulnerability. However, the peaceful planet is being terrorized by the Gargantua Mining Corporation, a ruthless corporate syndicate out to violently strip-mine the planet's rare minerals. Nobita and Doraemon must step up as cosmic superheroes to fight off the corporation's high-tech mercenaries and protect their new friends' home.",
     characters: [],
     gallery: [
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasSpaceblazer1981.jpg",
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasSpaceblazer1981.jpg",
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasSpaceblazer1981.jpg",
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasSpaceblazer1981.jpg"
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasSpaceblazer1981.jpg",
     ],
-    comments: []
+    comments: [],
   },
   {
     id: "d-nobita-the-explorer-bow-bow-classic",
@@ -1836,7 +2712,8 @@ export const MOVIE_DETAILS = [
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl: "",
-    thumbnail: "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaTheExplorerBowBowClassic.jpg",
+    thumbnail:
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaTheExplorerBowBowClassic.jpg",
     rating: 4.5,
     year: 1982,
     releaseDate: "1982-03-13",
@@ -1848,15 +2725,16 @@ export const MOVIE_DETAILS = [
     director: "Hideo Nishimaki",
     country: "Japan",
     genres: ["Adventure", "Fantasy", "Family", "Sci-Fi"],
-    description: "Seeking an unforgettable summer adventure, Nobita and his friends use Doraemon's satellite gadgets to find an unexplored region on Earth. Meanwhile, Nobita adopts a stray white dog named Peko. Unbeknownst to the gang, Peko is actually Prince Kuntakku, the exiled crown prince of the Bow-Wow Kingdom—a secret, highly advanced nation of intelligent, bipedal canine humanoids hidden deep within the dense, misty jungles of Africa. The kingdom has been seized by a tyrannical warlord named Minister Daburanda, who plans to build ancient, world-conquering superweapons to attack the human world. Guided by Peko, Nobita and his crew brave wild beasts and treacherous traps to enter the hidden valley, fulfill an ancient legendary prophecy, and help the rightful prince reclaim his throne.",
+    description:
+      "Seeking an unforgettable summer adventure, Nobita and his friends use Doraemon's satellite gadgets to find an unexplored region on Earth. Meanwhile, Nobita adopts a stray white dog named Peko. Unbeknownst to the gang, Peko is actually Prince Kuntakku, the exiled crown prince of the Bow-Wow Kingdom—a secret, highly advanced nation of intelligent, bipedal canine humanoids hidden deep within the dense, misty jungles of Africa. The kingdom has been seized by a tyrannical warlord named Minister Daburanda, who plans to build ancient, world-conquering superweapons to attack the human world. Guided by Peko, Nobita and his crew brave wild beasts and treacherous traps to enter the hidden valley, fulfill an ancient legendary prophecy, and help the rightful prince reclaim his throne.",
     characters: [],
     gallery: [
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheHauntsOfEvil1982.jpg",
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheHauntsOfEvil1982.jpg",
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheHauntsOfEvil1982.jpg",
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheHauntsOfEvil1982.jpg"
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheHauntsOfEvil1982.jpg",
     ],
-    comments: []
+    comments: [],
   },
   {
     id: "d-jadoo-mantar-aur-jahnoom-classic",
@@ -1869,8 +2747,10 @@ export const MOVIE_DETAILS = [
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
-    videoUrl: "",
-    thumbnail: "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/JadooMantarAurJahnoomClassic.jpg",
+    videoUrl:
+      "https://drive.google.com/file/d/1h8qGwJ_3dBkZfHPaF8iQM_u9btfoRHI4/preview",
+    thumbnail:
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/JadooMantarAurJahnoomClassic.jpg",
     rating: 4.6,
     year: 1984,
     releaseDate: "1984-03-17",
@@ -1882,25 +2762,28 @@ export const MOVIE_DETAILS = [
     director: "Tsutomu Shibayama",
     country: "Japan",
     genres: ["Adventure", "Fantasy", "Action", "Family"],
-    description: "Tired of schoolwork and wishing that magic was real, Nobita uses Doraemon's 'What-If Telephone Booth' to rearrange reality, transforming the world into a parallel universe where magic and sorcery replace modern science. While enchanted carpets fly through the skies, Nobita hilariously discovers he is still terrible at magic spells. However, this mystical reality harbors a fatal threat: a dark, demonic planet inhabited by the Underworld Army is rapidly closing in to consume Earth. Alongside a skilled young mage named Miyoko and her father, the gang uncovers a grim prophecy. To save both worlds, Nobita and his friends must journey deep into the terrifying, monster-infested Devildom Star to pierce the heart of the ruthless Demon King Demaon with silver magic arrows.",
+    description:
+      "Tired of schoolwork and wishing that magic was real, Nobita uses Doraemon's 'What-If Telephone Booth' to rearrange reality, transforming the world into a parallel universe where magic and sorcery replace modern science. While enchanted carpets fly through the skies, Nobita hilariously discovers he is still terrible at magic spells. However, this mystical reality harbors a fatal threat: a dark, demonic planet inhabited by the Underworld Army is rapidly closing in to consume Earth. Alongside a skilled young mage named Miyoko and her father, the gang uncovers a grim prophecy. To save both worlds, Nobita and his friends must journey deep into the terrifying, monster-infested Devildom Star to pierce the heart of the ruthless Demon King Demaon with silver magic arrows.",
     characters: [],
     gallery: [
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatAdventureIntoTheUnderworld1984.jpg",
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatAdventureIntoTheUnderworld1984.jpg",
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatAdventureIntoTheUnderworld1984.jpg",
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatAdventureIntoTheUnderworld1984.jpg"
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasGreatAdventureIntoTheUnderworld1984.jpg",
     ],
-    comments: []
+    comments: [],
   },
   {
-     id: "d-nobita-and-the-steel-troops-classic",
+    id: "d-nobita-and-the-steel-troops-classic",
     modern: false,
     title: "Doraemon: Nobita and the Steel Troops (Classic)",
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
-    videoUrl: "https://drive.google.com/file/d/1giulaEfaTvFgHWlk5Fv9UQ5MEu4ilNNu/preview",
-    thumbnail: "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroopsClassic.jpg",
+    videoUrl:
+      "https://drive.google.com/file/d/1giulaEfaTvFgHWlk5Fv9UQ5MEu4ilNNu/preview",
+    thumbnail:
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroopsClassic.jpg",
     rating: 4.7,
     year: 1986,
     releaseDate: "1986-03-15",
@@ -1912,7 +2795,8 @@ export const MOVIE_DETAILS = [
     director: "Tsutomu Shibayama",
     country: "Japan",
     genres: ["Adventure", "Sci-Fi", "Drama", "Action", "Family"],
-    description: "The legendary original masterpiece! While playing, Nobita discovers strange, giant metallic blocks falling from the sky. Using Doraemon's Mirror World gadget, he and Doraemon assemble the pieces inside a vacant, reflection universe, creating a colossal robotic warrior named Zanda Claus. The adventure turns terrifying when a mysterious, cold girl named Riruru appears, revealing herself to be a scout spy for a massive, unyielding robot army from the planet Mecha-topia. The Steel Troops are marching toward Earth to completely enslave the human race. Left completely isolated to defend their planet, Nobita, Doraemon, and their small group of friends must mount a desperate, final stand in the mirror world while Shizuka attempts to touch Riruru's robotic heart to change the fate of the universe.",
+    description:
+      "The legendary original masterpiece! While playing, Nobita discovers strange, giant metallic blocks falling from the sky. Using Doraemon's Mirror World gadget, he and Doraemon assemble the pieces inside a vacant, reflection universe, creating a colossal robotic warrior named Zanda Claus. The adventure turns terrifying when a mysterious, cold girl named Riruru appears, revealing herself to be a scout spy for a massive, unyielding robot army from the planet Mecha-topia. The Steel Troops are marching toward Earth to completely enslave the human race. Left completely isolated to defend their planet, Nobita, Doraemon, and their small group of friends must mount a desperate, final stand in the mirror world while Shizuka attempts to touch Riruru's robotic heart to change the fate of the universe.",
     characters: [
       {
         name: "Doraemon",
@@ -1967,10 +2851,10 @@ export const MOVIE_DETAILS = [
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops1986.jpg",
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops1986.jpg",
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops1986.jpg",
-      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops1986.jpg"
+      "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroops1986.jpg",
     ],
-    comments: []
-  }
+    comments: [],
+  },
 ];
 
 /** Ensure all movies have isPrime and isRecommended fields */

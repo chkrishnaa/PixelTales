@@ -105,7 +105,7 @@ export default function Hero() {
                 alt={slide.title}
                 loading="eager"
                 initial={{
-                  x: -250,
+                  x: 250,
                   opacity: 0,
                 }}
                 animate={{
@@ -113,7 +113,7 @@ export default function Hero() {
                   opacity: 1,
                 }}
                 exit={{
-                  x: 250,
+                  x: -250,
                   opacity: 0,
                 }}
                 transition={{
