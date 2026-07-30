@@ -94,7 +94,7 @@ export default function RecommendedMovies({ movies, isClassic = false }) {
           className={`p-4 xs:p-5 sm:p-6 ${v ? "bg-[#fdf3d8] dark:bg-[#1e1508]" : ""}`}
         >
           {/* ── Movie Grid ── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
             {paginated.map((movie, i) => (
               <div
                 key={movie.id}

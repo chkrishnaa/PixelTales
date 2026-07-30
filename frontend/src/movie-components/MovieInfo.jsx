@@ -237,7 +237,7 @@ export default function MovieInfo({
                   {movie.title.slice(1).map((alt) => (
                     <span
                       key={alt}
-                      className={`px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-medium ${v ? "rounded-sm" : "rounded-full"} ${C.altBadge}`}
+                      className={`px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-medium ${v ? "rounded-sm" : "rounded-md"} ${C.altBadge}`}
                       style={v ? C.font : undefined}
                     >
                       also: {alt}

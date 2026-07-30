@@ -341,7 +341,18 @@ export default function MovieCast({
                   : `${getTheme(selectedChar.role).border} ${getTheme(selectedChar.role).bg}`
               }`}
             >
-              <div className="flex flex-col xs:flex-row items-center xs:items-start gap-4 xs:gap-5 sm:gap-6 p-4 xs:p-5">
+              <div className="relative flex flex-col xs:flex-row items-center xs:items-start gap-4 xs:gap-5 sm:gap-6 p-4 xs:p-5">
+                <button
+                  onClick={() => setSelected(null)}
+                  className={`absolute top-3 right-3 z-10 p-1.5 transition ${
+                    v
+                      ? `rounded-sm ${V.panelClose}`
+                      : "rounded-full text-gray-400 hover:bg-black/10 hover:text-gray-600 dark:hover:bg-white/10"
+                  }`}
+                >
+                  <X size={15} />
+                </button>
+
                 {/* Avatar */}
                 <div className="relative shrink-0">
                   {selectedChar.photo?.trim() ? (
@@ -381,7 +392,7 @@ export default function MovieCast({
 
                 {/* Content */}
                 <div className="min-w-0 flex-1 text-center xs:text-left">
-                  <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
                     <div className="min-w-0 flex-1">
                       <h3
                         className={`font-sans text-lg xs:text-xl sm:text-2xl font-bold leading-tight ${
@@ -393,9 +404,7 @@ export default function MovieCast({
                       </h3>
 
                       <p
-                        className={`mt-1 text-[11px] xs:text-xs sm:text-sm font-semibold ${
-                          v ? V.panelSub : "text-gray-500 dark:text-gray-400"
-                        }`}
+                        className={`mt-1 text-[11px] xs:text-xs sm:text-sm font-semibold max-w-[180px] mx-auto xs:max-w-none xs:mx-0 ${v ? V.panelSub : "text-gray-500 dark:text-gray-400"}`}
                         style={v ? V.font : undefined}
                       >
                         Featured in{" "}
@@ -410,17 +419,6 @@ export default function MovieCast({
                         </span>
                       </p>
                     </div>
-
-                    <button
-                      onClick={() => setSelected(null)}
-                      className={`mt-0.5 shrink-0 p-1.5 transition ${
-                        v
-                          ? `rounded-sm ${V.panelClose}`
-                          : "rounded-full text-gray-400 hover:bg-black/10 hover:text-gray-600 dark:hover:bg-white/10"
-                      }`}
-                    >
-                      <X size={15} />
-                    </button>
                   </div>
 
                   <p
