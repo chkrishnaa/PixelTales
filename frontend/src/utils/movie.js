@@ -2984,7 +2984,7 @@ export const MOVIE_DETAILS = [
     gradient: DORAEMON_GRADIENT,
     progress: 0,
     videoUrl:
-      "https://drive.google.com/file/d/1giulaEfaTvFgHWlk5Fv9UQ5MEu4ilNNu/preview",
+      "https://drive.google.com/file/d/18YUuiGju8NLybhOh8A0s3F5f6wUBRHHH/preview",
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheSteelTroopsClassic.jpg",
     rating: 4.7,
