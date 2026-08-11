@@ -2272,7 +2272,7 @@ export const MOVIE_DETAILS = [
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 62,
-    videoUrl: "",
+    videoUrl: "https://drive.google.com/file/d/1fePnZw9O-NsiTCjPfFsxKP-Y_lTIk6Mk/preview",
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAurPisukeRemake.jpg",
     rating: 4.5,
@@ -2689,7 +2689,7 @@ export const MOVIE_DETAILS = [
     cartoonId: "doraemon",
     gradient: DORAEMON_GRADIENT,
     progress: 0,
-    videoUrl: "",
+    videoUrl: "https://drive.google.com/file/d/1-4FIdEo-Ncc1Ozb6zNM_qASSxpUOPQ_2/preview",
     // https://drive.google.com/file/d/1cHAMWQAKNh4F2XxMKCSG1pPtnLI_5zrl/preview
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitaAndTheBirthOfJapanRemake.jpg",
@@ -2727,7 +2727,7 @@ export const MOVIE_DETAILS = [
     gradient: "DORAEMON_GRADIENT",
     progress: 0,
     videoUrl:
-      "https://drive.google.com/file/d/1Eos3nNqgM9lzYaxyax8r8fiO4_kntUoZ/preview",
+      "https://drive.google.com/file/d/1gmxfr20QF50CvNNWx_brE1K7MIonm7c0/preview",
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasLittleSpaceWarRemake.jpg",
     rating: 4.4,
