@@ -110,14 +110,14 @@ export default function MovieGridCard({
   const visibleGenres = movie.genres?.slice(0, 2) ?? [];
   const remainingGenres = Math.max((movie.genres?.length ?? 0) - 2, 0);
   // Debug in development: log flag values for each card
-  if (import.meta.env.DEV) {
-    // eslint-disable-next-line no-console
-    console.debug("MovieGridCard flags", {
-      id: movie.id ?? movie.movieId,
-      isPrime: isPrimeFlag,
-      isRecommended: isRecommendedFlag,
-    });
-  }
+  // if (import.meta.env.DEV) {
+  //   // eslint-disable-next-line no-console
+  //   console.debug("MovieGridCard flags", {
+  //     id: movie.id ?? movie.movieId,
+  //     isPrime: isPrimeFlag,
+  //     isRecommended: isRecommendedFlag,
+  //   });
+  // }
 
   return (
     <>

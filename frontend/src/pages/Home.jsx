@@ -8,6 +8,9 @@ import {
   Clapperboard,
   MessageSquare,
   PlayCircle,
+  Flame,
+  Clock3,
+  Library,
 } from "lucide-react";
 import HomeNavbar from "../components/HomeNavbar";
 import MovieGridCard from "../components/MovieGridCard";
@@ -17,7 +20,8 @@ import HomeHeroCarousel from "../components/home/HomeHeroCarousel";
 import ReviewCard from "../components/ReviewCard";
 import CommonPagination from "../components/Utility/CommonPagination";
 import { useReviews } from "../hooks/useReviews";
-import { useAnalytics, formatCount } from "../hooks/useAnalytics";
+import { useAnalytics } from "../hooks/useAnalytics";
+import { formatNumber, formatWatchTime } from "../utils/helper";
 import { useAuth } from "../context/AuthContext";
 
 // function Stars({ rating }) {
@@ -336,10 +340,12 @@ export default function Home() {
         <section className="page-container pb-14">
           <div className="mb-6 flex items-center gap-2">
             <Sparkles className="size-6 text-turquoise-500" aria-hidden />
+
             <h2 className="font-display text-xl text-turquoise-700 dark:text-turquoise-400 md:text-2xl">
               Analytics
             </h2>
           </div>
+
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
@@ -347,32 +353,71 @@ export default function Home() {
                 label: "Users",
                 value: analyticsLoading
                   ? null
-                  : formatCount(analyticsStats?.totalUsers),
+                  : formatNumber(analyticsStats?.totalUsers),
                 hint: "Registered on PixelTales",
               },
+
               {
                 icon: Star,
                 label: "Reviews",
                 value: analyticsLoading
                   ? null
-                  : formatCount(analyticsStats?.totalReviews),
+                  : formatNumber(analyticsStats?.totalReviews),
                 hint: "Written by our community",
               },
+
               {
                 icon: MessageSquare,
                 label: "Feedback",
                 value: analyticsLoading
                   ? null
-                  : formatCount(analyticsStats?.totalFeedback),
+                  : formatNumber(analyticsStats?.totalFeedback),
                 hint: "Your suggestions power updates",
               },
+
               {
                 icon: PlayCircle,
                 label: "Videos Watched",
                 value: analyticsLoading
                   ? null
-                  : formatCount(analyticsStats?.videosWatched),
-                hint: "Total community engagements",
+                  : formatNumber(analyticsStats?.videosWatched),
+                hint: "Total community watch records",
+              },
+
+              {
+                icon: Clapperboard,
+                label: "Movies",
+                value: analyticsLoading
+                  ? null
+                  : formatNumber(analyticsStats?.totalMovies),
+                hint: "Available on PixelTales",
+              },
+
+              {
+                icon: Flame,
+                label: "Engagement",
+                value: analyticsLoading
+                  ? null
+                  : formatNumber(analyticsStats?.engagement),
+                hint: "Total likes & comments",
+              },
+
+              {
+                icon: Clock3,
+                label: "Average Watch Time",
+                value: analyticsLoading
+                  ? null
+                  : formatWatchTime(analyticsStats?.averageWatchTime),
+                hint: "Average per registered user",
+              },
+
+              {
+                icon: Library,
+                label: "Collections",
+                value: analyticsLoading
+                  ? null
+                  : formatNumber(analyticsStats?.totalCollections),
+                hint: "Created by our community",
               },
             ].map(({ icon: Icon, label, value, hint }) => (
               <div key={label} className="card-surface p-5">
@@ -380,16 +425,19 @@ export default function Home() {
                   className="size-7 text-turquoise-600 dark:text-turquoise-400"
                   aria-hidden
                 />
-                <p className="mt-2 text-sm font-bold text-gray-700 dark:text-gray-200">
+
+                <p className="mt-2 text-sm text-gray-700 dark:text-gray-200 font-display">
                   {label}
                 </p>
+
                 {value == null ? (
                   <div className="mt-1 h-8 w-16 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700" />
                 ) : (
-                  <p className="mt-1 font-sans text-2xl text-turquoise-700 dark:text-turquoise-400">
+                  <p className="mt-1 text-2xl text-turquoise-700 dark:text-turquoise-400 font-display">
                     {value}
                   </p>
                 )}
+
                 <p className="mt-1 text-xs font-semibold text-gray-500 dark:text-gray-400">
                   {hint}
                 </p>

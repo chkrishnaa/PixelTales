@@ -7,6 +7,9 @@ import OTP        from '../models/OTP.js';
 import cloudinary from '../config/cloudinary.js';
 import { sendOTPEmail, sendTemplateEmail } from "../config/email.js";
 
+const LOGO_URL =
+  "https://res.cloudinary.com/dqajspazz/image/upload/v1788035634/PixelTalesLogoDark_fdk4dc.png";
+  
 /* ── Helper ──────────────────────────────────────────────── */
 const signToken = (userId) =>
   jwt.sign({ id: userId }, process.env.JWT_SECRET, {

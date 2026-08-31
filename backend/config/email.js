@@ -5,6 +5,9 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+const LOGO_URL =
+  "https://res.cloudinary.com/dqajspazz/image/upload/v1788035634/PixelTalesLogoDark_fdk4dc.png";
+
 const loadTemplate = async (templateName) => {
   const templatePath = join(
     __dirname,
@@ -72,12 +75,17 @@ export const sendOTPEmail = async (
   templateName = "otp-email",
 ) => {
   const template = await loadTemplate(templateName);
+
+  const siteUrl = process.env.CLIENT_URL || "http://localhost:5173";
+
   const html = renderTemplate(template, {
     title: subject,
     message,
     otp,
     year: String(new Date().getFullYear()),
-    supportEmail: process.env.SENDER_EMAIL,
+    supportEmail: process.env.SENDER_EMAIL || "no-reply@pixeltales.com",
+    logo_url: LOGO_URL,
+    site_url: siteUrl,
   });
 
   const text = `${subject}\n\n${message}\n\nYour code: ${otp}`;
@@ -92,14 +100,23 @@ export const sendTemplateEmail = async (
   templateName = "generic",
 ) => {
   const template = await loadTemplate(templateName);
+
+  const siteUrl = process.env.CLIENT_URL || "http://localhost:5173";
+
   const html = renderTemplate(template, {
     title: subject,
     message,
     year: String(new Date().getFullYear()),
     supportEmail: process.env.SENDER_EMAIL || "no-reply@pixeltales.com",
+
+    dashboard_url: `${siteUrl}/dashboard`,
+    profile_url: `${siteUrl}/profile`,
   });
 
-  const text = `${subject}\n\n${message}`;
+  const text =
+    `${subject}\n\n${message}\n\n` +
+    `Dashboard: ${siteUrl}/dashboard\n` +
+    `Profile: ${siteUrl}/profile`;
 
   return sendEmail(to, subject, text, html);
 };

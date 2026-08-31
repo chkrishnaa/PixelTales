@@ -1,11 +1,18 @@
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import {
-  Camera, FastForward, Heart, Clock,
-  Bookmark, Trash2, ChevronLeft, Loader2,
-  FolderPlus, FilmIcon, Play,
-} from 'lucide-react'
-import { getMovieById, MOVIE_DETAILS } from '../utils/movie'
+  Camera,
+  FastForward,
+  Heart,
+  Clock,
+  Bookmark,
+  Trash2,
+  ChevronLeft,
+  Loader2,
+  FolderPlus,
+  FilmIcon,
+  Play,
+} from "lucide-react";
 import { useWatch }   from '../context/WatchContext'
 import { useAuth }    from '../context/AuthContext'
 import MovieGrid      from '../components/MovieGrid'
@@ -23,79 +30,41 @@ const TABS = [
   { id: 'history',     label: 'History',     icon: Clock },
 ]
 
-/* ── Dummy collections shown as preview / before API loads ── */
-const DUMMY_COLLECTIONS = [
-  {
-    _id: 'dummy-1',
-    name: 'Doraemon Classics',
-    movieIds: [
-      'd-steel-troops', 'd-parallel-visit-to-the-west', 'd-tin-labyrinth',
-      'd-three-visionary-swordsmen', 'd-adventure-in-south-seas',
-    ],
-    isDummy: true,
-  },
-  {
-    _id: 'dummy-2',
-    name: 'Weekend Watch',
-    movieIds: [
-      'd-stand-by-me', 'd-legend-of-the-sun-king', 'd-nobitas-treasure-island',
-    ],
-    isDummy: true,
-  },
-  {
-    _id: 'dummy-3',
-    name: 'Space Adventures',
-    movieIds: [
-      'd-little-space-war', 'd-nobitas-space-heroes',
-      'd-nobitas-chronicle-of-the-moon-exploration',
-    ],
-    isDummy: true,
-  },
-  {
-    _id: 'dummy-4',
-    name: 'Latest Releases',
-    movieIds: [
-      'd-stand-by-me-2', 'd-nobitas-new-dinosaur', 'd-nobitas-great-demon-peko',
-      'd-secret-gadget-museum', 'd-adventure-of-koya-koya-planet',
-    ],
-    isDummy: true,
-  },
-]
-
-/* ── Helper: movie IDs → full movie objects (static fallback) */
-function idsToMovies(ids) {
-  return ids.map((id) => getMovieById(id)).filter(Boolean)
-}
-
 
 /* ─────────────────────────────────────────────────────────── */
 /* Collection detail view                                      */
 /* ─────────────────────────────────────────────────────────── */
-function CollectionDetail({ col, token, API, onBack, onDeleted }) {
+function CollectionDetail({ col, token, API, onBack, onDeleted, movieCache }) {
   const navigate = useNavigate();
-  const [page, setPage] = useState(1)
-  const allMovies  = idsToMovies(col.movieIds ?? [])
-  const totalMovies = allMovies.length
+  const [page, setPage] = useState(1);
+  const allMovies = (col.movieIds ?? [])
+    .map((id) => movieCache[id])
+    .filter(Boolean);
+
+  const totalMovies = allMovies.length;
 
   useEffect(() => {
-  const totalPages = Math.max(1, Math.ceil(totalMovies / PAGE_SIZE));
+    const totalPages = Math.max(1, Math.ceil(totalMovies / PAGE_SIZE));
 
-  if (page > totalPages) {
-    setPage(totalPages);
-  }
-}, [totalMovies, page]);
+    if (page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [totalMovies, page]);
 
-  const movies     = allMovies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const movies = allMovies.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const handleDelete = async () => {
-    if (col.isDummy) { alert('This is a demo collection — log in to manage real ones.'); return }
-    if (!window.confirm(`Delete "${col.name}"?`)) return
+    if (col.isDummy) {
+      alert("This is a demo collection — log in to manage real ones.");
+      return;
+    }
+    if (!window.confirm(`Delete "${col.name}"?`)) return;
     await fetch(`${API}/api/collections/${col._id}`, {
-      method:  'DELETE',
+      method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
-    })
-    onDeleted(col._id)
-  }
+    });
+    onDeleted(col._id);
+  };
 
   return (
     <div>
@@ -131,22 +100,22 @@ function CollectionDetail({ col, token, API, onBack, onDeleted }) {
       </p>
 
       {movies.length === 0 ? (
-  <div className="card-surface flex flex-col items-center gap-4 p-8 text-center">
-    <p className="text-gray-500">
-      This collection is empty.
-      <br />
-      Start adding movies to build your collection.
-    </p>
+        <div className="card-surface flex flex-col items-center gap-4 p-8 text-center">
+          <p className="text-gray-500">
+            This collection is empty.
+            <br />
+            Start adding movies to build your collection.
+          </p>
 
-    <button
-      onClick={() => navigate("/dashboard")}
-      className="flex items-center gap-2 rounded-full bg-turquoise-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-turquoise-500"
-    >
-      <FilmIcon size={16} />
-      Add Movies
-    </button>
-  </div>
-) : (
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="flex items-center gap-2 rounded-full bg-turquoise-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-turquoise-500"
+          >
+            <FilmIcon size={16} />
+            Add Movies
+          </button>
+        </div>
+      ) : (
         <>
           <MovieGrid movies={movies} />
           {totalMovies > PAGE_SIZE && (
@@ -169,7 +138,7 @@ function CollectionDetail({ col, token, API, onBack, onDeleted }) {
 /* ─────────────────────────────────────────────────────────── */
 function CollectionsTab({ token, API, user }) {
   /* Start with dummy data only for guests; logged-in users get real data */
-  const [collections, setCollections] = useState(user ? [] : DUMMY_COLLECTIONS)
+  const [collections, setCollections] = useState([]);
   const [loading,     setLoading]     = useState(false)
   const [selectedCol, setSelectedCol] = useState(null)
   const [showCreate,  setShowCreate]  = useState(false)
@@ -246,8 +215,9 @@ function CollectionsTab({ token, API, user }) {
       API={API}
       onBack={() => setSelectedCol(null)}
       onDeleted={handleDeleted}
+      movieCache={movieCache}
     />
-  )
+  );
 
   return (
     <div>
@@ -549,9 +519,6 @@ export default function Profile() {
     })
   }, [allNeededIds, API]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [allMovies, setAllMovies] = useState(() => MOVIE_DETAILS)
-
-
   useEffect(() => {
     if (TABS.some((t) => t.id === initialTab)) setActiveTab(initialTab)
   }, [initialTab])
@@ -574,7 +541,7 @@ export default function Profile() {
       return continueMovieIds
         .map((id) => {
           // Prefer MongoDB data, fall back to static data
-          const base = movieCache[id] ?? getMovieById(id)
+          const base = movieCache[id];
           if (!base) return null
           const prog = getProgress(id)
           return { ...base, progress: prog?.progress ?? null }

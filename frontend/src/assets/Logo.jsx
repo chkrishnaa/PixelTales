@@ -1,105 +1,135 @@
-/**
- * Logo.jsx — single source of truth for the PixelTales brand mark.
- *
- * Uses the saved PNG assets:
- *   PixelTalesLogoLight.png  → shown in light mode
- *   PixelTalesLogoDark.png   → shown in dark  mode
- *   PixelTales.png           → icon-only mark (used on mobile when hideTextOnMobile=true)
- *
- * Props
- * ─────
- *   size             'sm' | 'md' | 'lg' | 'xl'   (default: 'md')
- *   iconOnly         show only the P icon mark (no text logo)
- *   hideTextOnMobile on screens < md: show icon-only; md+ show full logo
- *   className        extra classes on the outer wrapper
- *
- * Exports
- * ───────
- *   default  Logo       – the full component
- *   SITE_NAME           – 'PixelTales'   (change once → propagates everywhere)
- *   SITE_ICON           – '🎬'
- *   SITE_TAGLINE        – short tagline used in Footer / meta tags
- */
+import { useEffect, useState } from "react";
 
-import lightLogo from './PixelTalesLogoLight.png';
-import darkLogo  from './PixelTalesLogoDark.png';
-import iconMark  from './PixelTales.png';
+import lightLogo from "./PixelTalesLogoLight.png";
+import darkLogo from "./PixelTalesLogoDark.png";
+import lightIcon from "./PixelTalesLight.png";
+import darkIcon from "./PixelTalesDark.png";
 
-export const SITE_NAME    = 'PixelTales';
-export const SITE_ICON    = '🎬';
-export const SITE_TAGLINE = 'Your magical pocket for cartoons.';
+export const SITE_NAME = "PixelTales";
+export const SITE_ICON = "🎬";
+export const SITE_TAGLINE = "Your magical pocket for cartoons.";
 
-/* Height + matching max-width per size (keeps both light/dark logos identical visual size) */
 const HEIGHTS = {
-  sm: 'h-7  max-w-[100px]',
-  md: 'h-9  max-w-[130px]',
-  lg: 'h-11 max-w-[160px]',
-  xl: 'h-14 max-w-[200px]',
+  sm: "h-7 max-w-[100px]",
+  md: "h-9 max-w-[130px]",
+  lg: "h-11 max-w-[160px]",
+  xl: "h-14 max-w-[200px]",
 };
 
 export default function Logo({
-  size             = 'md',
-  iconOnly         = false,
+  size = "md",
+  iconOnly = false,
   hideTextOnMobile = false,
-  className        = '',
+  className = "",
 }) {
   const h = HEIGHTS[size] ?? HEIGHTS.md;
 
-  /* Icon-only mode: just the P mark, always visible */
+  /*
+   * Detect the current theme from <html class="dark">
+   *
+   * Instead of relying on Tailwind's:
+   *   dark:hidden
+   *   dark:block
+   *
+   * we directly choose the correct image with a ternary operator.
+   */
+  const [isDark, setIsDark] = useState(() =>
+    document.documentElement.classList.contains("dark"),
+  );
+
+  /*
+   * Watch for theme changes.
+   *
+   * This is important because simply checking
+   * document.documentElement.classList.contains("dark")
+   * once would NOT update when the user switches
+   * Light / Dark / System.
+   */
+  useEffect(() => {
+    const html = document.documentElement;
+
+    const updateTheme = () => {
+      setIsDark(html.classList.contains("dark"));
+    };
+
+    // Check immediately
+    updateTheme();
+
+    // Watch <html> for class changes
+    const observer = new MutationObserver(updateTheme);
+
+    observer.observe(html, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  /*
+   * Direct image selection using ternary operator.
+   *
+   * DARK  → dark asset
+   * LIGHT → light asset
+   */
+  const logoSrc = isDark ? darkLogo : lightLogo;
+  const iconSrc = isDark ? darkIcon : lightIcon;
+
+  /*
+   * =====================================================
+   * ICON ONLY
+   * =====================================================
+   */
   if (iconOnly) {
     return (
       <img
-        src={iconMark}
+        src={iconSrc}
         alt={SITE_NAME}
         className={`${h} w-auto object-contain ${className}`}
       />
     );
   }
 
-  /* hideTextOnMobile: P-mark on small screens, full logo on md+ */
+  /*
+   * =====================================================
+   * MOBILE ICON + DESKTOP FULL LOGO
+   * =====================================================
+   */
   if (hideTextOnMobile) {
     return (
       <span className={`inline-flex items-center ${className}`}>
-        {/* Mobile only: icon mark (theme-agnostic) */}
-        <img
-          src={iconMark}
-          alt={SITE_NAME}
-          className={`${h} w-auto object-contain md:hidden`}
-        />
+        {/* Mobile */}
+        <span className="flex md:hidden">
+          <img
+            src={iconSrc}
+            alt={SITE_NAME}
+            className={`${h} w-auto object-contain`}
+          />
+        </span>
 
-        {/* md+ light mode */}
-        <img
-          src={lightLogo}
-          alt={SITE_NAME}
-          className={`${h} w-auto object-contain hidden md:block dark:hidden`}
-        />
-
-        {/* md+ dark mode — use md:dark:block (responsive variant first) */}
-        <img
-          src={darkLogo}
-          alt={SITE_NAME}
-          className={`${h} w-auto object-contain hidden md:dark:block`}
-        />
+        {/* Tablet + Desktop */}
+        <span className="hidden md:flex">
+          <img
+            src={logoSrc}
+            alt={SITE_NAME}
+            className={`${h} w-auto object-contain`}
+          />
+        </span>
       </span>
     );
   }
 
-  /* Default: full logo, swaps between light and dark versions */
+  /*
+   * =====================================================
+   * DEFAULT FULL LOGO
+   * =====================================================
+   */
   return (
-    <span
-      className={`inline-flex items-center ${className} rounded-lg overflow-hidden`}
-    >
-      {/* Light mode */}
+    <span className={`inline-flex items-center ${className}`}>
       <img
-        src={lightLogo}
+        src={logoSrc}
         alt={SITE_NAME}
-        className={`${h} w-auto object-contain block dark:hidden`}
-      />
-      {/* Dark mode */}
-      <img
-        src={darkLogo}
-        alt={SITE_NAME}
-        className={`${h} w-auto object-contain hidden dark:block`}
+        className={`${h} w-auto object-contain`}
       />
     </span>
   );

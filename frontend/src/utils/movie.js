@@ -1411,7 +1411,7 @@ export const MOVIE_DETAILS = [
     gradient: "DORAEMON_GRADIENT",
     progress: 0,
     videoUrl:
-      "https://drive.google.com/file/d/1bVya_zt_s9f9nd_4-O3X08fiiq25AWU3/preview",
+      "https://www.facebook.com/plugins/video.php?height=313&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1097842376263648%2F&show_text=false&width=560&t=0",
     thumbnail:
       "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieThumbnails/Doraemon/NobitasNewDinosaur.jpg",
     rating: 4.6,
@@ -3068,11 +3068,6 @@ MOVIE_DETAILS.forEach((movie, index) => {
   if (index % 5 === 0) movie.isRecommended = true;
   if (index % 7 === 0) movie.isPrime = true;
 });
-
-/** Full detail rows (detail page lookup) */
-export function getMovieById(id) {
-  return MOVIE_DETAILS.find((m) => m.id === id) ?? null;
-}
 
 export function addMovieToCatalog(movie) {
   const normalized = {

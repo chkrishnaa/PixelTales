@@ -250,9 +250,10 @@ export default function MoviePlayer({
   if (!v && !movie.videoUrl?.trim()) return null;
 
   const hasVideo = Boolean(movie.videoUrl?.trim());
-  const isEmbed =
-    hasVideo &&
-    /youtube\.com|youtu\.be|drive\.google\.com/.test(movie.videoUrl);
+const isEmbed =
+  hasVideo &&
+  /(youtube\.com|youtu\.be|drive\.google\.com|facebook\.com|fb\.watch)/i.test(movie.videoUrl);
+  
   const vFont = { fontFamily: '"Courier New", Courier, monospace' };
 
   return (
