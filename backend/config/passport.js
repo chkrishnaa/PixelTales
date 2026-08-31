@@ -2,6 +2,7 @@ import passport          from 'passport';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import { Strategy as GoogleStrategy }           from 'passport-google-oauth20';
 import User from '../models/User.js';
+import { sendTemplateEmail } from '../config/email.js';
 
 export default function configurePassport() {
   /* ── JWT Strategy ──────────────────────────────────────── */
@@ -42,19 +43,26 @@ export default function configurePassport() {
           if (user) {
             // Link Google if not already linked
             if (!user.googleId) {
-              user.googleId  = profile.id;
-              user.avatar    = user.avatar || avatar;
+              user.googleId = profile.id;
+              user.avatar = user.avatar || avatar;
               user.isVerified = true;
               await user.save();
             }
           } else {
             user = await User.create({
-              name:       profile.displayName,
+              name: profile.displayName,
               email,
-              googleId:   profile.id,
+              googleId: profile.id,
               avatar,
               isVerified: true,
             });
+
+            await sendTemplateEmail(
+              user.email,
+              "Welcome to PixelTales!",
+              "Your account is ready. Start exploring PixelTales and enjoy your favourite cartoons.",
+              "account-created",
+            );
           }
 
           return done(null, user);
