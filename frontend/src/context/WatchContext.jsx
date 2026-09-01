@@ -1,20 +1,18 @@
 /**
- * WatchContext  (v2 — cross-device sync)
+ * WatchContext
  *
- * When a user is logged in, watch history and continue-watching are stored
- * in MongoDB via /api/watch and synced across all devices.
+ * Logged-in users:
+ *   - MongoDB is the ONLY source of truth.
+ *   - Watch history and continue-watching are loaded using the
+ *     authenticated user's token/userId.
+ *   - No localStorage watch data is migrated into a logged-in account.
  *
- * When a user is a guest (not logged in), falls back to localStorage only.
+ * Guests:
+ *   - Watch history and continue-watching use localStorage only.
  *
- * Strategy:
- *  1. On mount / login: load localStorage immediately for a fast render,
- *     then fetch from server and replace state (server is source of truth).
- *  2. On first login where server has 0 records but localStorage has data:
- *     automatically upload localStorage data (migration).
- *  3. Every mutating action (trackVisit, updateProgress, remove, clear)
- *     updates local state instantly (optimistic) then syncs to server in
- *     the background. API errors are silently ignored so the UI never breaks.
+ * This prevents watch data from Account A appearing in Account B.
  */
+
 import {
   createContext,
   useCallback,
@@ -22,19 +20,32 @@ import {
   useEffect,
   useRef,
   useState,
-} from 'react';
-import { useAuth } from './AuthContext';
+} from "react";
+
+import { useAuth } from "./AuthContext";
 
 const MIN_WATCH_SECONDS = 180; // 3 minutes
 
 /* ── localStorage helpers ─────────────────────────────────── */
+
 function load(key) {
-  try { return JSON.parse(localStorage.getItem(key) ?? '[]'); }
-  catch { return []; }
+  try {
+    return JSON.parse(localStorage.getItem(key) ?? "[]");
+  } catch {
+    return [];
+  }
 }
+
 function save(key, data) {
-  try { localStorage.setItem(key, JSON.stringify(data)); }
-  catch {}
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch {}
+}
+
+function remove(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch {}
 }
 
 const WatchContext = createContext(null);
@@ -42,179 +53,376 @@ const WatchContext = createContext(null);
 export function WatchProvider({ children }) {
   const { user, token, API } = useAuth();
 
-  const userId   = user?._id ?? user?.id ?? null;
-  const isGuest  = !userId;
+  const userId = user?._id ?? user?.id ?? null;
+  const isGuest = !userId || !token;
 
-  const historyKey  = `pt_watch_history_${userId ?? 'guest'}`;
-  const continueKey = `pt_continue_watching_${userId ?? 'guest'}`;
+  /*
+   * Guest-only localStorage keys (current).
+   * We do NOT use these keys for logged-in users.
+   */
+  const GUEST_HISTORY_KEY  = 'pt_watch_history_guest';
+  const GUEST_CONTINUE_KEY = 'pt_continue_watching_guest';
 
-  // Initialise from localStorage for instant render
-  const [watchHistory,     setWatchHistoryState]     = useState(() => load(historyKey));
-  const [continueWatching, setContinueWatchingState] = useState(() => load(continueKey));
-  const [synced, setSynced] = useState(false); // true once we've fetched from server
+  /*
+   * ALL localStorage keys that have ever been used for watch data
+   * across all versions of this app — including legacy keys from
+   * before the MongoDB migration.
+   *
+   * When a user is logged in we wipe every one of these so stale
+   * data from another account can NEVER bleed through.
+   */
+  const ALL_WATCH_KEYS = [
+    GUEST_HISTORY_KEY,
+    GUEST_CONTINUE_KEY,
+    // Legacy keys used before the MongoDB migration:
+    'watchHistory',
+    'continueWatching',
+    'pt_watch_history',
+    'pt_continue_watching',
+    'pixeltales_watch_history',
+    'pixeltales_continue_watching',
+    'watch_history',
+    'continue_watching',
+  ];
 
-  // Keep a ref to token so callbacks don't stale-close over it
+  /** Remove every watch-related key from localStorage */
+  const clearAllLocalWatchData = () => {
+    ALL_WATCH_KEYS.forEach((k) => remove(k));
+  };
+
+  /*
+   * Initial state:
+   * - If a token already exists at mount (page refresh while logged in),
+   *   start EMPTY so we never flash guest data before the server responds.
+   * - Guests start from their localStorage as usual.
+   */
+  const [watchHistory, setWatchHistoryState] = useState(() =>
+    token ? [] : load(GUEST_HISTORY_KEY),
+  );
+
+  const [continueWatching, setContinueWatchingState] = useState(() =>
+    token ? [] : load(GUEST_CONTINUE_KEY),
+  );
+
+  const [synced, setSynced] = useState(false);
+
+  /*
+   * Keep the latest token in a ref so API calls don't use
+   * an old token after switching accounts.
+   */
   const tokenRef = useRef(token);
-  useEffect(() => { tokenRef.current = token; }, [token]);
 
-  /* ── Sync localStorage whenever state changes ─────────────── */
-  useEffect(() => { save(historyKey,  watchHistory);     }, [watchHistory,     historyKey]);
-  useEffect(() => { save(continueKey, continueWatching); }, [continueWatching, continueKey]);
-
-  /* ── On user change: reload localStorage, then fetch server ── */
   useEffect(() => {
-    // Reset synced flag
+    tokenRef.current = token;
+  }, [token]);
+
+  /* ── Guest localStorage sync ───────────────────────────── */
+
+  useEffect(() => {
+    if (isGuest) {
+      save(GUEST_HISTORY_KEY, watchHistory);
+    }
+  }, [watchHistory, isGuest]);
+
+  useEffect(() => {
+    if (isGuest) {
+      save(GUEST_CONTINUE_KEY, continueWatching);
+    }
+  }, [continueWatching, isGuest]);
+
+  /* ── Load data whenever authenticated user changes ─────── */
+
+  useEffect(() => {
+    let cancelled = false;
+
     setSynced(false);
 
-    // Load this user's localStorage cache immediately
-    const localHistory  = load(historyKey);
-    const localContinue = load(continueKey);
-    setWatchHistoryState(localHistory);
-    setContinueWatchingState(localContinue);
+    /*
+     * ─────────────────────────────────────────────────────
+     * GUEST
+     * ─────────────────────────────────────────────────────
+     *
+     * Guests use only their localStorage data.
+     */
+    if (isGuest) {
+      const localHistory = load(GUEST_HISTORY_KEY);
+      const localContinue = load(GUEST_CONTINUE_KEY);
 
-    if (isGuest || !token) {
-      // Guest — localStorage only, mark as synced
+      setWatchHistoryState(localHistory);
+      setContinueWatchingState(localContinue);
+
       setSynced(true);
-      return;
+
+      return () => {
+        cancelled = true;
+      };
     }
 
-    // Logged-in user — fetch server data
+    /*
+     * ─────────────────────────────────────────────────────
+     * LOGGED-IN USER
+     * ─────────────────────────────────────────────────────
+     *
+     * Step 1: Wipe ALL local watch data immediately.
+     *
+     * This runs BEFORE the server fetch so there is zero
+     * chance stale localStorage data from any account
+     * (including legacy keys from older app versions)
+     * is ever displayed or re-uploaded.
+     */
+    clearAllLocalWatchData();
+    setWatchHistoryState([]);
+    setContinueWatchingState([]);
+
+    const currentToken = token;
+
+    if (!currentToken) {
+      setSynced(true);
+
+      return () => {
+        cancelled = true;
+      };
+    }
+
     fetch(`${API}/api/watch`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((r) => (r.ok ? r.json() : null))
-      .then(async (json) => {
-        if (!json?.success) return;
-
-        const { history: serverHistory, continueWatching: serverContinue } = json.data;
-
-        if (serverHistory.length === 0 && serverContinue.length === 0) {
-          // Server has no data — migrate from localStorage if we have any
-          if (localHistory.length > 0 || localContinue.length > 0) {
-            await fetch(`${API}/api/watch/bulk`, {
-              method:  'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization:  `Bearer ${tokenRef.current}`,
-              },
-              body: JSON.stringify({
-                history:         localHistory,
-                continueWatching: localContinue,
-              }),
-            }).catch(() => {});
-          }
-          // State stays as loaded from localStorage
-        } else {
-          // Server has data — use it as source of truth
-          setWatchHistoryState(serverHistory);
-          setContinueWatchingState(serverContinue);
-        }
-      })
-      .catch(() => {
-        // Network error — silently fall back to localStorage
-      })
-      .finally(() => setSynced(true));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
-
-  /* ── Fire-and-forget API helper ───────────────────────────── */
-  const apiCall = useCallback((method, path, body) => {
-    if (!tokenRef.current) return;
-    fetch(`${API}${path}`, {
-      method,
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization:  `Bearer ${tokenRef.current}`,
+        Authorization: `Bearer ${currentToken}`,
       },
-      body: body ? JSON.stringify(body) : undefined,
-    }).catch(() => {}); // silently ignore errors
-  }, [API]);
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load watch data");
+        }
 
-  /* ── History ─────────────────────────────────────────────── */
+        return response.json();
+      })
+      .then((json) => {
+        if (cancelled) return;
 
-  const trackVisit = useCallback((movieId) => {
-    setWatchHistoryState((prev) => {
-      const filtered = prev.filter((h) => h.movieId !== movieId);
-      return [{ movieId, visitedAt: new Date().toISOString() }, ...filtered];
-    });
-    if (!isGuest) {
-      apiCall('PUT', `/api/watch/${movieId}/visit`);
-    }
-  }, [isGuest, apiCall]);
+        if (!json?.success) {
+          throw new Error("Invalid watch data response");
+        }
 
-  const removeFromHistory = useCallback((movieId) => {
-    setWatchHistoryState((prev) => prev.filter((h) => h.movieId !== movieId));
-    if (!isGuest) {
-      // Only remove from history — keep continue-watching entry if it exists
-      // We do this by unsetting visitedAt on the server; if no continueWatching
-      // either, the record itself is cleaned up.
-      apiCall('DELETE', `/api/watch/${movieId}`);
-    }
-  }, [isGuest, apiCall]);
+        const serverHistory = Array.isArray(json.data?.history)
+          ? json.data.history
+          : [];
+
+        const serverContinue = Array.isArray(json.data?.continueWatching)
+          ? json.data.continueWatching
+          : [];
+
+        /*
+         * MongoDB is the source of truth.
+         *
+         * Even if both arrays are empty, KEEP them empty.
+         *
+         * DO NOT migrate localStorage here.
+         */
+        setWatchHistoryState(serverHistory);
+        setContinueWatchingState(serverContinue);
+
+        /*
+         * Clear any guest localStorage so that if this user later
+         * logs out and a NEW user signs in, the guest keys are empty
+         * and the new account starts fresh.
+         */
+        remove(GUEST_HISTORY_KEY);
+        remove(GUEST_CONTINUE_KEY);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+
+        console.error("Watch data sync error:", error);
+
+        /*
+         * IMPORTANT:
+         *
+         * Do NOT fall back to localStorage for logged-in users.
+         *
+         * Falling back to localStorage could show another
+         * account's watch history.
+         */
+        setWatchHistoryState([]);
+        setContinueWatchingState([]);
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setSynced(true);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [userId, token, API, isGuest]);
+
+  /* ── Fire-and-forget API helper ─────────────────────────── */
+
+  const apiCall = useCallback(
+    (method, path, body) => {
+      const currentToken = tokenRef.current;
+
+      /*
+       * Never send watch requests for guests.
+       */
+      if (!currentToken || !userId) return;
+
+      fetch(`${API}${path}`, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: body ? JSON.stringify(body) : undefined,
+      }).catch((error) => {
+        console.error("Watch API error:", error);
+      });
+    },
+    [API, userId],
+  );
+
+  /* ── History ────────────────────────────────────────────── */
+
+  const trackVisit = useCallback(
+    (movieId) => {
+      setWatchHistoryState((prev) => {
+        const filtered = prev.filter((item) => item.movieId !== movieId);
+
+        return [
+          {
+            movieId,
+            visitedAt: new Date().toISOString(),
+          },
+          ...filtered,
+        ];
+      });
+
+      /*
+       * Guest → localStorage state handles it.
+       *
+       * Logged-in → MongoDB handles it.
+       */
+      if (!isGuest) {
+        apiCall("PUT", `/api/watch/${movieId}/visit`);
+      }
+    },
+    [isGuest, apiCall],
+  );
+
+  const removeFromHistory = useCallback(
+    (movieId) => {
+      setWatchHistoryState((prev) =>
+        prev.filter((item) => item.movieId !== movieId),
+      );
+
+      if (!isGuest) {
+        apiCall("DELETE", `/api/watch/${movieId}`);
+      }
+    },
+    [isGuest, apiCall],
+  );
 
   const clearHistory = useCallback(() => {
     setWatchHistoryState([]);
-    if (!isGuest) {
-      apiCall('DELETE', '/api/watch', { target: 'history' });
+
+    if (isGuest) {
+      remove(GUEST_HISTORY_KEY);
+      return;
     }
-  }, [isGuest, apiCall]);
 
-  /* ── Continue Watching ───────────────────────────────────── */
-
-  const updateProgress = useCallback((movieId, watchedSeconds, totalDuration) => {
-    if (watchedSeconds < MIN_WATCH_SECONDS) return;
-
-    const progress = totalDuration > 0
-      ? Math.min(95, Math.round((watchedSeconds / totalDuration) * 100))
-      : null;
-
-    const entry = {
-      movieId,
-      watchedSeconds,
-      progress,
-      lastWatched: new Date().toISOString(),
-    };
-
-    setContinueWatchingState((prev) => {
-      const existing = prev.find((c) => c.movieId === movieId);
-      if (existing) return prev.map((c) => (c.movieId === movieId ? entry : c));
-      return [entry, ...prev];
+    apiCall("DELETE", "/api/watch", {
+      target: "history",
     });
-
-    if (!isGuest) {
-      apiCall('PUT', `/api/watch/${movieId}/progress`, { watchedSeconds, progress });
-    }
   }, [isGuest, apiCall]);
 
-  const removeFromContinue = useCallback((movieId) => {
-    setContinueWatchingState((prev) => prev.filter((c) => c.movieId !== movieId));
-    if (!isGuest) {
-      apiCall('DELETE', `/api/watch/${movieId}`);
-    }
-  }, [isGuest, apiCall]);
+  /* ── Continue Watching ─────────────────────────────────── */
 
-  /* ── Derived values ──────────────────────────────────────── */
+  const updateProgress = useCallback(
+    (movieId, watchedSeconds, totalDuration) => {
+      /*
+       * Don't save anything until the user has watched
+       * at least 3 minutes.
+       */
+      if (watchedSeconds < MIN_WATCH_SECONDS) {
+        return;
+      }
 
-  const continueMovieIds = continueWatching.map((c) => c.movieId);
+      const progress =
+        totalDuration > 0
+          ? Math.min(95, Math.round((watchedSeconds / totalDuration) * 100))
+          : null;
 
-  const getProgress = useCallback(
-    (movieId) => continueWatching.find((c) => c.movieId === movieId) ?? null,
-    [continueWatching]
+      const entry = {
+        movieId,
+        watchedSeconds,
+        progress,
+        lastWatched: new Date().toISOString(),
+      };
+
+      setContinueWatchingState((prev) => {
+        const existing = prev.find((item) => item.movieId === movieId);
+
+        if (existing) {
+          return prev.map((item) => (item.movieId === movieId ? entry : item));
+        }
+
+        return [entry, ...prev];
+      });
+
+      if (!isGuest) {
+        apiCall("PUT", `/api/watch/${movieId}/progress`, {
+          watchedSeconds,
+          progress,
+        });
+      }
+    },
+    [isGuest, apiCall],
   );
 
+  const removeFromContinue = useCallback(
+    (movieId) => {
+      setContinueWatchingState((prev) =>
+        prev.filter((item) => item.movieId !== movieId),
+      );
+
+      if (!isGuest) {
+        apiCall("DELETE", `/api/watch/${movieId}`);
+      }
+    },
+    [isGuest, apiCall],
+  );
+
+  /* ── Derived values ────────────────────────────────────── */
+
+  const continueMovieIds = continueWatching.map((item) => item.movieId);
+
+  const getProgress = useCallback(
+    (movieId) => {
+      return continueWatching.find((item) => item.movieId === movieId) ?? null;
+    },
+    [continueWatching],
+  );
+
+  /* ── Context ───────────────────────────────────────────── */
+
   return (
-    <WatchContext.Provider value={{
-      watchHistory,
-      continueWatching,
-      continueMovieIds,
-      synced,
-      trackVisit,
-      removeFromHistory,
-      clearHistory,
-      updateProgress,
-      removeFromContinue,
-      getProgress,
-    }}>
+    <WatchContext.Provider
+      value={{
+        watchHistory,
+        continueWatching,
+        continueMovieIds,
+        synced,
+
+        trackVisit,
+        removeFromHistory,
+        clearHistory,
+
+        updateProgress,
+        removeFromContinue,
+        getProgress,
+      }}
+    >
       {children}
     </WatchContext.Provider>
   );
@@ -222,6 +430,10 @@ export function WatchProvider({ children }) {
 
 export function useWatch() {
   const ctx = useContext(WatchContext);
-  if (!ctx) throw new Error('useWatch must be inside WatchProvider');
+
+  if (!ctx) {
+    throw new Error("useWatch must be inside WatchProvider");
+  }
+
   return ctx;
 }

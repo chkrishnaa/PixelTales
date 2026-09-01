@@ -1,4 +1,7 @@
-import WatchRecord from '../models/WatchRecord.js';
+import WatchRecord  from '../models/WatchRecord.js';
+import MovieStat    from '../models/MovieStat.js';
+import Movie        from '../models/Movie.js';
+
 
 /* ── GET /api/watch ─────────────────────────────────────────
    Returns all watch records for the logged-in user, split into
@@ -40,10 +43,19 @@ export const trackVisit = async (req, res, next) => {
   try {
     const { movieId } = req.params;
 
+    // 1. Update the per-user WatchRecord (for history / continue watching)
     await WatchRecord.findOneAndUpdate(
       { userId: req.user._id, movieId },
       { $set: { visitedAt: new Date() } },
       { upsert: true, new: true }
+    );
+
+    // 2. Increment the permanent per-movie visit counter in MovieStat.
+    //    This counter NEVER decrements — clearing history leaves it intact.
+    await MovieStat.findOneAndUpdate(
+      { movieId },
+      { $inc: { visitCount: 1 } },
+      { upsert: true }
     );
 
     res.json({ success: true });
@@ -51,6 +63,7 @@ export const trackVisit = async (req, res, next) => {
     next(err);
   }
 };
+
 
 /* ── PUT /api/watch/:movieId/progress ───────────────────────
    Called periodically while the video is playing.
@@ -191,3 +204,36 @@ export const bulkImport = async (req, res, next) => {
     next(err);
   }
 };
+
+/* ── GET /api/watch/liked ────────────────────────────────────
+   Authenticated — returns full movie objects for every movie
+   the current user has liked (via the heart button).
+   Queries MovieStat.likedBy, then fetches Movie documents.
+*/
+export const getLikedMovies = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+
+    // Find all stats where this user is in likedBy
+    const stats = await MovieStat.find({ likedBy: userId })
+      .select('movieId')
+      .lean();
+
+    if (stats.length === 0) {
+      return res.json({ success: true, data: [] });
+    }
+
+    const movieIds = stats.map((s) => s.movieId);
+
+    // Fetch the actual movie documents
+    const movies = await Movie.find({ movieId: { $in: movieIds } }).lean();
+
+    // Add .id alias and mark liked=true for the client
+    const result = movies.map((m) => ({ ...m, id: m.movieId, liked: true }));
+
+    res.json({ success: true, data: result, count: result.length });
+  } catch (err) {
+    next(err);
+  }
+};
+

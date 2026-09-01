@@ -6,7 +6,9 @@ import {
   removeRecord,
   clearWatchData,
   bulkImport,
+  getLikedMovies,
 } from '../controllers/watchController.js';
+
 import { protect } from '../middlewares/auth.js';
 
 const router = express.Router();
@@ -19,6 +21,9 @@ router.get('/', getWatchData);
 
 /* ── Bulk import from localStorage (migration helper) ──────── */
 router.post('/bulk', bulkImport);
+
+/* ── Get all movies liked by the current user ──────────────── */
+router.get('/liked', getLikedMovies);
 
 /* ── Track a movie page visit ──────────────────────────────── */
 router.put('/:movieId/visit', trackVisit);

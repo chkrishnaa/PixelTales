@@ -130,10 +130,21 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
+    // Auth keys
     lsDel('pt_token', 'pt_user', 'pt_last_active');
+    // Wipe ALL watch data so a subsequent account never sees stale records
+    const WATCH_KEYS = [
+      'pt_watch_history_guest', 'pt_continue_watching_guest',
+      'watchHistory', 'continueWatching',
+      'pt_watch_history', 'pt_continue_watching',
+      'pixeltales_watch_history', 'pixeltales_continue_watching',
+      'watch_history', 'continue_watching',
+    ];
+    WATCH_KEYS.forEach((k) => localStorage.removeItem(k));
     setToken(null);
     setUser(null);
   };
+
 
   /** Update local user state (e.g. after avatar upload) */
   const updateUser = (patch) => {
