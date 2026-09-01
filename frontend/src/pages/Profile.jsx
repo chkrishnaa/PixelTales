@@ -523,7 +523,26 @@ export default function Profile() {
 
   const addToCache = useCallback((entries) => {
     setMovieCache((prev) => ({ ...prev, ...entries }))
-  }, [])
+  }, []);
+
+  /* ── Load favorites count for profile header ─────────────── */
+useEffect(() => {
+  if (!token) {
+    setFavCount(0)
+    return
+  }
+
+  fetch(`${API}/api/watch/liked`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((json) => {
+      if (json?.success) {
+        setFavCount(json.data.length)
+      }
+    })
+    .catch(() => {})
+}, [API, token]);
 
   // Fetch IDs needed for Continue + History tabs
   const allNeededIds = useMemo(() => {
@@ -646,7 +665,7 @@ export default function Profile() {
               {[
                 ['Watched',     watchHistory.length],
                 ['In Progress', continueMovieIds.length],
-                ['Favourites',       favCount ?? '—'],
+                ['Favourites',       favCount ?? '0'],
               ].map(([label, val]) => (
                 <div
                   key={label}

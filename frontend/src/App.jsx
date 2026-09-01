@@ -16,6 +16,9 @@ import Page404 from "./pages/Page404";
 import Review from "./pages/Review";
 import ProtectedRoute from "./components/Utility/ProtectedRoute";
 
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -29,8 +32,10 @@ export default function App() {
         {/* Google OAuth callback — outside AuthLayout */}
         <Route path="auth/callback" element={<AuthCallback />} />
 
+        {/* Public pages */}
         <Route path="/" element={<Home />} />
-
+        <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
         <Route element={<MainLayout />}>
           <Route
@@ -41,6 +46,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
           <Route path="community" element={<Community />} />
           <Route path="feedback" element={<Feedback />} />
           <Route path="review" element={<Review />} />

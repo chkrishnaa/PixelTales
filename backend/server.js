@@ -1,21 +1,23 @@
-import 'dotenv/config';
-import express      from 'express';
-import cors          from 'cors';
-import cookieParser  from 'cookie-parser';
-import passport      from 'passport';
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import passport from "passport";
 
-import { connectDB }       from './config/db.js';
-import configurePassport   from './config/passport.js';
-import authRoutes          from './routes/authRoutes.js';
-import feedbackRoutes      from './routes/feedbackRoutes.js';
-import reviewRoutes        from './routes/reviewRoutes.js';
-import chatRoutes          from './routes/chatRoutes.js';
-import movieRoutes         from './routes/movieRoutes.js';
-import collectionRoutes    from './routes/collectionRoutes.js';
-import analyticsRoutes from './routes/analyticsRoutes.js';
-import watchRoutes     from './routes/watchRoutes.js';
+import { connectDB } from "./config/db.js";
+import configurePassport from "./config/passport.js";
 
-import { errorHandler }    from './middlewares/errorHandler.js';
+import authRoutes from "./routes/authRoutes.js";
+import feedbackRoutes from "./routes/feedbackRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
+import movieRoutes from "./routes/movieRoutes.js";
+import collectionRoutes from "./routes/collectionRoutes.js";
+import analyticsRoutes from "./routes/analyticsRoutes.js";
+import watchRoutes from "./routes/watchRoutes.js";
+import facebookRoutes from "./routes/facebookRoutes.js";
+
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 
@@ -53,8 +55,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
-
 // ── Routes ────────────────────────────────────────────────
 app.use("/api/auth", authRoutes);
 app.use("/api/feedback", feedbackRoutes);
@@ -63,17 +63,17 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/movies", movieRoutes);
 app.use("/api/collections", collectionRoutes);
 app.use("/api/analytics", analyticsRoutes);
-app.use("/api/watch",     watchRoutes);
-
+app.use("/api/watch", watchRoutes);
+app.use("/api/facebook", facebookRoutes);
 
 // Health check
-app.get('/api/health', (_req, res) =>
-  res.json({ status: 'ok', timestamp: new Date().toISOString() })
+app.get("/api/health", (_req, res) =>
+  res.json({ status: "ok", timestamp: new Date().toISOString() }),
 );
 
 // 404
 app.use((_req, res) =>
-  res.status(404).json({ success: false, message: 'Route not found' })
+  res.status(404).json({ success: false, message: "Route not found" }),
 );
 
 // Global error handler (must be last)
