@@ -802,13 +802,100 @@ export const BANNERS = {
 
 export const HERO_SLIDES = [
   {
-    id: "h1",
-    title: "Doraemon Movie",
+    id: "h-undersea-2026",
+
+    type: "image",
+
+    isNew: true,
+
+    badge: "Upcoming Movie",
+
+    title:
+      "Doraemon the Movie: New Nobita and the Castle of the Undersea Devil",
+
     cartoonId: "doraemon",
+
+    tagline:
+      "A brand-new underwater adventure awaits as Doraemon, Nobita and their friends discover a mysterious world beneath the ocean.",
+
+    bgImage: "/NobitasCastleOfTheUnderseaDevil.png",
+
+    accent: "cyan",
+
+    releaseDate: "2nd October 2026",
+
+    releaseLocation: "In All Indian Theatres",
+
+    announcedBy: "PVR INOX Pictures",
+
+    partner: "TV Asahi",
+
+    trailerUrl: "/NobitasCastleOfTheUnderseaDevil.mp4",
+  },
+
+  {
+    id: "h1",
+
+    title: "Doraemon Movie",
+
+    cartoonId: "doraemon",
+
     tagline: "Stream the latest Doraemon adventures in HD",
+
     gradient: cartoonGradients.doraemon,
+
     accent: "cyan",
   },
+
+  // {
+  //   id: "h2",
+  //   title: "Pokemon Movie 1",
+  //   cartoonId: "pokemon",
+  //   tagline: "Catch every Pokemon movie — anytime, anywhere",
+  //   gradient: cartoonGradients.pokemon,
+  //   accent: "yellow",
+  // },
+
+  // {
+  //   id: "h3",
+  //   title: "Shinchan Movie 1",
+  //   cartoonId: "shinchan",
+  //   tagline: "Laugh out loud with Shinchan's wildest stories",
+  //   gradient: cartoonGradients.shinchan,
+  //   accent: "pink",
+  // },
+
+  // {
+  //   id: "h1",
+
+  //   title: "Doraemon Movie",
+
+  //   cartoonId: "doraemon",
+
+  //   tagline: "Stream the latest Doraemon adventures in HD",
+
+  //   gradient: cartoonGradients.doraemon,
+
+  //   accent: "cyan",
+  // },
+
+  // {
+  //   id: "h2",
+  //   title: "Pokemon Movie 1",
+  //   cartoonId: "pokemon",
+  //   tagline: "Catch every Pokemon movie — anytime, anywhere",
+  //   gradient: cartoonGradients.pokemon,
+  //   accent: "yellow",
+  // },
+
+  // {
+  //   id: "h3",
+  //   title: "Shinchan Movie 1",
+  //   cartoonId: "shinchan",
+  //   tagline: "Laugh out loud with Shinchan's wildest stories",
+  //   gradient: cartoonGradients.shinchan,
+  //   accent: "pink",
+  // },
   // {
   //   id: "h2",
   //   title: "Pokemon Movie 1",
