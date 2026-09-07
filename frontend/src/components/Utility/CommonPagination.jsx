@@ -110,12 +110,12 @@ export default function CommonPagination({
               marginLeft: "4px",
             },
 
-            "& li:nth-child(2) .MuiPaginationItem-page": {
+            "& li:nth-of-type(2) .MuiPaginationItem-page": {
               borderTopLeftRadius: { xs: "10px", md: "12px" },
               borderBottomLeftRadius: { xs: "10px", md: "12px" },
             },
 
-            "& li:nth-last-child(2) .MuiPaginationItem-page": {
+            "& li:nth-last-of-type(2) .MuiPaginationItem-page": {
               borderTopRightRadius: { xs: "10px", md: "12px" },
               borderBottomRightRadius: { xs: "10px", md: "12px" },
             },

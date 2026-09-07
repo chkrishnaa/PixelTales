@@ -11,12 +11,17 @@ import {
   Film,
   Tv2,
 } from "lucide-react";
-import { getCartoonName } from '../utils/data'
+import { getCartoonName, GITHUB_MOVIE_VARIABLES } from "../utils/data";
 import { useAuth } from "../context/AuthContext";
 import SectionTitle from './SectionTitle'
 import MovieGrid from './MovieGrid'
 import CommonPagination from './Utility/CommonPagination'
 
+
+const GITHUB_MOVIE_LIST_URL =
+  "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieLists";
+
+const MOVIE_LIST_FILES = ["Doraemon.js", "Shinchan.js", "Pokemon.js"];
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function getAllTitles(movie) {
@@ -95,43 +100,128 @@ export default function AllMoviesSection() {
   const { API } = useAuth();
   const [allMovies, setAllMovies] = useState([]);
   const [moviesLoading, setMoviesLoading] = useState(true);
-  const [query,          setQuery]          = useState('')
-  const [sort,           setSort]           = useState('year_desc')
-  const [selectedGenres, setSelectedGenres] = useState([])
+  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState("year_desc");
+  const [selectedGenres, setSelectedGenres] = useState([]);
   const [yearFrom, setYearFrom] = useState(DEFAULT_MIN_YEAR);
   const [yearTo, setYearTo] = useState(DEFAULT_MAX_YEAR);
-  const [videoFilter,    setVideoFilter]    = useState('all')   // 'all' | 'available' | 'unavailable'
-  const [eraFilter,      setEraFilter]      = useState('all')   // 'all' | 'modern' | 'classic'
-  const [panelOpen,      setPanelOpen]      = useState(false)
-  const [currentPage,    setCurrentPage]    = useState(1)
+  const [videoFilter, setVideoFilter] = useState("all"); // 'all' | 'available' | 'unavailable'
+  const [eraFilter, setEraFilter] = useState("all"); // 'all' | 'modern' | 'classic'
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [favSet, setFavSet] = useState(new Set());
 
   // Fetch all movies from MongoDB on mount
+  // useEffect(() => {
+  //   const fetchMovies = async () => {
+  //     try {
+  //       const res = await fetch(`${API}/api/movies?limit=200`);
+  //       const data = await res.json();
+  //       if (data.success && Array.isArray(data.data)) {
+  //         const movies = data.data;
+  //         setAllMovies(movies);
+  //         // Calculate dynamic year range and genres
+  //         if (movies.length > 0) {
+  //           const years = movies.map((m) => m.year).filter(Boolean);
+  //           const minYear = Math.min(...years);
+  //           const maxYear = Math.max(...years);
+  //           setYearFrom(minYear);
+  //           setYearTo(maxYear);
+  //         }
+  //       }
+  //     } catch (err) {
+  //       console.error("Failed to fetch movies:", err);
+  //     } finally {
+  //       setMoviesLoading(false);
+  //     }
+  //   };
+  //   fetchMovies();
+  // }, [API]);
+
+  // Fetch all movies from GitHub MovieLists on mount
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const res = await fetch(`${API}/api/movies?limit=200`);
-        const data = await res.json();
-        if (data.success && Array.isArray(data.data)) {
-          const movies = data.data;
-          setAllMovies(movies);
-          // Calculate dynamic year range and genres
-          if (movies.length > 0) {
-            const years = movies.map((m) => m.year).filter(Boolean);
-            const minYear = Math.min(...years);
-            const maxYear = Math.max(...years);
-            setYearFrom(minYear);
-            setYearTo(maxYear);
+        const movieFiles = await Promise.all(
+          MOVIE_LIST_FILES.map(async (file) => {
+            try {
+              const response = await fetch(`${GITHUB_MOVIE_LIST_URL}/${file}`);
+
+              if (!response.ok) {
+                console.warn(`Failed to fetch ${file}`);
+                return [];
+              }
+
+              let code = await response.text();
+
+              Object.entries(GITHUB_MOVIE_VARIABLES).forEach(
+                ([variable, value]) => {
+                  const escapedVariable = variable.replace(
+                    /[.*+?^${}()|[\]\\]/g,
+                    "\\$&",
+                  );
+
+                  // Handles: "DORAEMON_GRADIENT" / 'DORAEMON_GRADIENT'
+                  code = code.replace(
+                    new RegExp(`(["'])${escapedVariable}\\1`, "g"),
+                    JSON.stringify(value),
+                  );
+
+                  // Handles: DORAEMON_GRADIENT
+                  code = code.replace(
+                    new RegExp(`\\b${escapedVariable}\\b`, "g"),
+                    JSON.stringify(value),
+                  );
+                },
+              );
+
+              const blob = new Blob([code], {
+                type: "text/javascript",
+              });
+
+              const moduleUrl = URL.createObjectURL(blob);
+
+              try {
+                const module = await import(/* @vite-ignore */ moduleUrl);
+
+                return Array.isArray(module.default)
+                  ? module.default
+                  : Array.isArray(module.MOVIE_DETAILS)
+                    ? module.MOVIE_DETAILS
+                    : [];
+              } finally {
+                URL.revokeObjectURL(moduleUrl);
+              }
+            } catch (err) {
+              console.error(`Failed to load ${file}:`, err);
+              return [];
+            }
+          }),
+        );
+
+        const movies = movieFiles.flat();
+
+        setAllMovies(movies);
+
+        // Calculate dynamic year range from GitHub movies
+        if (movies.length > 0) {
+          const years = movies.map((m) => m.year).filter(Boolean);
+
+          if (years.length > 0) {
+            setYearFrom(Math.min(...years));
+            setYearTo(Math.max(...years));
           }
         }
       } catch (err) {
-        console.error("Failed to fetch movies:", err);
+        console.error("Failed to fetch movies from GitHub:", err);
+        setAllMovies([]);
       } finally {
         setMoviesLoading(false);
       }
     };
+
     fetchMovies();
-  }, [API]);
+  }, []);
 
   // Calculate genres dynamically
   const ALL_GENRES = useMemo(() => {
@@ -149,39 +239,43 @@ export default function AllMoviesSection() {
   );
 
   // ── Seed query from URL ?q= param ─────────────────────────────────────────
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
-    const urlQ = searchParams.get('q')
+    const urlQ = searchParams.get("q");
     if (urlQ) {
-      setQuery(urlQ)
-      setCurrentPage(1)
+      setQuery(urlQ);
+      setCurrentPage(1);
       // Clean the param from the URL without a page reload
-      setSearchParams({}, { replace: true })
+      setSearchParams({}, { replace: true });
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleFavorite = useCallback((id) => {
     setFavSet((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id); else next.add(id)
-      return next
-    })
-  }, [])
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
 
   const toggleGenre = useCallback((g) => {
     setSelectedGenres((prev) =>
-      prev.includes(g) ? prev.filter((x) => x !== g) : [...prev, g]
-    )
-    setCurrentPage(1)
-  }, [])
+      prev.includes(g) ? prev.filter((x) => x !== g) : [...prev, g],
+    );
+    setCurrentPage(1);
+  }, []);
 
   const resetAll = useCallback(() => {
-    setQuery(''); setSort('year_desc'); setSelectedGenres([])
+    setQuery("");
+    setSort("year_desc");
+    setSelectedGenres([]);
     setYearFrom(DEFAULT_MIN_YEAR);
     setYearTo(DEFAULT_MAX_YEAR);
-    setVideoFilter('all'); setEraFilter('all')
-    setCurrentPage(1)
-  }, [])
+    setVideoFilter("all");
+    setEraFilter("all");
+    setCurrentPage(1);
+  }, []);
 
   const activeFilterCount = useMemo(
     () =>
@@ -208,8 +302,13 @@ export default function AllMoviesSection() {
       if (m.year < yearFrom || m.year > yearTo) return false;
       if (videoFilter === "available" && !m.videoUrl?.trim()) return false;
       if (videoFilter === "unavailable" && m.videoUrl?.trim()) return false;
-      if (eraFilter === 'classic' && m.modern !== false && m.modern !== 'false') return false;
-      if (eraFilter === 'modern' && (m.modern === false || m.modern === 'false')) return false;
+      if (eraFilter === "classic" && m.modern !== false && m.modern !== "false")
+        return false;
+      if (
+        eraFilter === "modern" &&
+        (m.modern === false || m.modern === "false")
+      )
+        return false;
 
       return true;
     });
@@ -240,10 +339,10 @@ export default function AllMoviesSection() {
     eraFilter,
   ]);
 
-  const totalPages = Math.ceil(filtered.length / MOVIES_PER_PAGE)
-  const paginated  = filtered
+  const totalPages = Math.ceil(filtered.length / MOVIES_PER_PAGE);
+  const paginated = filtered
     .slice((currentPage - 1) * MOVIES_PER_PAGE, currentPage * MOVIES_PER_PAGE)
-    .map((m) => ({ ...m, favorited: favSet.has(m.id) }))
+    .map((m) => ({ ...m, favorited: favSet.has(m.id) }));
 
   // ── Filter button (passed as SectionTitle action) ──────────────────────────
   const filterButton = (

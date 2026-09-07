@@ -46,6 +46,15 @@ export const cartoonGradients = {
     "linear-gradient(135deg, #7C4DFF 0%, #5E35B1 35%, #3949AB 70%, #1A237E 100%)",
 };
 
+export const GITHUB_MOVIE_VARIABLES = {
+  DORAEMON_GRADIENT: cartoonGradients.doraemon,
+  POKEMON_GRADIENT: cartoonGradients.pokemon,
+  SHINCHAN_GRADIENT: cartoonGradients.shinchan,
+  OGGY_GRADIENT: cartoonGradients.oggyAndTheCockroaches,
+  PAKDAM_PAKDAI_GRADIENT: cartoonGradients.pakdamPakdai,
+  PERMAN_GRADIENT: cartoonGradients.perman,
+};
+
 function makeMovie(id, title, cartoonId, year, extra = {}) {
   const { rating, thumbnail, favorited, progress, likes, commentsCount, duration, ...detail } = extra;
 
@@ -800,62 +809,62 @@ export const HERO_SLIDES = [
     gradient: cartoonGradients.doraemon,
     accent: "cyan",
   },
-  {
-    id: "h2",
-    title: "Pokemon Movie 1",
-    cartoonId: "pokemon",
-    tagline: "Catch every pokemon movie — anytime, anywhere",
-    gradient: cartoonGradients.pokemon,
-    accent: "yellow",
-  },
-  {
-    id: "h3",
-    title: "Shinchan Movie 1",
-    cartoonId: "shinchan",
-    tagline: "Laugh out loud with Shinchan's wildest stories",
-    gradient: cartoonGradients.shinchan,
-    accent: "pink",
-  },
-  {
-    id: "h4",
-    title: "Oggy and the Cockroaches",
-    cartoonId: "oggy-and-the-cockroaches",
-    tagline: "Enjoy Oggy's funniest battles with the crazy cockroaches",
-    gradient: cartoonGradients.oggyAndTheCockroaches,
-    accent: "blue",
-  },
-  {
-    id: "h5",
-    title: "Pakdam Pakdai",
-    cartoonId: "pakdam-pakdai",
-    tagline: "Join Doggy Don and friends for nonstop laughter and action",
-    gradient: cartoonGradients.pakdamPakdai,
-    accent: "green",
-  },
-  {
-    id: "h6",
-    title: "Perman",
-    cartoonId: "perman",
-    tagline: "Fly into nostalgic adventures with Mitsuo and the Perman team",
-    gradient: cartoonGradients.perman,
-    accent: "purple",
-  },
-  {
-    id: "h7",
-    title: "Doraemon Movie 2",
-    cartoonId: "doraemon",
-    tagline: "Nobita and friends — epic journeys await",
-    gradient: cartoonGradients.doraemon,
-    accent: "cyan",
-  },
-  {
-    id: "h8",
-    title: "Pokemon Movie 2",
-    cartoonId: "pokemon",
-    tagline: "Trending this week — join millions watching",
-    gradient: cartoonGradients.pokemon,
-    accent: "yellow",
-  },
+  // {
+  //   id: "h2",
+  //   title: "Pokemon Movie 1",
+  //   cartoonId: "pokemon",
+  //   tagline: "Catch every pokemon movie — anytime, anywhere",
+  //   gradient: cartoonGradients.pokemon,
+  //   accent: "yellow",
+  // },
+  // {
+  //   id: "h3",
+  //   title: "Shinchan Movie 1",
+  //   cartoonId: "shinchan",
+  //   tagline: "Laugh out loud with Shinchan's wildest stories",
+  //   gradient: cartoonGradients.shinchan,
+  //   accent: "pink",
+  // },
+  // {
+  //   id: "h4",
+  //   title: "Oggy and the Cockroaches",
+  //   cartoonId: "oggy-and-the-cockroaches",
+  //   tagline: "Enjoy Oggy's funniest battles with the crazy cockroaches",
+  //   gradient: cartoonGradients.oggyAndTheCockroaches,
+  //   accent: "blue",
+  // },
+  // {
+  //   id: "h5",
+  //   title: "Pakdam Pakdai",
+  //   cartoonId: "pakdam-pakdai",
+  //   tagline: "Join Doggy Don and friends for nonstop laughter and action",
+  //   gradient: cartoonGradients.pakdamPakdai,
+  //   accent: "green",
+  // },
+  // {
+  //   id: "h6",
+  //   title: "Perman",
+  //   cartoonId: "perman",
+  //   tagline: "Fly into nostalgic adventures with Mitsuo and the Perman team",
+  //   gradient: cartoonGradients.perman,
+  //   accent: "purple",
+  // },
+  // {
+  //   id: "h7",
+  //   title: "Doraemon Movie 2",
+  //   cartoonId: "doraemon",
+  //   tagline: "Nobita and friends — epic journeys await",
+  //   gradient: cartoonGradients.doraemon,
+  //   accent: "cyan",
+  // },
+  // {
+  //   id: "h8",
+  //   title: "Pokemon Movie 2",
+  //   cartoonId: "pokemon",
+  //   tagline: "Trending this week — join millions watching",
+  //   gradient: cartoonGradients.pokemon,
+  //   accent: "yellow",
+  // },
 ];
 
 export const POPULAR_SHOWS = [
@@ -902,22 +911,54 @@ export const TESTIMONIALS = [
 
 export const FAQ_ITEMS = [
   {
-    q: 'How to watch?',
-    a: 'Browse cartoons, pick a movie, and hit Watch Now. Create a free account to save progress.',
+    q: "How to watch cartoons and movies?",
+    a: "Browse through the available cartoons and movies and choose the one you want to watch. Open the movie page and click Watch Now to start streaming directly in your browser.",
   },
   {
-    q: 'Is registration required?',
-    a: 'You can browse freely. Sign up to unlock Continue Watching, favorites, and watch parties.',
+    q: "Is registration required?",
+    a: "No, you can browse the website and watch available content without creating an account. Creating a free account unlocks personalized features such as Continue Watching and favorites.",
   },
   {
-    q: 'Is download available?',
-    a: 'Offline downloads are coming soon. For now, stream online in HD.',
+    q: "Can I watch cartoons on my phone?",
+    a: "Yes, PixelTales works through a modern web browser on phones and tablets. Simply open the website, choose your favorite cartoon or movie, and start watching.",
   },
   {
-    q: 'Supported devices?',
-    a: 'Phones, tablets, laptops, and smart TVs with a modern browser.',
+    q: "Can I watch PixelTales on a smart TV?",
+    a: "PixelTales is a web-based platform and does not require a dedicated TV app. If your smart TV or streaming device has a supported web browser, you can open PixelTales there and watch.",
   },
-]
+  {
+    q: "Does PixelTales save my watch progress?",
+    a: "Yes, signed-in users can have their watch progress saved to their account. This makes it easier to return later and continue watching from where they stopped.",
+  },
+  {
+    q: "What is Continue Watching?",
+    a: "Continue Watching shows movies you have already started watching. When you are signed in, your saved progress helps you quickly return to unfinished content.",
+  },
+  {
+    q: "Can I save movies to my favorites?",
+    a: "Yes, you can save your favorite movies for easier access later. Your favorites are associated with your account, so they remain available when you return to PixelTales.",
+  },
+  {
+    q: "What are Watch Parties?",
+    a: "Watch Parties allow you to enjoy movies together with friends in a shared watching experience. You can create or join a party and watch the same content with others.",
+  },
+  {
+    q: "What cartoons are available on PixelTales?",
+    a: "PixelTales features movies and adventures from various cartoon series. The collection can continue to grow, so check the website regularly to discover newly added content.",
+  },
+  {
+    q: "Can I search for a specific movie?",
+    a: "Yes, you can use the available search and browsing options to find movies more easily. You can also explore content through different cartoons, genres, and other categories.",
+  },
+  {
+    q: "What video quality is available?",
+    a: "Video quality depends on the particular movie and its available source. When HD quality is available, you can enjoy it through a compatible browser and a stable internet connection.",
+  },
+  {
+    q: "Is PixelTales free to use?",
+    a: "Yes, PixelTales is free to browse and use for the available content. You can also create a free account to access additional personalized features on the platform.",
+  },
+];
 
 export const FOOTER_LINKS = {
   company: [

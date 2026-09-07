@@ -132,7 +132,7 @@ export default function Dashboard() {
               </span>
             </p>
 
-            <div className="grid gap-4 grid-cols-1 xs:grid-cols-2 md:grid-cols-3">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
               {paginatedFeedbacks.map((item) => {
                 const typeMeta = TYPE_META[item.feedbackType] ?? {
                   icon: "💬",
@@ -151,7 +151,7 @@ export default function Dashboard() {
                         <Avatar
                           name={item.name}
                           avatar={item.avatar}
-                          size={9}
+                          className="h-9 w-9"
                         />
                         <span className="text-sm font-extrabold">
                           {item.name}
@@ -206,7 +206,7 @@ export default function Dashboard() {
           onClick={() => setSelectedFeedback(null)}
         >
           <div
-            className="w-full max-w-2xl rounded-3xl bg-white p-6 shadow-2xl dark:bg-gray-900"
+            className="w-full max-w-2xl rounded-xl xs:rounded-2xl sm:rounded-3xl bg-white p-4 xs:p-6 shadow-2xl dark:bg-gray-900"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
@@ -214,18 +214,18 @@ export default function Dashboard() {
                 <Avatar
                   name={selectedFeedback.name}
                   avatar={selectedFeedback.avatar}
-                  size={12}
+                  className="h-3 w-3 sm:h-4 sm:w-4"
                 />
                 <div>
-                  <h3 className="font-sans text-xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="line-clamp-1 font-sans text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                     {selectedFeedback.name}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                     Community Member
                   </p>
                 </div>
               </div>
-              <span className="text-3xl">
+              <span className="text-xl xs:text-2xl sm:text-3xl ml-3">
                 {SENTIMENT_EMOJI[selectedFeedback.sentiment] ?? "💬"}
               </span>
             </div>
@@ -237,19 +237,19 @@ export default function Dashboard() {
                   label: selectedFeedback.feedbackType,
                 };
                 return (
-                  <span className="inline-flex rounded-full bg-turquoise-100 px-3 py-1 text-sm font-bold text-turquoise-700 dark:bg-turquoise-900/40 dark:text-turquoise-300">
+                  <span className="inline-flex rounded-full bg-turquoise-100 px-3 py-1 text-xs sm:text-sm font-bold text-turquoise-700 dark:bg-turquoise-900/40 dark:text-turquoise-300">
                     {m.icon} {m.label}
                   </span>
                 );
               })()}
             </div>
 
-            <p className="mt-5 whitespace-pre-wrap text-justify text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+            <p className="mt-3 sm:mt-5 whitespace-pre-wrap text-justify text-[11px] xs:text-xs sm:text-sm leading-relaxed text-gray-700 dark:text-gray-300">
               {selectedFeedback.message}
             </p>
 
-            <div className="mt-5 grid grid-cols-2 items-center gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
-              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+            <div className="mt-3 sm:mt-5 grid grid-cols-2 items-center gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
+              <p className="text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-400">
                 {formatDate(selectedFeedback.createdAt)}
               </p>
               <button

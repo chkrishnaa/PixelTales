@@ -15,7 +15,13 @@ import {
 import HomeNavbar from "../components/HomeNavbar";
 import MovieGridCard from "../components/MovieGridCard";
 import Footer from "../components/Footer";
-import { FEATURES, FAQ_ITEMS, CARTOONS, GENRES } from "../utils/data";
+import {
+  FEATURES,
+  FAQ_ITEMS,
+  CARTOONS,
+  GENRES,
+  GITHUB_MOVIE_VARIABLES,
+} from "../utils/data";
 import HomeHeroCarousel from "../components/home/HomeHeroCarousel";
 import ReviewCard from "../components/ReviewCard";
 import CommonPagination from "../components/Utility/CommonPagination";
@@ -24,15 +30,20 @@ import { useAnalytics } from "../hooks/useAnalytics";
 import { formatNumber, formatWatchTime } from "../utils/helper";
 import { useAuth } from "../context/AuthContext";
 
+const GITHUB_MOVIE_LIST_URL =
+  "https://raw.githubusercontent.com/chkrishnaa/PixelTalesMovieImages/main/MovieLists";
+
+const MOVIE_LIST_FILES = ["Doraemon.js", "Shinchan.js", "Pokemon.js"];
+
 // function Stars({ rating }) {
 //   const full = Math.max(0, Math.min(5, Math.round(rating)));
 
 //   return (
 //     <p className="text-amber-400" aria-label={`Rating ${rating} out of 5`}>
-//       {'★'.repeat(full)}
-//       {'☆'.repeat(5 - full)}
+//       {"★".repeat(full)}
+//       {"☆".repeat(5 - full)}
 //     </p>
-//   )
+//   );
 // }
 
 export default function Home() {
@@ -42,22 +53,103 @@ export default function Home() {
   const [moviesLoading, setMoviesLoading] = useState(true);
 
   // Fetch movies from MongoDB on mount
+  // useEffect(() => {
+  //   const fetchMovies = async () => {
+  //     try {
+  //       const res = await fetch(`${API}/api/movies?limit=100`);
+  //       const data = await res.json();
+  //       if (data.success && Array.isArray(data.data)) {
+  //         setMovies(data.data);
+  //       }
+  //     } catch (err) {
+  //       console.error("Failed to fetch movies:", err);
+  //     } finally {
+  //       setMoviesLoading(false);
+  //     }
+  //   };
+  //   fetchMovies();
+  // }, [API]);
+
+  // useEffect(() => {
+  //   const fetchMovies = async () => {
+  //     try {
+  //       // TEMPORARY TEST — MongoDB se movies fetch nahi kar rahe
+  //       setMovies([]);
+  //     } catch (err) {
+  //       console.error("Failed to load movies:", err);
+  //     } finally {
+  //       setMoviesLoading(false);
+  //     }
+  //   };
+
+  //   fetchMovies();
+  // }, []);
+
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const res = await fetch(`${API}/api/movies?limit=100`);
-        const data = await res.json();
-        if (data.success && Array.isArray(data.data)) {
-          setMovies(data.data);
-        }
+        const movieFiles = await Promise.all(
+          MOVIE_LIST_FILES.map(async (file) => {
+            const response = await fetch(`${GITHUB_MOVIE_LIST_URL}/${file}`);
+
+            if (!response.ok) {
+              console.warn(`Failed to fetch ${file}`);
+              return [];
+            }
+
+            let code = await response.text();
+
+            Object.entries(GITHUB_MOVIE_VARIABLES).forEach(
+              ([variable, value]) => {
+                const escapedVariable = variable.replace(
+                  /[.*+?^${}()|[\]\\]/g,
+                  "\\$&",
+                );
+
+                // Handles: "DORAEMON_GRADIENT" / 'DORAEMON_GRADIENT'
+                code = code.replace(
+                  new RegExp(`(["'])${escapedVariable}\\1`, "g"),
+                  JSON.stringify(value),
+                );
+
+                // Handles: DORAEMON_GRADIENT
+                code = code.replace(
+                  new RegExp(`\\b${escapedVariable}\\b`, "g"),
+                  JSON.stringify(value),
+                );
+              },
+            );
+
+            const blob = new Blob([code], {
+              type: "text/javascript",
+            });
+
+            const moduleUrl = URL.createObjectURL(blob);
+
+            try {
+              const module = await import(/* @vite-ignore */ moduleUrl);
+              return Array.isArray(module.default)
+                ? module.default
+                : Array.isArray(module.MOVIE_DETAILS)
+                  ? module.MOVIE_DETAILS
+                  : [];
+            } finally {
+              URL.revokeObjectURL(moduleUrl);
+            }
+          }),
+        );
+
+        setMovies(movieFiles.flat());
       } catch (err) {
-        console.error("Failed to fetch movies:", err);
+        console.error("Failed to fetch movies from GitHub:", err);
+        setMovies([]);
       } finally {
         setMoviesLoading(false);
       }
     };
+
     fetchMovies();
-  }, [API]);
+  }, []);
 
   const { stats: analyticsStats, loading: analyticsLoading } = useAnalytics();
 
@@ -91,7 +183,7 @@ export default function Home() {
         <HomeHeroCarousel />
 
         {/* ABOUT */}
-        <section className="page-container py-10 md:py-14">
+        <section id="about" className="page-container py-10 md:py-14">
           <div className="grid gap-6 md:grid-cols-2 md:items-start">
             <div>
               <h2 className="font-display text-2xl text-turquoise-700 dark:text-turquoise-400 md:text-3xl">
@@ -323,7 +415,7 @@ export default function Home() {
                 >
                   {item.q}
                   <span className="text-turquoise-500" aria-hidden>
-                    {openFaq === i ? "−" : "+"}
+                    {openFaq === i ? "-" : "+"}
                   </span>
                 </button>
                 {openFaq === i ? (
@@ -346,7 +438,7 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 icon: Users,

@@ -247,12 +247,12 @@ export default function Footer() {
                       {link.label}
                     </button>
                   ) : (
-                    <Link
-                      to={link.href}
+                    <a
+                      href={link.href}
                       className="hover:text-turquoise-600 transition-colors"
                     >
                       {link.label}
-                    </Link>
+                    </a>
                   )}
                 </li>
               ))}
