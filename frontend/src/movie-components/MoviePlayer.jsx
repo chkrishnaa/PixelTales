@@ -283,13 +283,13 @@ const isEmbed =
                 poster={movie.thumbnail}
                 className="aspect-video w-full max-h-[45vh] xs:max-h-[55vh] md:max-h-[65vh] lg:max-h-[75vh] bg-black"
                 onPlay={() => {
-                  if ('mediaSession' in navigator) {
-                    navigator.mediaSession.playbackState = 'playing';
+                  if ("mediaSession" in navigator) {
+                    navigator.mediaSession.playbackState = "playing";
                   }
                 }}
                 onPause={() => {
-                  if ('mediaSession' in navigator) {
-                    navigator.mediaSession.playbackState = 'paused';
+                  if ("mediaSession" in navigator) {
+                    navigator.mediaSession.playbackState = "paused";
                   }
                 }}
                 onTimeUpdate={(e) => {
@@ -300,12 +300,12 @@ const isEmbed =
                     totalDurationSecs,
                   );
                   // Keep MediaSession position state in sync
-                  if ('mediaSession' in navigator && e.currentTarget.duration) {
+                  if ("mediaSession" in navigator && e.currentTarget.duration) {
                     try {
                       navigator.mediaSession.setPositionState({
-                        duration:     e.currentTarget.duration,
+                        duration: e.currentTarget.duration,
                         playbackRate: e.currentTarget.playbackRate,
-                        position:     e.currentTarget.currentTime,
+                        position: e.currentTarget.currentTime,
                       });
                     } catch (_) {}
                   }
@@ -314,7 +314,7 @@ const isEmbed =
                 <source src={movie.videoUrl} type="video/mp4" />
               </video>
             )}
-            {movie.quality && (
+            {movie.quality === "1080p" && (
               <span
                 className={`absolute top-2 xs:top-3 right-2 xs:right-3 px-2 xs:px-2.5 py-1 text-[10px] xs:text-xs font-bold tracking-wide text-white backdrop-blur-sm ${v ? "rounded-sm" : "rounded-lg"} ${v ? "bg-amber-700/90" : "bg-turquoise-700/90"}`}
               >
@@ -378,119 +378,120 @@ const isEmbed =
               This classic title has not been digitised yet
             </p>
             {/* Quality badge */}
-            {movie.quality && (
+            {movie.quality === "1080p" && (
               <span
-                className="absolute top-4 right-4 rounded bg-amber-700/80 px-2.5 py-1 text-xs font-bold tracking-wide text-amber-100"
-                style={vFont}
+                className={`absolute top-2 xs:top-3 right-2 xs:right-3 px-2 xs:px-2.5 py-1 text-[10px] xs:text-xs font-bold tracking-wide text-white backdrop-blur-sm ${v ? "rounded-sm" : "rounded-lg"} ${v ? "bg-amber-700/90" : "bg-turquoise-700/90"}`}
               >
-                {movie.quality}
+                {movie.quality.trim().toLowerCase() === "1080p"
+                  ? "HD"
+                  : movie.quality}
               </span>
             )}
           </div>
         ) : null}
+      </div>
 
-        {/* ── Action Bar ── */}
-        <div
-          className={`flex flex-wrap items-center justify-center sm:justify-start gap-2 xs:gap-3 border-t px-3 xs:px-4 sm:px-5 py-3 xs:py-4 ${
-            v
-              ? "border-amber-700/30 dark:border-amber-800/30 bg-[#fdf3d8] dark:bg-[#1e1508]"
-              : "border-turquoise-100 dark:border-turquoise-900/30"
+      {/* ── Action Bar ── */}
+      <div
+        className={`flex flex-wrap items-center justify-center sm:justify-start gap-2 xs:gap-3 border-t px-3 xs:px-4 sm:px-5 py-3 xs:py-4 ${
+          v
+            ? "border-amber-700/30 dark:border-amber-800/30 bg-[#fdf3d8] dark:bg-[#1e1508]"
+            : "border-turquoise-100 dark:border-turquoise-900/30"
+        }`}
+      >
+        {/* Like */}
+        <button
+          onClick={handleLike}
+          disabled={likeLoading}
+          title={user ? (liked ? "Unlike" : "Like") : "Log in to like"}
+          className={`group flex items-center gap-2 border-2 bg-transparent px-3 xs:px-4 py-2 xs:py-2.5 text-[13px] xs:text-sm font-bold transition-all duration-200 active:scale-95 disabled:cursor-default ${
+            v ? "rounded-sm" : "rounded-lg"
+          } ${
+            liked
+              ? v
+                ? "border-amber-500 text-amber-700 dark:border-amber-500 dark:text-amber-400"
+                : "border-rose-400 text-rose-600 dark:border-rose-500 dark:text-rose-400"
+              : v
+                ? "border-amber-700/40 text-amber-800/70 hover:border-amber-600 hover:text-amber-700 dark:border-amber-800/50 dark:text-amber-500"
+                : "border-gray-200 text-gray-600 hover:border-rose-300 hover:text-rose-500 dark:border-gray-700 dark:text-gray-400 dark:hover:border-rose-600"
           }`}
+          style={v ? vFont : undefined}
         >
-          {/* Like */}
+          <Heart
+            size={16}
+            fill={liked ? "currentColor" : "none"}
+            className="transition-transform duration-200 group-hover:scale-110"
+          />
+          <span>{likeCount.toLocaleString()}</span>
+        </button>
+
+        {/* Save */}
+        <button
+          onClick={() =>
+            user ? setShowCollection(true) : setShowLoginModal(true)
+          }
+          title={user ? "Save to collection" : "Log in to save"}
+          className={`flex items-center gap-2 border-2 bg-transparent px-4 py-2.5 text-sm font-bold transition-all duration-200 active:scale-95 ${
+            v ? "rounded-sm" : "rounded-lg"
+          } ${
+            savedToAny
+              ? v
+                ? "border-amber-600 text-amber-700 dark:border-amber-500 dark:text-amber-400"
+                : "border-turquoise-400 text-turquoise-700 dark:border-turquoise-500 dark:text-turquoise-400"
+              : v
+                ? "border-amber-700/40 text-amber-800/70 hover:border-amber-600 hover:text-amber-700 dark:border-amber-800/50 dark:text-amber-500"
+                : "border-gray-200 text-gray-600 hover:border-turquoise-300 hover:text-turquoise-600 dark:border-gray-700 dark:text-gray-400"
+          } ${!user ? "opacity-60 cursor-default" : ""}`}
+          style={v ? vFont : undefined}
+        >
+          <Bookmark size={16} fill={savedToAny ? "currentColor" : "none"} />
+          {savedToAny ? "Saved" : "Save"}
+        </button>
+
+        {editMode && !playerEditing && !activeEditor && (
           <button
-            onClick={handleLike}
-            disabled={likeLoading}
-            title={user ? (liked ? "Unlike" : "Like") : "Log in to like"}
-            className={`group flex items-center gap-2 border-2 bg-transparent px-3 xs:px-4 py-2 xs:py-2.5 text-[13px] xs:text-sm font-bold transition-all duration-200 active:scale-95 disabled:cursor-default ${
-              v ? "rounded-sm" : "rounded-lg"
-            } ${
-              liked
-                ? v
-                  ? "border-amber-500 text-amber-700 dark:border-amber-500 dark:text-amber-400"
-                  : "border-rose-400 text-rose-600 dark:border-rose-500 dark:text-rose-400"
-                : v
-                  ? "border-amber-700/40 text-amber-800/70 hover:border-amber-600 hover:text-amber-700 dark:border-amber-800/50 dark:text-amber-500"
-                  : "border-gray-200 text-gray-600 hover:border-rose-300 hover:text-rose-500 dark:border-gray-700 dark:text-gray-400 dark:hover:border-rose-600"
+            type="button"
+            onClick={openMediaEditor}
+            className={`flex items-center gap-2 rounded-lg xs:rounded-xl sm:rounded-full border border-turquoise-200 bg-transparent px-3 xs:px-4 py-2 xs:py-2.5 text-[13px] xs:text-sm font-semibold transition-all duration-200 active:scale-95 ${
+              v
+                ? "text-amber-700 dark:border-amber-500 dark:text-amber-400"
+                : "text-turquoise-700 hover:border-turquoise-400 dark:border-turquoise-500 dark:text-turquoise-400"
             }`}
             style={v ? vFont : undefined}
           >
-            <Heart
-              size={16}
-              fill={liked ? "currentColor" : "none"}
-              className="transition-transform duration-200 group-hover:scale-110"
-            />
-            <span>{likeCount.toLocaleString()}</span>
+            <PencilLine size={16} />
+            Edit media
           </button>
+        )}
 
-          {/* Save */}
+        {/* Share */}
+        <div className="relative">
           <button
-            onClick={() =>
-              user ? setShowCollection(true) : setShowLoginModal(true)
-            }
-            title={user ? "Save to collection" : "Log in to save"}
-            className={`flex items-center gap-2 border-2 bg-transparent px-4 py-2.5 text-sm font-bold transition-all duration-200 active:scale-95 ${
-              v ? "rounded-sm" : "rounded-lg"
-            } ${
-              savedToAny
-                ? v
-                  ? "border-amber-600 text-amber-700 dark:border-amber-500 dark:text-amber-400"
-                  : "border-turquoise-400 text-turquoise-700 dark:border-turquoise-500 dark:text-turquoise-400"
-                : v
-                  ? "border-amber-700/40 text-amber-800/70 hover:border-amber-600 hover:text-amber-700 dark:border-amber-800/50 dark:text-amber-500"
-                  : "border-gray-200 text-gray-600 hover:border-turquoise-300 hover:text-turquoise-600 dark:border-gray-700 dark:text-gray-400"
-            } ${!user ? "opacity-60 cursor-default" : ""}`}
+            onClick={handleShare}
+            className={`flex items-center justify-center gap-2 px-4 xs:px-5 py-2 xs:py-2.5 text-[13px] xs:text-sm font-bold text-white shadow-md transition-all duration-200 active:scale-95 ${
+              v
+                ? "rounded-sm bg-amber-700 hover:bg-amber-600"
+                : "rounded-lg bg-turquoise-700 hover:bg-turquoise-600"
+            }`}
             style={v ? vFont : undefined}
           >
-            <Bookmark size={16} fill={savedToAny ? "currentColor" : "none"} />
-            {savedToAny ? "Saved" : "Save"}
-          </button>
-
-          {editMode && !playerEditing && !activeEditor && (
-            <button
-              type="button"
-              onClick={openMediaEditor}
-              className={`flex items-center gap-2 rounded-lg xs:rounded-xl sm:rounded-full border border-turquoise-200 bg-transparent px-3 xs:px-4 py-2 xs:py-2.5 text-[13px] xs:text-sm font-semibold transition-all duration-200 active:scale-95 ${
-                v
-                  ? "text-amber-700 dark:border-amber-500 dark:text-amber-400"
-                  : "text-turquoise-700 hover:border-turquoise-400 dark:border-turquoise-500 dark:text-turquoise-400"
-              }`}
-              style={v ? vFont : undefined}
-            >
-              <PencilLine size={16} />
-              Edit media
-            </button>
-          )}
-
-          {/* Share */}
-          <div className="relative">
-            <button
-              onClick={handleShare}
-              className={`flex items-center justify-center gap-2 px-4 xs:px-5 py-2 xs:py-2.5 text-[13px] xs:text-sm font-bold text-white shadow-md transition-all duration-200 active:scale-95 ${
-                v
-                  ? "rounded-sm bg-amber-700 hover:bg-amber-600"
-                  : "rounded-lg bg-turquoise-700 hover:bg-turquoise-600"
-              }`}
-              style={v ? vFont : undefined}
-            >
-              {copied ? (
-                <CheckCircle2 size={16} className="text-emerald-500" />
-              ) : (
-                <Share2 size={16} />
-              )}
-              {copied ? "Copied!" : "Share"}
-            </button>
-            {copied && (
-              <div
-                className={`absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 xs:px-3 py-1 text-[10px] xs:text-xs font-medium text-white shadow-lg whitespace-nowrap ${v ? "rounded-sm" : "rounded-lg"} ${v ? "bg-amber-900" : "bg-gray-900 dark:bg-gray-700"}`}
-              >
-                Link copied! ✓
-                <div
-                  className={`absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent ${v ? "border-t-amber-900" : "border-t-gray-900 dark:border-t-gray-700"}`}
-                />
-              </div>
+            {copied ? (
+              <CheckCircle2 size={16} className="text-emerald-500" />
+            ) : (
+              <Share2 size={16} />
             )}
-          </div>
+            {copied ? "Copied!" : "Share"}
+          </button>
+          {copied && (
+            <div
+              className={`absolute -top-10 left-1/2 -translate-x-1/2 px-2.5 xs:px-3 py-1 text-[10px] xs:text-xs font-medium text-white shadow-lg whitespace-nowrap ${v ? "rounded-sm" : "rounded-lg"} ${v ? "bg-amber-900" : "bg-gray-900 dark:bg-gray-700"}`}
+            >
+              Link copied! ✓
+              <div
+                className={`absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent ${v ? "border-t-amber-900" : "border-t-gray-900 dark:border-t-gray-700"}`}
+              />
+            </div>
+          )}
         </div>
       </div>
 

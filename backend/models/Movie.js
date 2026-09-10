@@ -28,7 +28,7 @@ const MovieSchema = new mongoose.Schema({
   genres: [String],
   description: String,
   characters: [CharacterSchema],
-  gallery: [String],
+  gallery: { type: String, default: "" },
   // Admin-controlled flags
   isPrime: { type: Boolean, default: false },
   isRecommended: { type: Boolean, default: false },

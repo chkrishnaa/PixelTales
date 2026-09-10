@@ -9,6 +9,7 @@ import {
   Image,
 } from "lucide-react";
 import { getMovieTitle } from "../utils/movie";
+import { iterateGalleryImages } from "../utils/movieHelper";
 
 
 const ITEMS_PER_PAGE = 6;
@@ -250,7 +251,9 @@ export default function MovieGallery({
   movie,
 }) {
   const v = movie.modern === false || movie.modern === 'false';
-  const gallery = (movie.gallery || []).filter(Boolean);
+  const gallery = iterateGalleryImages(movie.gallery).filter(Boolean);
+
+  if (!gallery.length) return null;
 
   const [page, setPage] = useState(0);
   const [lightbox, setLightbox] = useState(null);
