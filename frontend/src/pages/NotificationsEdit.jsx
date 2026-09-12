@@ -466,7 +466,11 @@ export default function NotificationsEdit() {
 
               <div className="min-h-0 flex-1 overflow-y-auto p-5">
                 {content.trim() ? (
-                  <Marddown text={content} isDarkMode={isDarkMode} className="font-display text-sm" />
+                  <Marddown
+                    text={content}
+                    isDarkMode={isDarkMode}
+                    className="font-text text-base"
+                  />
                 ) : (
                   <div className="flex min-h-full items-center justify-center">
                     <div className="text-center">

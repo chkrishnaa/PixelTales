@@ -255,7 +255,7 @@ export default function NotificationBell() {
                           />
                         </div>
 
-                        <p className="mt-1 line-clamp-3 whitespace-pre-line text-xs leading-5 text-gray-500 dark:text-gray-400 font-display">
+                        <p className="mt-1 line-clamp-3 whitespace-pre-line text-[13px] leading-5 text-gray-500 dark:text-gray-400">
                           {stripMarkdown(notification.content)}
                         </p>
 
