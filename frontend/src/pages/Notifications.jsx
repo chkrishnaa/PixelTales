@@ -523,7 +523,7 @@ export default function Notifications() {
                   <Marddown
                     text={selectedNotification.content}
                     isDarkMode={isDarkMode}
-                    className="font-display"
+                    className="font-display text-sm"
                   />
                 </div>
               )}

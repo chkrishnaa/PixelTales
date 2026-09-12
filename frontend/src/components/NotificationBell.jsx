@@ -166,7 +166,7 @@ export default function NotificationBell() {
       </button>
 
       {showPopup && (
-        <div className="absolute right-0 top-full z-[100] mt-3 w-[calc(100vw-2rem)] max-w-[390px] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl dark:border-gray-800 dark:bg-gray-950">
+        <div className="absolute right-0 top-full z-[100] mt-3 w-[min(390px,calc(100vw-1rem))] max-w-[calc(100vw-1rem)] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl dark:border-gray-800 dark:bg-gray-950">
           <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-800">
             <div className="flex items-center gap-2">
               <Bell size={24} className="text-turquoise-500" />
@@ -237,7 +237,7 @@ export default function NotificationBell() {
                       key={notification.id}
                       type="button"
                       onClick={() => handleNotificationClick(notification.id)}
-                      className="group flex w-full gap-3 rounded-xl p-3 text-left transition hover:bg-gray-100 dark:hover:bg-gray-900"
+                      className="group flex w-full min-w-0 gap-3 rounded-xl p-3 text-left transition hover:bg-gray-100 dark:hover:bg-gray-900"
                     >
                       <div className="relative shrink-0">
                         <Avatar user={notification.createdBy} size={11} />
@@ -259,27 +259,29 @@ export default function NotificationBell() {
                           {stripMarkdown(notification.content)}
                         </p>
 
-                        <div className="mt-2 flex items-center justify-between gap-2">
+                        <div className="mt-2 flex min-w-0 flex-wrap items-center justify-between gap-2">
                           <div className="flex items-center gap-1.5">
                             {isNew && (
                               <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-turquoise-600 dark:bg-turquoise-400" />
                             )}
 
-                            <span className="font-display text-[11px] text-gray-400 dark:text-gray-500">
+                            <span className="font-display text-xs text-gray-400 dark:text-gray-500">
                               {formatTime(notification.createdAt)}
                             </span>
                           </div>
 
                           {showExpiry && (
                             <span
-                              className={`flex shrink-0 items-center gap-1 font-display text-[11px] font-semibold ${
+                              className={`flex min-w-0 max-w-full items-center gap-1 text-right font-display text-xs font-semibold ${
                                 remainingSeconds <= 3600
                                   ? "text-red-500 dark:text-red-400"
                                   : "text-turquoise-600 dark:text-turquoise-400"
                               }`}
                             >
-                              <Clock size={12} />
-                              Expires in: {formatCountdown(remainingSeconds)}
+                              <Clock size={12} className="shrink-0" />
+                              <span className="min-w-0 break-words">
+                                Expires in: {formatCountdown(remainingSeconds)}
+                              </span>
                             </span>
                           )}
                         </div>
