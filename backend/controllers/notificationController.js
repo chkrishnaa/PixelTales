@@ -8,6 +8,7 @@ export const getNotifications = async (req, res, next) => {
     const notifications = await Notification.find({
       $or: [{ expiresAt: null }, { expiresAt: { $gt: new Date() } }],
     })
+      .populate("createdBy", "name username avatar profileImage")
       .sort({ createdAt: -1 })
       .lean();
 
@@ -22,8 +23,10 @@ export const getNotifications = async (req, res, next) => {
 
 export const getNotificationById = async (req, res, next) => {
   try {
-    const notification = await Notification.findById(req.params.id).lean();
-
+const notification = await Notification.findById(req.params.id)
+  .populate("createdBy", "name username avatar profileImage")
+  .lean();
+  
     if (!notification) {
       return res.status(404).json({
         success: false,

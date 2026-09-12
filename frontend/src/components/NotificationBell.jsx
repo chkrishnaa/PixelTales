@@ -240,7 +240,7 @@ export default function NotificationBell() {
                       className="group flex w-full gap-3 rounded-xl p-3 text-left transition hover:bg-gray-100 dark:hover:bg-gray-900"
                     >
                       <div className="relative shrink-0">
-                        <Avatar user={user} size={11} />
+                        <Avatar user={notification.createdBy} size={11} />
                       </div>
 
                       <div className="min-w-0 flex-1">
