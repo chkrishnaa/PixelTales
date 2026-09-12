@@ -155,7 +155,7 @@ export default function MovieGridCard({
             <img
               src={movie.thumbnail}
               alt={getMovieTitle(movie)}
-              className={`absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105`}
+              className={`absolute inset-0 h-full w-full object-fit transition-transform duration-500 group-hover:scale-105`}
               loading="lazy"
               onError={() => setImgError(true)}
             />
@@ -184,13 +184,25 @@ export default function MovieGridCard({
                   />
                 </div>
               </div>
-              {!v && (
-                <div className="absolute bottom-0 left-0 right-0 px-3 py-2 backdrop-blur-sm bg-black/30">
-                  <p className="line-clamp-1 text-[11px] font-bold leading-tight text-white drop-shadow">
-                    {getMovieTitle(movie)}
-                  </p>
-                </div>
-              )}
+
+              <div
+                className={`absolute left-0 right-0 z-20 flex justify-center items-center bottom-8`}
+              >
+                <span
+                  className={`px-2.5 py-[3px] text-[8px] font-black tracking-[0.18em] uppercase shadow-md rounded-sm ${
+                    v
+                      ? "bg-amber-500 text-gray-800 backdrop-blur-sm"
+                      : "bg-red-700/90 text-gray-300 backdrop-blur-sm"
+                  }`}
+                  style={
+                    v
+                      ? { fontFamily: '"Courier New", Courier, monospace' }
+                      : undefined
+                  }
+                >
+                  UNAVAILABLE
+                </span>
+              </div>
             </>
           )}
 
@@ -247,13 +259,13 @@ export default function MovieGridCard({
           {/* UNAVAILABLE badge */}
           {!hasVideo && (
             <div
-              className={`absolute left-0 right-0 z-20 flex justify-center items-center ${v ? "bottom-4" : "bottom-2"}`}
+              className={`absolute left-0 right-0 z-20 flex justify-center items-center bottom-8`}
             >
               <span
                 className={`px-2.5 py-[3px] text-[8px] font-black tracking-[0.18em] uppercase shadow-md rounded-sm ${
                   v
-                    ? "bg-amber-500 border border-white/50 text-gray-800 backdrop-blur-sm"
-                    : "bg-red-700/90 border border-red-900 text-gray-300 backdrop-blur-sm"
+                    ? "bg-amber-500 text-gray-800 backdrop-blur-sm"
+                    : "bg-red-700/90 text-gray-300 backdrop-blur-sm"
                 }`}
                 style={
                   v
@@ -393,11 +405,19 @@ export default function MovieGridCard({
                   ? "rounded bg-amber-800/20 dark:bg-amber-700/20 text-amber-800 dark:text-amber-400 border border-amber-700/30"
                   : "rounded-md bg-turquoise-100 text-turquoise-700 dark:bg-turquoise-950/40 dark:text-turquoise-400 border border-turquoise-500 dark:border-turquoise-400"
               }`}
-              style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}
+              style={
+                v
+                  ? { fontFamily: '"Courier New", Courier, monospace' }
+                  : undefined
+              }
             >
               <Star
                 size={11}
-                className={v ? "fill-amber-600 text-amber-600" : "fill-turquoise-500 text-turquoise-500"}
+                className={
+                  v
+                    ? "fill-amber-600 text-amber-600"
+                    : "fill-turquoise-500 text-turquoise-500"
+                }
               />
               {movie.rating}
             </span>
@@ -409,7 +429,11 @@ export default function MovieGridCard({
                   ? `rounded bg-[#c8902a]/20 text-amber-900 dark:bg-amber-800/30 dark:text-amber-300 border border-amber-700/40`
                   : `rounded-md ${cartoonBadgeClass}`
               }`}
-              style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}
+              style={
+                v
+                  ? { fontFamily: '"Courier New", Courier, monospace' }
+                  : undefined
+              }
             >
               {cartoonName}
             </span>
@@ -428,7 +452,11 @@ export default function MovieGridCard({
                     ? "rounded bg-amber-800/15 dark:bg-amber-700/20 text-amber-900 dark:text-amber-300 border border-amber-700/30"
                     : "rounded-md bg-gray-100 text-gray-600 dark:bg-gray-700 border border-gray-400 dark:border-gray-600 dark:text-gray-300"
                 }`}
-                style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}
+                style={
+                  v
+                    ? { fontFamily: '"Courier New", Courier, monospace' }
+                    : undefined
+                }
               >
                 {genre}
               </span>
@@ -437,7 +465,9 @@ export default function MovieGridCard({
             {remainingGenres > 0 && (
               <span
                 className={`text-[11px] font-medium ${
-                  v ? "text-amber-700/70 dark:text-amber-500" : "text-gray-500 dark:text-gray-400"
+                  v
+                    ? "text-amber-700/70 dark:text-amber-500"
+                    : "text-gray-500 dark:text-gray-400"
                 }`}
               >
                 +{remainingGenres} more
@@ -507,7 +537,11 @@ export default function MovieGridCard({
                   ? "bg-amber-800/15 text-amber-800 dark:bg-amber-800/20 dark:text-amber-400 border border-amber-700/30"
                   : "bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
               }`}
-              style={v ? { fontFamily: '"Courier New", Courier, monospace' } : undefined}
+              style={
+                v
+                  ? { fontFamily: '"Courier New", Courier, monospace' }
+                  : undefined
+              }
             >
               <Clock size={11} />
               {formatDuration(movie.duration)}

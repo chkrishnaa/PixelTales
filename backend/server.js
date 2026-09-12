@@ -15,6 +15,7 @@ import movieRoutes from "./routes/movieRoutes.js";
 import collectionRoutes from "./routes/collectionRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
 import watchRoutes from "./routes/watchRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 import facebookRoutes from "./routes/facebookRoutes.js";
 
 import { errorHandler } from "./middlewares/errorHandler.js";
@@ -64,7 +65,9 @@ app.use("/api/movies", movieRoutes);
 app.use("/api/collections", collectionRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/watch", watchRoutes);
+app.use("/api/notifications", notificationRoutes);
 app.use("/api/facebook", facebookRoutes);
+
 
 // Health check
 app.get("/api/health", (_req, res) =>

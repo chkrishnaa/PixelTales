@@ -18,6 +18,8 @@ import ProtectedRoute from "./components/Utility/ProtectedRoute";
 
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Notifications from "./pages/Notifications";
+import NotificationsEdit from "./pages/NotificationsEdit";
 
 export default function App() {
   return (
@@ -52,6 +54,17 @@ export default function App() {
           <Route path="review" element={<Review />} />
           <Route path="write-review" element={<Review />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route
+            path="/notifications/:notificationId"
+            element={<Notifications />}
+          />
+
+          <Route path="/notifications/new" element={<NotificationsEdit />} />
+          <Route
+            path="/notifications/:notificationId/edit"
+            element={<NotificationsEdit />}
+          />
 
           <Route
             path="/movie/:movieId"
