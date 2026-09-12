@@ -175,8 +175,6 @@ export default function NotificationBell() {
                 Notifications
               </h2>
             </div>
-
-            
           </div>
 
           <div className="max-h-[min(70vh,560px)] overflow-y-auto p-2">
@@ -200,6 +198,20 @@ export default function NotificationBell() {
                 <p className="mt-1 font-display text-xs text-gray-500 dark:text-gray-400">
                   You're all caught up.
                 </p>
+
+                {user?.role === "admin" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPopup(false);
+                      navigate("/notifications/new");
+                    }}
+                    className="mt-4 inline-flex items-center gap-2 rounded-lg bg-turquoise-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-turquoise-700 dark:bg-turquoise-500 dark:hover:bg-turquoise-600"
+                  >
+                    <span className="text-base leading-none">+</span>
+                    Add Notification
+                  </button>
+                )}
               </div>
             ) : (
               <>

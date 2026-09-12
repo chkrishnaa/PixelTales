@@ -470,47 +470,49 @@ export default function Notifications() {
                 </div>
               </div>
 
-              {selectedNotification.expiresAt && remainingSeconds !== null && (
-                <div
-                  className={`mb-5 font-display rounded-xl border p-4 ${
-                    remainingSeconds <= 3600
-                      ? "border-red-200 bg-red-50 dark:border-red-900/60 dark:bg-red-950/30"
-                      : "border-turquoise-200 bg-turquoise-50 dark:border-turquoise-900/60 dark:bg-turquoise-950/30"
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="min-w-0">
-                      <p
-                        className={`text-xs font-semibold uppercase tracking-wide ${
+              {selectedNotification.expiresAt &&
+                remainingSeconds !== null &&
+                remainingSeconds < 7 * 24 * 60 * 60 && (
+                  <div
+                    className={`mb-5 font-display rounded-xl border p-4 ${
+                      remainingSeconds <= 3600
+                        ? "border-red-200 bg-red-50 dark:border-red-900/60 dark:bg-red-950/30"
+                        : "border-turquoise-200 bg-turquoise-50 dark:border-turquoise-900/60 dark:bg-turquoise-950/30"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="min-w-0">
+                        <p
+                          className={`text-xs font-semibold uppercase tracking-wide ${
+                            remainingSeconds <= 3600
+                              ? "text-red-600 dark:text-red-400"
+                              : "text-turquoise-700 dark:text-turquoise-400"
+                          }`}
+                        >
+                          {remainingSeconds <= 3600
+                            ? "Expiring Soon"
+                            : "Time Remaining"}
+                        </p>
+
+                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                          {remainingSeconds <= 3600
+                            ? "This notification will expire in"
+                            : "This notification will automatically expire when the timer reaches to"}
+                        </p>
+                      </div>
+
+                      <div
+                        className={`shrink-0 font-display rounded-lg px-3 py-2 text-lg font-semibold tabular-nums shadow-sm ${
                           remainingSeconds <= 3600
-                            ? "text-red-600 dark:text-red-400"
-                            : "text-turquoise-700 dark:text-turquoise-400"
+                            ? "bg-red-100 text-red-600 dark:bg-red-950/60 dark:text-red-400"
+                            : "bg-white text-turquoise-700 dark:bg-gray-900 dark:text-turquoise-400"
                         }`}
                       >
-                        {remainingSeconds <= 3600
-                          ? "Expiring Soon"
-                          : "Time Remaining"}
-                      </p>
-
-                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        {remainingSeconds <= 3600
-                          ? "This notification will expire in"
-                          : "This notification will automatically expire when the timer reaches to"}
-                      </p>
-                    </div>
-
-                    <div
-                      className={`shrink-0 font-display rounded-lg px-3 py-2 text-lg font-semibold tabular-nums shadow-sm ${
-                        remainingSeconds <= 3600
-                          ? "bg-red-100 text-red-600 dark:bg-red-950/60 dark:text-red-400"
-                          : "bg-white text-turquoise-700 dark:bg-gray-900 dark:text-turquoise-400"
-                      }`}
-                    >
-                      {formatCountdown(remainingSeconds)}
+                        {formatCountdown(remainingSeconds)}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
               {detailLoading ? (
                 <div className="flex min-h-[150px] items-center justify-center">
                   <Loader2
