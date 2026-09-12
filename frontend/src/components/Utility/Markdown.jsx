@@ -139,7 +139,6 @@ ${isDarkMode ? "[&>p>kbd]:border-gray-600 [&>p>kbd]:bg-gray-800 [&>p>kbd]:text-g
 [&>p>sup]:text-[10px]
 
 /* ---------------- IMAGES ---------------- */
-[&>p>img]:cursor-pointer
 [&>p>img]:transition
 [&>p>img:hover]:opacity-90
 
@@ -261,7 +260,7 @@ ${className}`}
               <img
                 src={src}
                 alt={alt}
-                className="my-4 w-full max-w-full cursor-pointer rounded-md transition hover:opacity-90 mob:rounded-lg"
+                className="my-4 w-full max-w-full rounded-md transition hover:opacity-90 mob:rounded-lg"
                 style={{ height: "auto" }}
                 onError={(e) => (e.currentTarget.style.display = "none")}
               />
