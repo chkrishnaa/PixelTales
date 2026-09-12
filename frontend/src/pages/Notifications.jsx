@@ -251,7 +251,7 @@ export default function Notifications() {
   return (
     <div className="page-container py-6 xs:py-8">
       <div className="mb-6">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-turquoise-100 text-turquoise-700 dark:bg-turquoise-950 dark:text-turquoise-400">
               <Bell size={24} />
@@ -269,14 +269,14 @@ export default function Notifications() {
           </div>
 
           {isAdmin && (
-            <div className="font-display flex items-center gap-2">
+            <div className="font-display flex w-full items-center justify-end gap-2 sm:w-auto">
               <button
                 type="button"
                 onClick={() => navigate("/notifications/new")}
                 className="flex items-center gap-2 rounded-lg border border-turquoise-500 bg-turquoise-500 px-3 py-2 text-sm font-medium text-white transition hover:bg-turquoise-600"
               >
                 <Plus size={16} />
-                <span className="hidden xs:inline">Add Notification</span>
+                <span>Add Notification</span>
               </button>
 
               {notifications.length > 0 && (
@@ -290,9 +290,7 @@ export default function Notifications() {
                   }`}
                 >
                   <Settings2 size={16} />
-                  <span className="hidden xs:inline">
-                    {editMode ? "Done Editing" : "Edit Mode"}
-                  </span>
+                  <span>{editMode ? "Done Editing" : "Edit Mode"}</span>
                 </button>
               )}
             </div>
@@ -341,16 +339,16 @@ export default function Notifications() {
           </div>
         </div>
       ) : (
-        <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
+        <div className="grid min-w-0 gap-5 lg:grid-cols-[320px_minmax(0,1fr)]">
           {/* Notification List */}
-          <div className="space-y-2">
+          <div className="min-w-0 space-y-2">
             {notifications.map((notification) => {
               const selected = notification.id === selectedNotification?.id;
 
               return (
                 <div
                   key={notification.id}
-                  className={`flex w-full items-center gap-3 rounded-xl border p-3 transition ${
+                  className={`flex w-full min-w-0 items-center gap-3 rounded-xl border p-3 transition ${
                     selected
                       ? "border-turquoise-400 bg-turquoise-50 dark:border-turquoise-700 dark:bg-turquoise-950/40"
                       : "border-gray-200 hover:border-turquoise-300 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-900"
@@ -401,7 +399,7 @@ export default function Notifications() {
                         title="Delete notification"
                         disabled={deletingId === notification.id}
                         onClick={() => handleDelete(notification.id)}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition hover:bg-red-100 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-400 dark:hover:bg-red-950 dark:hover:text-red-400"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition hover:bg-red-100 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-400 dark:hover:bg-red-950 dark:hover:text-red-400 self-end"
                       >
                         {deletingId === notification.id ? (
                           <Loader2 size={15} className="animate-spin" />
@@ -418,14 +416,14 @@ export default function Notifications() {
 
           {/* Selected Notification */}
           {selectedNotification && (
-            <article className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900 xs:p-6">
+            <article className="min-w-0 max-w-full rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900 xs:p-5 sm:p-6">
               <div className="mb-5 border-b border-gray-200 pb-4 dark:border-gray-800">
-                <h2 className="font-display text-[26px] font-medium leading-tight text-turquoise-600 dark:text-turquoise-500">
+                <h2 className="font-display text-xl font-medium leading-tight text-turquoise-600 dark:text-turquoise-500 sm:text-2xl">
                   {selectedNotification.title}
                 </h2>
 
-                <div className="font-display mt-2 flex justify-between items-center gap-x-4 gap-y-2 text-xs text-gray-500 dark:text-gray-400">
-                  <div className="flex items-center gap-2">
+                <div className="font-display mt-2 flex flex-col items-start gap-2 text-xs text-gray-500 dark:text-gray-400 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:text-sm">
+                  <div className="flex items-center text-sm gap-2">
                     <Clock size={14} />
                     <span>
                       {new Date(
@@ -446,7 +444,7 @@ export default function Notifications() {
                   </div>
 
                   {selectedNotification.expiresAt && (
-                    <div className="flex items-center gap-2 text-turquoise-600 dark:text-turquoise-400">
+                    <div className="flex w-full items-center justify-end gap-2 text-sm text-turquoise-600 dark:text-turquoise-400 sm:w-auto">
                       <Clock size={14} />
                       <span>
                         Expires at{" "}
@@ -480,7 +478,7 @@ export default function Notifications() {
                         : "border-turquoise-200 bg-turquoise-50 dark:border-turquoise-900/60 dark:bg-turquoise-950/30"
                     }`}
                   >
-                    <div className="flex items-center justify-between gap-4">
+                    <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                       <div className="min-w-0">
                         <p
                           className={`text-xs font-semibold uppercase tracking-wide ${
@@ -502,7 +500,7 @@ export default function Notifications() {
                       </div>
 
                       <div
-                        className={`shrink-0 font-display rounded-lg px-3 py-2 text-lg font-semibold tabular-nums shadow-sm ${
+                        className={`max-w-full shrink-0 font-display rounded-lg px-3 py-2 text-sm font-semibold tabular-nums shadow-sm sm:text-base ${
                           remainingSeconds <= 3600
                             ? "bg-red-100 text-red-600 dark:bg-red-950/60 dark:text-red-400"
                             : "bg-white text-turquoise-700 dark:bg-gray-900 dark:text-turquoise-400"
@@ -521,7 +519,7 @@ export default function Notifications() {
                   />
                 </div>
               ) : (
-                <div className="max-w-none">
+                <div className="min-w-0 max-w-full overflow-hidden">
                   <Marddown
                     text={selectedNotification.content}
                     isDarkMode={isDarkMode}

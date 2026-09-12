@@ -226,7 +226,7 @@ ${className}`}
             return (
               <a
                 href={href}
-                className="text-blue-500 hover:underline"
+                className="break-words text-blue-500 hover:underline"
                 {...(isExternal
                   ? {
                       target: "_blank",
