@@ -231,7 +231,7 @@ export default function HomeHeroCarousel() {
                 className="flex w-full flex-col items-center text-center md:items-start md:text-left"
               >
                 <p
-                  className={`mb-1 font-sans text-[10px] font-bold uppercase tracking-[0.22em] xs:text-xs sm:text-sm ${accentText[slide.accent]} [text-shadow:0_2px_8px_rgba(0,0,0,0.95)]`}
+                  className={`mb-1 font-sans text-[10px] font-bold uppercase tracking-[0.22em] xs:text-xs sm:text-sm text-blue-100 [text-shadow:0_2px_8px_rgba(0,0,0,0.95)]`}
                 >
                   {slide.badge || "Upcoming Movie"}
                 </p>
