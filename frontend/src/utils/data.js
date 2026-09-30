@@ -802,49 +802,56 @@ export const BANNERS = {
 
 export const HERO_SLIDES = [
   {
+    id: "h1",
+    title: "Doraemon Movies",
+    cartoonId: "doraemon",
+    tagline: "Stream the latest Doraemon adventures in HD",
+    gradient: cartoonGradients.doraemon,
+    accent: "cyan",
+  },
+  {
     id: "h-undersea-2026",
-
     type: "image",
-
     isNew: true,
-
     badge: "Upcoming Movie",
-
     title:
       "Doraemon the Movie: New Nobita and the Castle of the Undersea Devil",
-
     cartoonId: "doraemon",
-
     tagline:
       "A brand-new underwater adventure awaits as Doraemon, Nobita and their friends discover a mysterious world beneath the ocean.",
-
     bgImage: "/NobitasCastleOfTheUnderseaDevil.png",
-
     accent: "cyan",
-
     releaseDate: "2nd October 2026",
-
     releaseLocation: "In All Indian Theatres",
-
     announcedBy: "PVR INOX Pictures",
-
     partner: "TV Asahi",
-
     trailerUrl: "/NobitasCastleOfTheUnderseaDevil.mp4",
+    youtubeUrl: "https://www.youtube.com/watch?v=9QkdtXDGHeg",
   },
-
   {
-    id: "h1",
-
-    title: "Doraemon Movie",
-
+    id: "h-steampowered-2027",
+    type: "image",
+    isNew: true,
+    badge: "Upcoming Movie",
+    title: "Doraemon the Movie: Nobita's Steam-Powered Time Machine",
     cartoonId: "doraemon",
-
-    tagline: "Stream the latest Doraemon adventures in HD",
-
-    gradient: cartoonGradients.doraemon,
-
-    accent: "cyan",
+    tagline: "This is a story of 'time' that connects the past and the future.",
+    bgImage: "/NobitasSteamPoweredTimeMachine.png",
+    accent: "bronze",
+    releaseDate: "5th March 2027",
+    releaseLocation: "In Japanese Theatres",
+    announcedBy: "Toho",
+    partner: "Shin-Ei Animation",
+    trailerUrl: "/NobitasSteamPoweredTimeMachine.mp4",
+    youtubeUrl: "https://www.youtube.com/watch?v=BQgadaPZMko",
+  },
+  {
+    id: "h2",
+    title: "Shinchan Movies",
+    cartoonId: "shinchan",
+    tagline: "Laugh out loud with Shinchan's wildest stories",
+    gradient: cartoonGradients.shinchan,
+    accent: "pink",
   },
 
   // {

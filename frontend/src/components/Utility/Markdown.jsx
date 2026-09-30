@@ -82,17 +82,17 @@ const Marddown = ({ text, isDarkMode, className = "" }) => {
       }
 
 /* ---------------- HEADINGS ---------------- */
-[&>h1]:text-2xl [&>h1]:font-display [&>h1]:font-medium [&>h1]:mb-4 [&>h1]:mt-6
+[&>h1]:text-2xl text-left [&>h1]:font-display [&>h1]:font-medium [&>h1]:mb-4 [&>h1]:mt-6
 ${isDarkMode ? "[&>h1]:text-turquoise-500" : "[&>h1]:text-turquoise-600"}
 
-[&>h2]:text-xl [&>h2]:font-display [&>h2]:font-medium [&>h2]:mb-3 [&>h2]:mt-5
+[&>h2]:text-xl text-left [&>h2]:font-display [&>h2]:font-medium [&>h2]:mb-3 [&>h2]:mt-5
 ${isDarkMode ? "[&>h2]:text-turquoise-500" : "[&>h2]:text-turquoise-600"}
 
-[&>h3]:text-lg [&>h3]:font-display [&>h3]:font-medium [&>h3]:mb-2 [&>h3]:mt-4
+[&>h3]:text-lg text-left [&>h3]:font-display [&>h3]:font-medium [&>h3]:mb-2 [&>h3]:mt-4
 ${isDarkMode ? "[&>h3]:text-turquoise-500" : "[&>h3]:text-turquoise-600"}
 
 /* h4-h6 */
-[&>h4]:text-base [&>h4]:font-display [&>h4]:font-medium [&>h4]:mb-2 [&>h4]:mt-4
+[&>h4]:text-base text-left [&>h4]:font-display [&>h4]:font-medium [&>h4]:mb-2 [&>h4]:mt-4
 ${isDarkMode ? "[&>h4]:text-turquoise-500" : "[&>h4]:text-turquoise-600"}
 
 /* ---------------- TEXT ---------------- */

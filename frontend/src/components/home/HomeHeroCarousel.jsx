@@ -10,6 +10,7 @@ import {
   Maximize,
   X,
 } from "lucide-react";
+import { FaYoutube } from "react-icons/fa";
 import {
   BUBBLES,
   BANNERS,
@@ -118,7 +119,7 @@ export default function HomeHeroCarousel() {
 
   return (
     <>
-      <section className="relative min-h-[420px] overflow-hidden py-8 xs:py-10 sm:py-12 md:min-h-[480px] md:py-16">
+      <section className="relative h-[560px] overflow-hidden py-8 xs:py-10 sm:py-12 md:h-[620px] md:py-16">
         {/* BACKGROUNDS */}
 
         {HERO_SLIDES.map((s, i) => {
@@ -213,7 +214,7 @@ export default function HomeHeroCarousel() {
 
         {/* CONTENT */}
 
-        <div className="page-container relative z-10 flex min-h-[420px] items-center md:min-h-[480px]">
+        <div className="page-container relative z-10 flex h-full items-center">
           <div
             className={`grid w-full items-center gap-6 xs:gap-8 md:gap-10 ${
               isImageSlide ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"
@@ -234,17 +235,13 @@ export default function HomeHeroCarousel() {
                 >
                   {slide.badge || "Upcoming Movie"}
                 </p>
-
                 <h1 className="max-w-4xl font-display text-3xl leading-tight text-white [text-shadow:0_4px_18px_rgba(0,0,0,0.95)] xs:text-4xl sm:text-5xl md:text-5xl lg:text-6xl">
                   {slide.title}
                 </h1>
-
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.95)] xs:text-base md:mt-3 md:text-lg">
                   {slide.tagline}
                 </p>
-
                 {/* RELEASE + ANNOUNCEMENT */}
-
                 <div className="mt-4 grid w-full max-w-2xl gap-3 sm:grid-cols-2">
                   {/* RELEASE DATE */}
 
@@ -252,9 +249,9 @@ export default function HomeHeroCarousel() {
                     <div className="flex items-center gap-3">
                       <div className="bg-gradient-to-br from-blue-400 to-blue-600 p-3 rounded-lg">
                         <CalendarDays
-                        size={26}
-                        className="shrink-0 text-white drop-shadow-[0_1px_3px_rgba(255,255,255,0.8)]"
-                      />
+                          size={26}
+                          className="shrink-0 text-white drop-shadow-[0_1px_3px_rgba(255,255,255,0.8)]"
+                        />
                       </div>
 
                       <div className="text-left">
@@ -279,10 +276,10 @@ export default function HomeHeroCarousel() {
                     <div className="flex items-center gap-3">
                       <div className="bg-gradient-to-br from-blue-400 to-blue-600 p-3 rounded-lg">
                         <Clapperboard
-                        size={26}
-                        className="shrink-0 text-white drop-shadow-[0_1px_3px_rgba(255,255,255,0.8)]"
-                      /></div>
-                      
+                          size={26}
+                          className="shrink-0 text-white drop-shadow-[0_1px_3px_rgba(255,255,255,0.8)]"
+                        />
+                      </div>
 
                       <div className="text-left">
                         <p className="text-[9px] font-bold uppercase tracking-wider text-blue-500 drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)] xs:text-[10px]">
@@ -300,23 +297,35 @@ export default function HomeHeroCarousel() {
                     </div>
                   </div>
                 </div>
+                {/* WATCH BUTTONS */}
+                <div className="mt-5 flex flex-wrap items-center gap-3">
+                  {/* WATCH TRAILER */}
 
-                {/* WATCH TRAILER */}
-
-                <div className="mt-5">
                   <button
                     type="button"
                     onClick={openTrailer}
-                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-b from-blue-400 to-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:bg-white/90"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-b from-blue-400 to-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:bg-blue-500"
                   >
                     <Play size={18} fill="currentColor" />
                     Watch Trailer
                   </button>
+
+                  {/* WATCH ON YOUTUBE */}
+
+                  {slide.youtubeUrl && (
+                    <a
+                      href={slide.youtubeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-b from-red-500 to-red-700 px-5 py-2.5 text-sm font-bold text-white shadow-xl shadow-red-900/20 transition-all duration-300 hover:scale-105 hover:from-red-600 hover:to-red-800"
+                    >
+                      <FaYoutube size={18} fill="currentColor" />
+                      Watch on YouTube
+                    </a>
+                  )}
                 </div>
-
                 {/* DOTS */}
-
-                {hasMultipleSlides && (
+                {/* {hasMultipleSlides && (
                   <div className="mt-6 flex items-center gap-2">
                     {HERO_SLIDES.map((_, i) => (
                       <button
@@ -330,21 +339,21 @@ export default function HomeHeroCarousel() {
                       />
                     ))}
                   </div>
-                )}
+                )} */}
               </motion.div>
             ) : (
               /* ================= NORMAL SLIDE ================= */
               <>
                 {/* MOBILE BANNER */}
 
-                <div className="block md:hidden">
+                <div className="flex h-[220px] w-full items-center justify-center overflow-hidden xs:h-[250px] sm:h-[280px] md:hidden">
                   {BANNERS[slide.cartoonId] && (
                     <img
                       key={slide.id}
                       src={`${GITHUB_IMAGE_BASE}/${BANNERS[slide.cartoonId]}`}
                       alt={slide.title}
                       loading="eager"
-                      className="h-[220px] w-full animate-slideIn object-contain drop-shadow-[0_15px_40px_rgba(0,0,0,0.45)] xs:h-[250px] sm:h-[280px]"
+                      className="h-full w-full animate-slideIn object-contain drop-shadow-[0_15px_40px_rgba(0,0,0,0.45)]"
                     />
                   )}
                 </div>
@@ -382,33 +391,18 @@ export default function HomeHeroCarousel() {
                       Watch Party
                     </Link>
                   </div>
-
-                  {hasMultipleSlides && (
-                    <div className="mt-8 flex items-center gap-2">
-                      {HERO_SLIDES.map((_, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => setIndex(i)}
-                          className={`h-2 rounded-full transition-all ${
-                            i === index ? "w-8 bg-white" : "w-2 bg-white/50"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  )}
                 </div>
 
                 {/* RIGHT BANNER */}
 
-                <div className="hidden justify-center md:flex">
+                <div className="hidden h-[480px] w-full items-center justify-center overflow-hidden md:flex lg:h-[500px] xl:h-[520px]">
                   {BANNERS[slide.cartoonId] && (
                     <img
                       key={slide.id}
                       src={`${GITHUB_IMAGE_BASE}/${BANNERS[slide.cartoonId]}`}
                       alt={slide.title}
                       loading="eager"
-                      className="h-[330px] w-full max-w-[430px] animate-slideIn object-contain drop-shadow-[0_15px_40px_rgba(0,0,0,0.45)] lg:h-[390px] lg:max-w-[520px] xl:h-[430px] xl:max-w-[600px]"
+                      className="h-full w-full animate-slideIn object-contain"
                     />
                   )}
                 </div>
@@ -416,6 +410,25 @@ export default function HomeHeroCarousel() {
             )}
           </div>
         </div>
+
+        {hasMultipleSlides && (
+          <div className="absolute bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 sm:bottom-6 md:left-15 md:translate-x-0 md:pl-6 lg:pl-10">
+            {" "}
+            {HERO_SLIDES.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                aria-label={`Go to slide ${i + 1}`}
+                onClick={() => setIndex(i)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  i === index
+                    ? "w-8 bg-white shadow-md"
+                    : "w-2 bg-white/60 hover:bg-white/80"
+                }`}
+              />
+            ))}
+          </div>
+        )}
 
         {/* PREVIOUS */}
 
